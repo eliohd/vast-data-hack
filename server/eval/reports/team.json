@@ -1,15 +1,16 @@
 {
   "schema_version": "1",
   "publication": {
-    "status": "local_only_publication_failed",
-    "local_results_preserved": true,
-    "requested_project": "vastdata/team-46",
-    "blocked_reason": "configured_key_cannot_access_team_project"
+    "status": "submitted_unverified",
+    "local_results_preserved": true
   },
   "video_interpretation": {
     "sample_size": 0,
     "recorded_sample_size": 0,
     "synthetic_sample_size": 0,
+    "human_reviewed_sample_size": 0,
+    "ai_reviewed_sample_size": 0,
+    "human_ground_truth_metrics_available": false,
     "development_overlap_count": 0,
     "held_out_claim": false,
     "methods": {
@@ -466,7 +467,7 @@
   },
   "cached_prediction_coverage": {
     "status": "predictions_only_not_accuracy",
-    "cache_sha256": "e3f117ba88f7e37928b1d56524060c32f53c72606f38778e892cfcffbd9711ea",
+    "cache_sha256": "adb8b4a4d2ea3fe3dbcfa1dcdd2b060d83ab47bb925f8007cc3c94d6a88e96d5",
     "built_at": "2026-10-17T12:21:51+00:00",
     "source_weave_project": "vastdata/team-46",
     "source_weave_traced": true,

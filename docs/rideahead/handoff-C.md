@@ -30,7 +30,48 @@ obstruction. It is a **work zone** (`hazard_type="work_zone"`), not a parked veh
 - Not yet emitted by `ArchivePerceptionProvider` (that needs a scenario/ride on Broadway, A's call). If A wants
   it, C can add it as a second ride (`nyc_streets_cam-1`) with `work_zone` observations.
 
-## Deploy report (current: named tunnel, 2026-10-17 ~13:13 UTC)
+## Deploy report (current: ea6fd79, both scenarios, 2026-10-17 ~14:01 UTC)
+
+- **Deployed SHA: `ea6fd79`** (`main`); `make verify` green (server 174 passed / 1 skipped, web 61 passed).
+  `make deploy VM=bc-rishiksiripurapu`; named tunnel left running. **URL: https://cysense.elio.ltd**.
+- Capabilities: scenarios `nyc-6th-ave-v2`, `nyc-broadway-work-zone-v1`; vast/cosmos/yolo/wandb_inference
+  `cached`, **weave `connected`**, routing `configured` (no ORS key on the VM, so routes are `cached_provider`).
+
+Smoke test against https://cysense.elio.ltd (demo key read on the VM, never printed):
+
+```
+--- 6th Ave (default)
+140.0 [] ['continue'] {'cached_provider'}
+160.0 [('lane_blocked', 'observed', None)] ['heads_up'] {'cached_provider'}
+400.0 [('lane_blocked', 'stale', None)] ['slow'] {'cached_provider'}
+480.0 [('lane_blocked', 'cleared', None)] ['continue'] {'cached_provider'}
+--- Broadway (scenario_id nyc-broadway-work-zone-v1)
+60.0 [('work_zone', 'observed', None)] ['reroute'] {'cached_provider'}
+   event: "1 detour(s) from Bike B (simulated)'s position (84 m along)"
+   event: "bike_b: reroute: Blockage 60 m ahead. Take the detour; about 1 min 40 sec extra."
+1489.0 [('work_zone', 'confirmed', 'persistence')] ['heads_up'] {'cached_provider'}
+```
+
+Media (`Range: bytes=0-65535`): Walker clip `VID_20261006_174811_003 c04-s6` → **206 video/mp4**;
+`VID_20261006_171812_002 c17-s2` → **206 video/mp4**.
+
+### Weave evaluation
+
+`WANDB_TEAM=vastdata WANDB_PROJECT=team-46 uv run python -m eval.run --model-cache
+fixtures/rideahead/cache/model_outputs_v2.json --publish-weave --output eval/reports/team.json`
+
+- **Link: https://wandb.ai/vastdata/team-46/r/call/01a14a2b-0087-750e-906e-1f38257e5652**
+  (evaluation `rideahead-synthetic-lifecycle` + `evaluation_summary`). The report says
+  `submitted_unverified` by design; lane C read the call back with the Weave client (finished, has output).
+- Result: **lifecycle 21/21 scenarios passed** (synthetic ground truth). **Video interpretation: not scored**:
+  0 human-reviewed / 0 AI-reviewed clips, **10 clip labels pending**, so keyword/structured/verified methods
+  are `unavailable`. Cached predictions are reported as coverage only, not accuracy. Report committed:
+  `server/eval/reports/team.json`.
+- Suggestion: lane C's frame reviews (handoff above and `hazard-catalogue-c.md`) could fill those 10 labels
+  as "AI-reviewed" if D's label format allows. Not done here without D's agreement.
+
+## Deploy report (earlier: c448774, superseded)
+
 
 - **Deployed SHA: `c448774`** (`main`); `make verify` green locally first (server 160 passed / 1 skipped,
   web 27 passed, build OK). `make deploy VM=bc-rishiksiripurapu` with no `VM_DIR` override (A's fix works).
