@@ -1,0 +1,537 @@
+{
+ "provenance": "cached recorded",
+ "built_at": "2026-10-17T12:21:51+00:00",
+ "weave_traced": true,
+ "weave_project": "vastdata/team-46",
+ "results": [
+  {
+   "segment_id": "gx010001-c03-s1",
+   "segment_file": "20261008_073802_GX010001_chunk_0003_segment_001_of_006.mp4",
+   "caption": "The video shows a city street with two lanes in the direction of travel, separated by a dashed white line. The road surface is dark asphalt with visible white lane markings and crosswalks. On the right side of the street, there is a sidewalk with storefronts, including a coffee shop with a blue awning and a sign that reads \"think coffee.\" A fire hydrant is visible near the curb. Several cars are driving in the same direction, including a dark SUV and a green sedan. A black car is parked on the right side of the street. Pedestrians can be seen walking on the sidewalk. The traffic light ahead is green, allowing the vehicles to continue moving forward. There are no visible trucks or buses in the scene. No vehicles are blocking the lanes, and there are no apparent violations or hazards.",
+   "object_counts": {
+    "car": 12,
+    "bus": 2,
+    "person": 4,
+    "fire hydrant": 1,
+    "bicycle": 2,
+    "traffic light": 1,
+    "motorcycle": 1
+   },
+   "extraction": {
+    "model": "meta-llama/Llama-3.3-70B-Instruct",
+    "prompt_version": "rideahead-extract-1",
+    "parsed": {
+     "hazard_type": "lane_blocked",
+     "assertion": "clear",
+     "support": "supported",
+     "description": "No vehicles block the bike lane or the cyclist's lane.",
+     "evidence_quote": "No vehicles are blocking the lanes, and there are no apparent violations or hazards.",
+     "confidence": 0.9
+    },
+    "latency_ms": 1128
+   },
+   "verification": {
+    "model": "nvidia/cosmos3-nano-reasoner",
+    "prompt_version": "rideahead-verify-2",
+    "question": "A motor vehicle is stopped or parked in, or partially in, the bicycle lane or the cyclist's riding lane ahead, so a rider would have to leave that lane.",
+    "verdict": "contradicted",
+    "parsed": {
+     "road_space_visible": true,
+     "obstruction_visible": false,
+     "verdict": "contradicted",
+     "object": null,
+     "evidence_seconds": null,
+     "rationale": "The bicycle lane markings are clearly visible as white diagonal stripes on the right side of the road, and no vehicle is seen occupying or partially entering that space."
+    },
+    "raw_text": "```json\n{\n  \"road_space_visible\": true,\n  \"obstruction_visible\": false,\n  \"verdict\": \"contradicted\",\n  \"object\": null,\n  \"evidence_seconds\": null,\n  \"rationale\": \"The bicycle lane markings are clearly visible as white diagonal stripes on the right side of the road, and no vehicle is seen occupying or partially entering that space.\"\n}\n```",
+    "latency_ms": 4230
+   },
+   "video_sha256": "2065d602dabb339916c4f7f6a8aa6e25edde9402959ab65a4e5553b87d8f0acf"
+  },
+  {
+   "segment_id": "gx010001-c12-s5",
+   "segment_file": "20261008_074151_GX010001_chunk_0012_segment_005_of_006.mp4",
+   "caption": "The clip shows a first-person view from a vehicle moving along a city street with a dedicated bike lane. The bike lane is marked with green pavement and a yellow center line, and the word \"BICYCLE\" is painted on the road surface. A row of blue docked bicycles lines the left side of the bike lane, separated from the main roadway by a concrete barrier. Pedestrians are visible on the sidewalk to the left, walking past storefronts including one labeled \"100 W 33\" and another with \"AEROPOSTALE\" signage. On the main roadway to the right, multiple vehicles are present, including a white sedan, a yellow taxi, a silver SUV, and a red delivery van with white text on its side. A white bus is also visible further down the street. Traffic appears moderate, with vehicles moving in the same direction as the camera vehicle. The road has white crosswalk markings and yellow diagonal stripes near the bike lane entrance. No traffic lights or stop signs are clearly visible in the frame.",
+   "object_counts": {
+    "car": 9,
+    "person": 7,
+    "umbrella": 1,
+    "bus": 1,
+    "skateboard": 2,
+    "bicycle": 4,
+    "truck": 2,
+    "motorcycle": 4,
+    "fire hydrant": 1,
+    "surfboard": 1
+   },
+   "extraction": {
+    "model": "meta-llama/Llama-3.3-70B-Instruct",
+    "prompt_version": "rideahead-extract-1",
+    "parsed": {
+     "hazard_type": "lane_blocked",
+     "assertion": "clear",
+     "support": "supported",
+     "description": "The bike lane appears to be unobstructed by vehicles.",
+     "evidence_quote": "A row of blue docked bicycles lines the left side of the bike lane",
+     "confidence": 0.8
+    },
+    "latency_ms": 994
+   },
+   "verification": {
+    "model": "nvidia/cosmos3-nano-reasoner",
+    "prompt_version": "rideahead-verify-2",
+    "question": "A motor vehicle is stopped or parked in, or partially in, the bicycle lane or the cyclist's riding lane ahead, so a rider would have to leave that lane.",
+    "verdict": "contradicted",
+    "parsed": {
+     "road_space_visible": true,
+     "obstruction_visible": false,
+     "verdict": "contradicted",
+     "object": null,
+     "evidence_seconds": null,
+     "rationale": "The bicycle lane is clearly visible with green paint, bike symbols, and lane lines, and no vehicle is seen with its wheels or body inside those markings."
+    },
+    "raw_text": "```json\n{\n  \"road_space_visible\": true,\n  \"obstruction_visible\": false,\n  \"verdict\": \"contradicted\",\n  \"object\": null,\n  \"evidence_seconds\": null,\n  \"rationale\": \"The bicycle lane is clearly visible with green paint, bike symbols, and lane lines, and no vehicle is seen with its wheels or body inside those markings.\"\n}\n```",
+    "latency_ms": 4362
+   },
+   "video_sha256": "f9e457a081dfedc506f09e8cc06f0bc9263f04ec74fa1b419917ae0594dfd782"
+  },
+  {
+   "segment_id": "gx010001-c13-s2",
+   "segment_file": "20261008_074216_GX010001_chunk_0013_segment_002_of_006.mp4",
+   "caption": "The scene unfolds on a busy city street with a dedicated green bike lane marked by a yellow center line. To the left of the bike lane, a row of blue bicycles is parked along the sidewalk, and a large Macy\u2019s store sign is visible on a building. The main roadway has multiple lanes with vehicles including yellow taxis and a yellow van. A concrete barrier separates the bike lane from the main traffic lanes. As the camera moves forward, it approaches an intersection with a marked pedestrian crosswalk. A cyclist wearing a dark jacket and carrying an orange backpack rides ahead in the bike lane. Pedestrians are gathered on the sidewalk near the crosswalk, and a traffic officer in a high-visibility vest is present at the intersection. The traffic light is red, and vehicles are stopped or slowing down. A street sign indicates \u201cWest 34th St.\u201d and \u201cNo Turns\u201d is posted. The camera then turns right onto another street, following the flow of traffic.",
+   "object_counts": {
+    "car": 7,
+    "bicycle": 3,
+    "person": 13,
+    "motorcycle": 4,
+    "bus": 1,
+    "truck": 1,
+    "traffic light": 2,
+    "suitcase": 1,
+    "backpack": 1,
+    "skateboard": 1,
+    "potted plant": 1,
+    "fire hydrant": 1
+   },
+   "extraction": {
+    "model": "meta-llama/Llama-3.3-70B-Instruct",
+    "prompt_version": "rideahead-extract-1",
+    "parsed": {
+     "hazard_type": "lane_blocked",
+     "assertion": "clear",
+     "support": "supported",
+     "description": "The bike lane is not blocked by any vehicles or objects.",
+     "evidence_quote": "a dedicated green bike lane marked by a yellow center line",
+     "confidence": 0.8
+    },
+    "latency_ms": 859
+   },
+   "verification": {
+    "model": "nvidia/cosmos3-nano-reasoner",
+    "prompt_version": "rideahead-verify-2",
+    "question": "A motor vehicle is stopped or parked in, or partially in, the bicycle lane or the cyclist's riding lane ahead, so a rider would have to leave that lane.",
+    "verdict": "contradicted",
+    "parsed": {
+     "road_space_visible": true,
+     "obstruction_visible": false,
+     "verdict": "contradicted",
+     "object": null,
+     "evidence_seconds": null,
+     "rationale": "The bicycle lane is clearly visible with green paint, bike symbols, and lane lines, and no vehicle is seen occupying that space."
+    },
+    "raw_text": "```json\n{\n  \"road_space_visible\": true,\n  \"obstruction_visible\": false,\n  \"verdict\": \"contradicted\",\n  \"object\": null,\n  \"evidence_seconds\": null,\n  \"rationale\": \"The bicycle lane is clearly visible with green paint, bike symbols, and lane lines, and no vehicle is seen occupying that space.\"\n}\n```",
+    "latency_ms": 3808
+   },
+   "video_sha256": "4e7eacccebdfe97eb95ec2e03d506d6efee81932369975a3afd88392052e8212"
+  },
+  {
+   "segment_id": "gx010001-c14-s2",
+   "segment_file": "20261008_074241_GX010001_chunk_0014_segment_002_of_006.mp4",
+   "caption": "The scene unfolds on a busy city street with a marked bike lane on the left and multiple lanes of traffic. A black van is stopped at an intersection, partially blocking the lane. Pedestrians are crossing the street at a marked crosswalk, and a few cyclists are visible in the bike lane. A white car with blue stripes is stopped near the intersection, and a bus is seen further down the road. Traffic lights are visible at the intersection, and street signs indicate directions and crosswalks. The overall activity suggests a typical urban traffic scenario with vehicles and pedestrians interacting at a busy junction.",
+   "object_counts": {
+    "car": 7,
+    "person": 12,
+    "tv": 1,
+    "bicycle": 2,
+    "bus": 3,
+    "traffic light": 4,
+    "truck": 2,
+    "backpack": 1,
+    "motorcycle": 2,
+    "umbrella": 1,
+    "skateboard": 1,
+    "parking meter": 1
+   },
+   "extraction": {
+    "model": "meta-llama/Llama-3.3-70B-Instruct",
+    "prompt_version": "rideahead-extract-1",
+    "parsed": {
+     "hazard_type": "lane_blocked",
+     "assertion": "present",
+     "support": "supported",
+     "description": "A black van is partially blocking the bike lane.",
+     "evidence_quote": "A black van is stopped at an intersection, partially blocking the lane.",
+     "confidence": 0.8
+    },
+    "latency_ms": 1078
+   },
+   "verification": {
+    "model": "nvidia/cosmos3-nano-reasoner",
+    "prompt_version": "rideahead-verify-2",
+    "question": "A motor vehicle is stopped or parked in, or partially in, the bicycle lane or the cyclist's riding lane ahead, so a rider would have to leave that lane.",
+    "verdict": "unclear",
+    "parsed": {
+     "road_space_visible": true,
+     "obstruction_visible": false,
+     "verdict": "unclear",
+     "object": null,
+     "evidence_seconds": null,
+     "rationale": "The bicycle lane markings are visible, but no vehicle is seen with its wheels or body inside those markings."
+    },
+    "raw_text": "```json\n{\n  \"road_space_visible\": true,\n  \"obstruction_visible\": false,\n  \"verdict\": \"unclear\",\n  \"object\": null,\n  \"evidence_seconds\": null,\n  \"rationale\": \"The bicycle lane markings are visible, but no vehicle is seen with its wheels or body inside those markings.\"\n}\n```",
+    "latency_ms": 4655
+   },
+   "video_sha256": "9a6af8b1471436232743667d03d6ea26d540ba9a50d3684bda443233b6bb63c6"
+  },
+  {
+   "segment_id": "gx010001-c14-s3",
+   "segment_file": "20261008_074241_GX010001_chunk_0014_segment_003_of_006.mp4",
+   "caption": "The scene is a wide, multi-lane urban street with a designated bike lane on the left, separated by a painted curb and a white barrier. The road surface is gray asphalt with white lane markings and a green bike lane stripe. A green street sign reading \"W 36 St\" is visible at an intersection. Traffic lights are present, showing red for vehicles and green for pedestrians. Several vehicles are stopped or moving slowly, including a black SUV, a silver van with its side door open, and a large bus with an advertisement that reads \"WE ARE ASTOUND.\" Pedestrians are crossing the street and walking along the sidewalks, some carrying bags or wearing backpacks. A person in a brown jacket is seen exiting the silver van. The overall environment is a busy city intersection with moderate traffic and active pedestrian movement.",
+   "object_counts": {
+    "person": 13,
+    "bus": 4,
+    "car": 6,
+    "traffic light": 3,
+    "truck": 2,
+    "skateboard": 2,
+    "handbag": 1,
+    "backpack": 1,
+    "parking meter": 1
+   },
+   "extraction": {
+    "model": "meta-llama/Llama-3.3-70B-Instruct",
+    "prompt_version": "rideahead-extract-1",
+    "parsed": {
+     "hazard_type": "lane_blocked",
+     "assertion": "unclear",
+     "support": "uncertain",
+     "description": "Vehicles are present near the bike lane",
+     "evidence_quote": "a black SUV, a silver van with its side door open, and a large bus",
+     "confidence": 0.4
+    },
+    "latency_ms": 978
+   },
+   "verification": {
+    "model": "nvidia/cosmos3-nano-reasoner",
+    "prompt_version": "rideahead-verify-2",
+    "question": "A motor vehicle is stopped or parked in, or partially in, the bicycle lane or the cyclist's riding lane ahead, so a rider would have to leave that lane.",
+    "verdict": "supported",
+    "parsed": {
+     "road_space_visible": true,
+     "obstruction_visible": true,
+     "verdict": "supported",
+     "object": "van",
+     "evidence_seconds": [
+      0.1,
+      4.8
+     ],
+     "rationale": "A van is parked in the bicycle lane, partially obstructing the lane."
+    },
+    "raw_text": "```json\n{\n  \"road_space_visible\": true,\n  \"obstruction_visible\": true,\n  \"verdict\": \"supported\",\n  \"object\": \"van\",\n  \"evidence_seconds\": [0.1, 4.8],\n  \"rationale\": \"A van is parked in the bicycle lane, partially obstructing the lane.\"\n}\n```",
+    "latency_ms": 4748
+   },
+   "video_sha256": "e7bbd45b833d3fc907dca13ab9beb42361a7c42399b9ea46341f6a244d3ce6d2"
+  },
+  {
+   "segment_id": "gx010001-c15-s1",
+   "segment_file": "20261008_074307_GX010001_chunk_0015_segment_001_of_006.mp4",
+   "caption": "The clip shows a vehicle traveling along a multi-lane city street with a dedicated green bike lane on the left. The road surface is marked with white lane lines and diagonal white stripes in the bike lane. Pedestrians are visible on the sidewalks, some walking and others standing near storefronts. Several cars are present, including a silver SUV and a black sedan, with brake lights illuminated as they slow or stop. A yellow taxi is visible further ahead. A large black delivery truck is in the left lane, partially blocking the bike lane. Storefront signs along the street include \u201cRetail Space Available,\u201d \u201cGift Shop,\u201d and \u201cChinese Food.\u201d The vehicle continues forward, navigating around the truck and other traffic. No traffic lights or stop signs are clearly visible in the immediate foreground.",
+   "object_counts": {
+    "person": 7,
+    "car": 7,
+    "dog": 1,
+    "motorcycle": 1,
+    "bicycle": 2,
+    "truck": 1,
+    "suitcase": 1,
+    "fire hydrant": 3,
+    "bus": 1
+   },
+   "extraction": {
+    "model": "meta-llama/Llama-3.3-70B-Instruct",
+    "prompt_version": "rideahead-extract-1",
+    "parsed": {
+     "hazard_type": "lane_blocked",
+     "assertion": "present",
+     "support": "supported",
+     "description": "A large black delivery truck is partially blocking the bike lane.",
+     "evidence_quote": "A large black delivery truck is in the left lane, partially blocking the bike lane.",
+     "confidence": 0.9
+    },
+    "latency_ms": 1104
+   },
+   "verification": {
+    "model": "nvidia/cosmos3-nano-reasoner",
+    "prompt_version": "rideahead-verify-2",
+    "question": "A motor vehicle is stopped or parked in, or partially in, the bicycle lane or the cyclist's riding lane ahead, so a rider would have to leave that lane.",
+    "verdict": "supported",
+    "parsed": {
+     "road_space_visible": true,
+     "obstruction_visible": true,
+     "verdict": "supported",
+     "object": "car",
+     "evidence_seconds": [
+      0.1,
+      4.8
+     ]
+    },
+    "raw_text": "```json\n{\n  \"road_space_visible\": true,\n  \"obstruction_visible\": true,\n  \"verdict\": \"supported\",\n  \"object\": \"car\",\n  \"evidence_seconds\": [0.1, 4.8]\n}\n```",
+    "latency_ms": 3528
+   },
+   "video_sha256": "0cad9c07491feeaf74fba4de9c9af16082ca50d2f86171a293e948009aa6a1ec"
+  },
+  {
+   "segment_id": "gx010001-c15-s3",
+   "segment_file": "20261008_074307_GX010001_chunk_0015_segment_003_of_006.mp4",
+   "caption": "The scene is a busy city intersection with multiple lanes and crosswalks. A yellow taxi and a black SUV are prominent vehicles, with the taxi making a turn through the intersection. Pedestrians are crossing the street at marked crosswalks, and a person on a blue bicycle is visible near the curb. Traffic lights control the flow, and a green street sign reading \"W 38 St\" is visible. The camera perspective suggests it is mounted on a vehicle, capturing the movement of cars and people as they navigate the intersection.",
+   "object_counts": {
+    "car": 11,
+    "person": 11,
+    "backpack": 2,
+    "handbag": 1,
+    "traffic light": 1,
+    "bicycle": 1,
+    "motorcycle": 1,
+    "truck": 1
+   },
+   "extraction": {
+    "model": "meta-llama/Llama-3.3-70B-Instruct",
+    "prompt_version": "rideahead-extract-1",
+    "parsed": {
+     "hazard_type": "lane_blocked",
+     "assertion": "unclear",
+     "support": "uncertain",
+     "description": "The presence of a bicycle and multiple vehicles is detected.",
+     "evidence_quote": "A person on a blue bicycle is visible near the curb.",
+     "confidence": 0.2
+    },
+    "latency_ms": 952
+   },
+   "verification": {
+    "model": "nvidia/cosmos3-nano-reasoner",
+    "prompt_version": "rideahead-verify-2",
+    "question": "A motor vehicle is stopped or parked in, or partially in, the bicycle lane or the cyclist's riding lane ahead, so a rider would have to leave that lane.",
+    "verdict": "contradicted",
+    "parsed": {
+     "road_space_visible": true,
+     "obstruction_visible": false,
+     "verdict": "contradicted",
+     "object": null,
+     "evidence_seconds": null,
+     "rationale": "The bicycle lane markings are clearly visible and unobstructed throughout the clip, with no vehicles or objects occupying part of the lane."
+    },
+    "raw_text": "```json\n{\n  \"road_space_visible\": true,\n  \"obstruction_visible\": false,\n  \"verdict\": \"contradicted\",\n  \"object\": null,\n  \"evidence_seconds\": null,\n  \"rationale\": \"The bicycle lane markings are clearly visible and unobstructed throughout the clip, with no vehicles or objects occupying part of the lane.\"\n}\n```",
+    "latency_ms": 3880
+   },
+   "video_sha256": "ff5100f384e597322957fc55625874e409b3e40e7b533b39cd5662ef91d249e0"
+  },
+  {
+   "segment_id": "gx010001-c15-s5",
+   "segment_file": "20261008_074307_GX010001_chunk_0015_segment_005_of_006.mp4",
+   "caption": "The scene unfolds on a busy city street with multiple lanes of traffic and a dedicated green bike lane on the left. The road surface is marked with white lane lines and directional arrows. A black SUV is parked along the right side of the bike lane, partially blocking the lane and creating a potential hazard for cyclists. A pedestrian wearing a red jacket and carrying a blue backpack walks across the bike lane from right to left, crossing in front of the camera\u2019s path. Several cars and a blue bus are visible in the adjacent traffic lanes, moving slowly or stopped. On the left sidewalk, a person is seen with a suitcase, and another individual is holding an umbrella. A fire hydrant is visible near the curb. Storefronts and buildings line both sides of the street, with some displaying signage and advertisements. The overall environment suggests a typical urban setting with moderate traffic and pedestrian activity.",
+   "object_counts": {
+    "car": 9,
+    "person": 6,
+    "bus": 2,
+    "truck": 1,
+    "umbrella": 1,
+    "fire hydrant": 2,
+    "handbag": 1,
+    "backpack": 2,
+    "suitcase": 3,
+    "tv": 1,
+    "laptop": 1,
+    "motorcycle": 1
+   },
+   "extraction": {
+    "model": "meta-llama/Llama-3.3-70B-Instruct",
+    "prompt_version": "rideahead-extract-1",
+    "parsed": {
+     "hazard_type": "lane_blocked",
+     "assertion": "present",
+     "support": "supported",
+     "description": "A black SUV is partially blocking the bike lane.",
+     "evidence_quote": "A black SUV is parked along the right side of the bike lane, partially blocking the lane and creating a potential hazard for cyclists.",
+     "confidence": 0.9
+    },
+    "latency_ms": 997
+   },
+   "verification": {
+    "model": "nvidia/cosmos3-nano-reasoner",
+    "prompt_version": "rideahead-verify-2",
+    "question": "A motor vehicle is stopped or parked in, or partially in, the bicycle lane or the cyclist's riding lane ahead, so a rider would have to leave that lane.",
+    "verdict": "supported",
+    "parsed": {
+     "road_space_visible": true,
+     "obstruction_visible": true,
+     "verdict": "supported",
+     "object": "car",
+     "evidence_seconds": [
+      0.1,
+      4.8
+     ],
+     "rationale": "A black SUV is parked in the bicycle lane, partially obstructing the lane."
+    },
+    "raw_text": "```json\n{\n  \"road_space_visible\": true,\n  \"obstruction_visible\": true,\n  \"verdict\": \"supported\",\n  \"object\": \"car\",\n  \"evidence_seconds\": [0.1, 4.8],\n  \"rationale\": \"A black SUV is parked in the bicycle lane, partially obstructing the lane.\"\n}\n```",
+    "latency_ms": 4418
+   },
+   "video_sha256": "8abee8f7c57a26bec58dcb9e5bb2f3bbbfeba320bd142bfdf19e259ac4714e77"
+  },
+  {
+   "segment_id": "gx010001-c15-s6",
+   "segment_file": "20261008_074307_GX010001_chunk_0015_segment_006_of_006.mp4",
+   "caption": "The scene is a busy city street with multiple lanes and a dedicated green bike lane marked with white bicycle symbols and the word \"ONLY.\" The road surface shows painted arrows and crosswalks. A white bus with \"ENDGAME\" visible on its side is stopped or moving slowly in the rightmost lane. Several cars are present, including a dark blue sedan and a black sedan, with brake lights illuminated as they slow or stop. A black sedan is positioned near the intersection, partially blocking the lane. Pedestrians are crossing at the crosswalk, and a person in dark clothing is walking along the sidewalk. A traffic light at the intersection is red, requiring vehicles to stop. A street sign reading \"Hudson River\" with a left-pointing arrow is visible. The camera vehicle approaches the intersection, where a small cart or utility vehicle is also present. No clear violations are evident, but the stopped bus and partially blocking black sedan create potential congestion.",
+   "object_counts": {
+    "car": 7,
+    "person": 12,
+    "bus": 1,
+    "traffic light": 3,
+    "fire hydrant": 1,
+    "motorcycle": 1,
+    "truck": 1,
+    "umbrella": 1,
+    "skateboard": 1
+   },
+   "extraction": {
+    "model": "meta-llama/Llama-3.3-70B-Instruct",
+    "prompt_version": "rideahead-extract-1",
+    "parsed": {
+     "hazard_type": "lane_blocked",
+     "assertion": "present",
+     "support": "supported",
+     "description": "A black sedan is partially blocking the bike lane.",
+     "evidence_quote": "A black sedan is positioned near the intersection, partially blocking the lane.",
+     "confidence": 0.8
+    },
+    "latency_ms": 1152
+   },
+   "verification": {
+    "model": "nvidia/cosmos3-nano-reasoner",
+    "prompt_version": "rideahead-verify-2",
+    "question": "A motor vehicle is stopped or parked in, or partially in, the bicycle lane or the cyclist's riding lane ahead, so a rider would have to leave that lane.",
+    "verdict": "supported",
+    "parsed": {
+     "road_space_visible": true,
+     "obstruction_visible": true,
+     "verdict": "supported",
+     "object": "car",
+     "evidence_seconds": [
+      0.1,
+      4.8
+     ],
+     "rationale": "A black car is positioned in the bicycle lane, occupying part of the green-painted bike lane markings and partially blocking the lane."
+    },
+    "raw_text": "```json\n{\n  \"road_space_visible\": true,\n  \"obstruction_visible\": true,\n  \"verdict\": \"supported\",\n  \"object\": \"car\",\n  \"evidence_seconds\": [0.1, 4.8],\n  \"rationale\": \"A black car is positioned in the bicycle lane, occupying part of the green-painted bike lane markings and partially blocking the lane.\"\n}\n```",
+    "latency_ms": 6592
+   },
+   "video_sha256": "448b9cdc869e13cfd6d41e1ef67f5944d50f71a5136845a6ca6d80a3a6d82679"
+  },
+  {
+   "segment_id": "gx010001-c16-s2",
+   "segment_file": "20261008_074332_GX010001_chunk_0016_segment_002_of_006.mp4",
+   "caption": "The video shows a cyclist moving along a city street with a dedicated green bike lane on the left side. The bike lane is marked with white lines and the word \"Bike\" painted on the pavement. The cyclist is riding in the bike lane, which is separated from the main traffic lanes by a solid white line. Several cars are visible in the adjacent traffic lanes, including a black sedan and a white SUV. The traffic appears to be moving slowly, with vehicles stopped or moving at a reduced speed. Pedestrians can be seen walking on the sidewalk to the left of the bike lane. The street is lined with tall buildings, some with illuminated windows, indicating it is either late afternoon or early evening. There are no visible traffic lights or stop signs in the immediate area. The overall scene depicts a typical urban environment with mixed traffic and pedestrian activity.",
+   "object_counts": {
+    "car": 8,
+    "person": 4,
+    "truck": 1,
+    "bench": 1,
+    "fire hydrant": 2,
+    "parking meter": 1,
+    "bus": 1,
+    "skateboard": 1
+   },
+   "extraction": {
+    "model": "meta-llama/Llama-3.3-70B-Instruct",
+    "prompt_version": "rideahead-extract-1",
+    "parsed": {
+     "hazard_type": "lane_blocked",
+     "assertion": "clear",
+     "support": "supported",
+     "description": "The bike lane is not blocked by any vehicles or objects.",
+     "evidence_quote": "The bike lane is marked with white lines and the word 'Bike' painted on the pavement. The cyclist is riding in the bike lane...",
+     "confidence": 0.9
+    },
+    "latency_ms": 1210
+   },
+   "verification": {
+    "model": "nvidia/cosmos3-nano-reasoner",
+    "prompt_version": "rideahead-verify-2",
+    "question": "A motor vehicle is stopped or parked in, or partially in, the bicycle lane or the cyclist's riding lane ahead, so a rider would have to leave that lane.",
+    "verdict": "supported",
+    "parsed": {
+     "road_space_visible": true,
+     "obstruction_visible": true,
+     "verdict": "supported",
+     "object": "car",
+     "evidence_seconds": [
+      0.1,
+      4.8
+     ],
+     "rationale": "A car is visible with its wheels and body partially within the green-painted bicycle lane markings throughout the clip, obstructing the lane."
+    },
+    "raw_text": "```json\n{\n  \"road_space_visible\": true,\n  \"obstruction_visible\": true,\n  \"verdict\": \"supported\",\n  \"object\": \"car\",\n  \"evidence_seconds\": [\n    0.1,\n    4.8\n  ],\n  \"rationale\": \"A car is visible with its wheels and body partially within the green-painted bicycle lane markings throughout the clip, obstructing the lane.\"\n}\n```",
+    "latency_ms": 4458
+   },
+   "video_sha256": "572b144bb38cd6d4771141e0167bcd48500fe867fdb005e9a0a9b2f3300f2f74"
+  },
+  {
+   "segment_id": "gx010001-c14-s3",
+   "segment_file": "20261008_074241_GX010001_chunk_0014_segment_003_of_006.mp4",
+   "caption": "The scene is a wide, multi-lane urban street with a designated bike lane on the left, separated by a painted curb and a white barrier. The road surface is gray asphalt with white lane markings and a green bike lane stripe. A green street sign reading \"W 36 St\" is visible at an intersection. Traffic lights are present, showing red for vehicles and green for pedestrians. Several vehicles are stopped or moving slowly, including a black SUV, a silver van with its side door open, and a large bus with an advertisement that reads \"WE ARE ASTOUND.\" Pedestrians are crossing the street and walking along the sidewalks, some carrying bags or wearing backpacks. A person in a brown jacket is seen exiting the silver van. The overall environment is a busy city intersection with moderate traffic and active pedestrian movement.",
+   "object_counts": {
+    "person": 13,
+    "bus": 4,
+    "car": 6,
+    "traffic light": 3,
+    "truck": 2,
+    "skateboard": 2,
+    "handbag": 1,
+    "backpack": 1,
+    "parking meter": 1
+   },
+   "extraction": {
+    "model": "meta-llama/Llama-3.3-70B-Instruct",
+    "prompt_version": "rideahead-extract-1",
+    "parsed": {
+     "hazard_type": "lane_blocked",
+     "assertion": "unclear",
+     "support": "uncertain",
+     "description": "Vehicles are present near the bike lane",
+     "evidence_quote": "A black SUV, a silver van with its side door open, and a large bus",
+     "confidence": 0.4
+    },
+    "latency_ms": 1087
+   },
+   "verification": {
+    "model": "nvidia/cosmos3-nano-reasoner",
+    "prompt_version": "rideahead-verify-2",
+    "question": "A motor vehicle is stopped or parked in, or partially in, the bicycle lane or the cyclist's riding lane ahead, so a rider would have to leave that lane.",
+    "verdict": "supported",
+    "parsed": {
+     "road_space_visible": true,
+     "obstruction_visible": true,
+     "verdict": "supported",
+     "object": "van",
+     "evidence_seconds": [
+      0.1,
+      4.8
+     ],
+     "rationale": "A van is parked in the bicycle lane, occupying part of the designated space for cyclists."
+    },
+    "raw_text": "```json\n{\n  \"road_space_visible\": true,\n  \"obstruction_visible\": true,\n  \"verdict\": \"supported\",\n  \"object\": \"van\",\n  \"evidence_seconds\": [0.1, 4.8],\n  \"rationale\": \"A van is parked in the bicycle lane, occupying part of the designated space for cyclists.\"\n}\n```",
+    "latency_ms": 3811
+   },
+   "video_sha256": "e7bbd45b833d3fc907dca13ab9beb42361a7c42399b9ea46341f6a244d3ce6d2"
+  }
+ ]
+}

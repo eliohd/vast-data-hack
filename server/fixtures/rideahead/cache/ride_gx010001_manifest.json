@@ -128,10 +128,22 @@
     "lon": -73.9858,
     "uncertainty_m": 150,
     "evidence": "street sign 'W 38 St'"
+   },
+   {
+    "chunk": 15,
+    "segment": 6,
+    "ride_offset_s": 479.5,
+    "label": "W 39 St (street sign at 4.5 s)",
+    "lat": 40.7528,
+    "lon": -73.9853,
+    "uncertainty_m": 60,
+    "evidence": "street sign 'W 39 St' visible in frame; Sophie's Cuban Cuisine / Residence Inn in c15-s2"
    }
   ],
   "coordinate_note": "Coordinates are hand-placed approximations at the named intersections on 6th Ave; verify on a map before relying on them. Uncertainty widens north of W 34th (possible Broadway turn).",
-  "interpolation": "Linear between neighbouring anchors by ride offset; unmapped outside chunks 11-15."
+  "interpolation": "Linear between neighbouring anchors by ride offset; unmapped outside chunks 11-15.",
+  "section_start_offset_s": 340,
+  "road_segment_id": "manhattan-6th-ave:nb"
  },
  "shortlist": [
   {
@@ -166,7 +178,9 @@
    "ride_offset_s": 425,
    "role": "uncertain: van 'partially blocking the lane' at intersection, lane unspecified",
    "caption_assertion": "present",
-   "lane_ref": "lane"
+   "lane_ref": "lane",
+   "review_support": "uncertain",
+   "review_note": "Van stopped at the intersection 'partially blocking the lane': lane not identified; Cosmos v2 unclear; not frame-reviewed."
   },
   {
    "id": "gx010001-c14-s3",
@@ -174,7 +188,9 @@
    "segment": 3,
    "ride_offset_s": 430,
    "role": "ordinary / anchor (W 36 St)",
-   "caption_assertion": "none"
+   "caption_assertion": "none",
+   "review_support": "uncertain",
+   "review_note": "Cosmos v2 twice says a van is parked in the bike lane; W&B extraction says unclear; frame at 2.5 s shows a parked SUV and stopped van in the curbside lane before the green paint starts, so cycle-lane occupancy is ambiguous."
   },
   {
    "id": "gx010001-c15-s1",
@@ -184,7 +200,9 @@
    "role": "caption false positive (was primary): caption claims bike-lane blocking; video shows vehicle beside the lane",
    "caption_assertion": "present",
    "lane_ref": "bike_lane",
-   "verification": "cosmos v1: contradicted; frame review agrees (vehicle adjacent to / in buffer of the bike lane)"
+   "verification": "cosmos v1: contradicted; frame review agrees (vehicle adjacent to / in buffer of the bike lane)",
+   "review_support": "contradicted",
+   "review_note": "Frames c15-s1 (0.5/2.5/4.5 s) and c15-s2 (1.0/3.5 s): UPS delivery truck stopped in the traffic lane right of the buffer; the rider passes it without leaving the lane and the green bike lane is clear. Cosmos v1 contradicted; v2 'supported' rejected."
   },
   {
    "id": "gx010001-c15-s3",
@@ -202,7 +220,9 @@
    "role": "second obstruction: caption claims bike-lane blocking; video shows vehicle beside the lane",
    "caption_assertion": "present",
    "lane_ref": "lane",
-   "verification": "cosmos v1: contradicted; frame review agrees (vehicle adjacent to / in buffer of the bike lane)"
+   "verification": "cosmos v1: contradicted; frame review agrees (vehicle adjacent to / in buffer of the bike lane)",
+   "review_support": "contradicted",
+   "review_note": "Frames 0.5/2.5 s: black SUV in the hatched buffer next to the bike lane; green lane clear. Cosmos v1 contradicted; v2 'supported' rejected."
   },
   {
    "id": "gx010001-c15-s6",
@@ -211,7 +231,9 @@
    "ride_offset_s": 475,
    "role": "mixed denial + claim (trust test)",
    "caption_assertion": "present",
-   "lane_ref": "lane"
+   "lane_ref": "lane",
+   "review_support": "contradicted",
+   "review_note": "Frames 0.5/2.5/4.5 s: green bike lane clear up to the W 39 St crossing; black sedan in the buffer/traffic lane. Cosmos v2 'supported' rejected."
   },
   {
    "id": "gx010001-c16-s2",
@@ -222,5 +244,7 @@
    "caption_assertion": "none",
    "verification": "cosmos v1: contradicted (clear lane), as expected"
   }
- ]
+ ],
+ "review_version": "c-review-2026-10-17.2",
+ "review_rule": "support is 'supported' only when the claim is present in the caption/extraction AND Cosmos supports it AND frame review does not contradict it. Frame review by Agent C (3 frames per clip) overrides a model 'supported' when the frames show the cycle lane clear and the vehicle beside it. Not ground truth."
 }
