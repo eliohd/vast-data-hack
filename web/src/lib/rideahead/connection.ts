@@ -254,7 +254,10 @@ function failure(response: Response): Error {
   );
 }
 
-export function createRideAheadConnection(rideId?: string): RideAheadConnection {
+export function createRideAheadConnection(
+  rideId?: string,
+  scenarioId?: string,
+): RideAheadConnection {
   let sessionId: string | null = null;
   let creating: Promise<string> | null = null;
   const signal = (external?: AbortSignal) =>
@@ -265,7 +268,7 @@ export function createRideAheadConnection(rideId?: string): RideAheadConnection 
       creating = (async () => {
         try {
           const result = await api.POST('/api/rideahead/sessions', {
-            body: { ride_id: rideId },
+            body: { ride_id: rideId, ...(scenarioId ? { scenario_id: scenarioId } : {}) },
             signal: signal(external),
           });
           if (!result.data) throw failure(result.response);
