@@ -1,5 +1,11 @@
 # RideAhead — "One bike sees it. The next bike avoids it."
 
+> **Background notes, not build instructions.** `master-prompt.md` and `COLLABORATION.md` take
+> precedence wherever they differ. In particular, the build plan and prompt in sections 10–11 below
+> (osmnx, Streamlit, VAST DB tables, a 6-hour plan) are superseded by the master prompt
+> (openrouteservice, the existing Astro UI, an in-memory store, 4 hours). Useful parts: corpus findings
+> (sections 3 and 5) and the per-jurisdiction law table (section 6). Agents: don't implement from this file.
+
 VAST Builders Challenge (London) · Team 46
 
 ## 1. The idea
