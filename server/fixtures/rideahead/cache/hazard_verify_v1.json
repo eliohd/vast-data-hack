@@ -1,0 +1,176 @@
+{
+ "provenance": "cached recorded",
+ "weave_traced": true,
+ "results": [
+  {
+   "id": "gx050001-c19-s3",
+   "camera_id": "nyc_bike_gopro-1",
+   "segment_file": "20261008_075441_GX050001_chunk_0019_segment_003_of_006.mp4",
+   "claim": "construction barriers occupy part of the lane the cyclist is riding in, so the rider must go around them",
+   "caption_clauses": {
+    "construction/work zone": [
+     "On the right side of the road, orange and white construction barriers block off a portion of the lane, accompanied by orange traffic cones"
+    ],
+    "lane blocked": [
+     "On the right side of the road, orange and white construction barriers block off a portion of the lane, accompanied by orange traffic cones"
+    ]
+   },
+   "verification": {
+    "model": "nvidia/cosmos3-nano-reasoner",
+    "prompt_version": "c-verify-hazard-1 (lane C proposal)",
+    "verdict": "unclear",
+    "parsed": {
+     "verdict": "unclear",
+     "visible_objects": [
+      "construction barriers",
+      "road markings",
+      "vehicles"
+     ],
+     "where": "right side of the road",
+     "evidence_seconds": [
+      2.7,
+      4.8
+     ],
+     "rationale": "The construction barriers are visible on the right side of the road, but it is unclear whether they occupy the lane the cyclist is riding in or if the cyclist needs to go around them."
+    },
+    "latency_ms": 3696
+   },
+   "video_sha256": "0499bb3c5eeef384f90f2ecb59d1a92ad4ec24c40b773529ea78bfaf11d00dae"
+  },
+  {
+   "id": "gx010001-c00-s1",
+   "camera_id": "nyc_bike_gopro-1",
+   "segment_file": "20261008_073646_GX010001_chunk_0000_segment_001_of_006.mp4",
+   "claim": "a parked delivery truck occupies the lane the cyclist is riding in, so the rider must stop or go around it",
+   "caption_clauses": {
+    "lane blocked": [
+     "A white USPS delivery truck is parked on a city street, partially blocking the lane"
+    ],
+    "construction/work zone": [
+     "The street is lined with buildings, including a yellow-brick structure with a storefront sign reading \"AMSTERDAM BILLIARDS & BAR.\" An orange construction barrier is visible near the truck"
+    ]
+   },
+   "verification": {
+    "model": "nvidia/cosmos3-nano-reasoner",
+    "prompt_version": "c-verify-hazard-1 (lane C proposal)",
+    "verdict": "supported",
+    "parsed": {
+     "verdict": "supported",
+     "visible_objects": [
+      "delivery truck",
+      "cyclist",
+      "lane",
+      "barrier"
+     ],
+     "where": "The delivery truck is parked in the lane, blocking the cyclist's path.",
+     "evidence_seconds": [
+      0.1,
+      4.8
+     ],
+     "rationale": "The delivery truck is positioned directly in the lane, forcing the cyclist to stop or maneuver around it."
+    },
+    "latency_ms": 4585
+   },
+   "video_sha256": "b2c9e92da3eb770d81666ac202892e39c5ea48b23de4fb10a14d2cbe52a58e07"
+  },
+  {
+   "id": "walker-c12-s5",
+   "camera_id": "nyc_streets_cam-1",
+   "segment_file": "20261008_070255_VID_20261006_174811_003_chunk_0012_segment_005_of_006.mp4",
+   "claim": "an ambulance or other emergency vehicle with flashing lights is moving through the intersection",
+   "caption_clauses": {
+    "accident/emergency": [
+     "A red and white ambulance with flashing lights drives through the intersection from right to left"
+    ]
+   },
+   "verification": {
+    "model": "nvidia/cosmos3-nano-reasoner",
+    "prompt_version": "c-verify-hazard-1 (lane C proposal)",
+    "verdict": "supported",
+    "parsed": {
+     "verdict": "supported",
+     "visible_objects": [
+      "ambulance"
+     ],
+     "where": "center of the intersection",
+     "evidence_seconds": [
+      0.6,
+      2.2
+     ],
+     "rationale": "A red and white ambulance with flashing lights is clearly visible driving through the intersection."
+    },
+    "latency_ms": 4455
+   },
+   "video_sha256": "2dac458f82d5d2d6998cb5f4998fb0fdb661d0866454677549a45bee851ffcf9"
+  },
+  {
+   "id": "img0509-c28-s1",
+   "camera_id": "nyc_streets_cam-2",
+   "segment_file": "20261008_072246_IMG_0509_chunk_0028_segment_001_of_006.mp4",
+   "claim": "a fire truck is present in or moving through the roadway at the intersection",
+   "caption_clauses": {
+    "accident/emergency": [
+     "A red fire truck is visible on the left side of the frame, indicating emergency services are present"
+    ],
+    "construction/work zone": [
+     "A McDonald's sign is visible in the background, and there are construction barriers and signs indicating roadwork"
+    ]
+   },
+   "verification": {
+    "model": "nvidia/cosmos3-nano-reasoner",
+    "prompt_version": "c-verify-hazard-1 (lane C proposal)",
+    "verdict": "supported",
+    "parsed": {
+     "verdict": "supported",
+     "visible_objects": [
+      "fire truck"
+     ],
+     "where": "left side of the intersection",
+     "evidence_seconds": [
+      0.1,
+      4.8
+     ],
+     "rationale": "A red fire truck is clearly visible entering and moving through the intersection on the left side of the frame."
+    },
+    "latency_ms": 3830
+   },
+   "video_sha256": "88b68ea3932db7990ee620ce366f26c274d2d6da49fe15cc8cdd2a0f479ed68f"
+  },
+  {
+   "id": "sf1-c06-s5",
+   "camera_id": "sf_streets_cam-1",
+   "segment_file": "20261001_094332_sf1_chunk_0006_segment_005_of_006.mp4",
+   "claim": "a stopped or parked vehicle has a door open into the roadway where a cyclist could hit it",
+   "caption_clauses": {
+    "conflict with people": [
+     "A black SUV is stopped in the foreground, with its driver-side door open"
+    ],
+    "accident/emergency": [
+     "In the background, a white police car is driving through the intersection, followed by a white pickup truck"
+    ]
+   },
+   "verification": {
+    "model": "nvidia/cosmos3-nano-reasoner",
+    "prompt_version": "c-verify-hazard-1 (lane C proposal)",
+    "verdict": "supported",
+    "parsed": {
+     "verdict": "supported",
+     "visible_objects": [
+      "black SUV",
+      "open driver-side door",
+      "roadway",
+      "cyclist"
+     ],
+     "where": "center of the scene, on the roadway",
+     "evidence_seconds": [
+      0.1,
+      4.8
+     ],
+     "rationale": "The black SUV is stopped with its driver-side door open into the roadway, creating a potential hazard for a cyclist."
+    },
+    "latency_ms": 3428
+   },
+   "video_sha256": "002e9e5564c2ca85b2883c6ec566e53c1f976bdee3268f40f4ec3b54367e4b82"
+  }
+ ]
+}
