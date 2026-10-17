@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { api, type Schemas } from '@/lib/api/client';
 import { createRideAheadConnection } from '@/lib/rideahead/connection';
 import { clipsFromSegments, rideStartOffset } from '@/lib/rideahead/feed';
+import LiveNavigation from './LiveNavigation';
 import RideAhead from './RideAhead';
 
 export default function RideAheadApp() {
@@ -10,6 +11,17 @@ export default function RideAheadApp() {
     () => new URLSearchParams(window.location.search).get('preview') === '1',
   );
   const [generation, setGeneration] = useState(0);
+  // Live mode: real GPS + destination + bike route + camera hazards. Linkable as ?mode=live.
+  const [live, setLive] = useState(
+    () => new URLSearchParams(window.location.search).get('mode') === 'live',
+  );
+  const setLiveMode = (value: boolean) => {
+    const url = new URL(window.location.href);
+    if (value) url.searchParams.set('mode', 'live');
+    else url.searchParams.delete('mode');
+    window.history.replaceState(null, '', url);
+    setLive(value);
+  };
   const [rides, setRides] = useState<Schemas['RideManifest'][]>([]);
   const [rideId, setRideId] = useState('');
   const [ridesError, setRidesError] = useState(false);
@@ -64,10 +76,12 @@ export default function RideAheadApp() {
       window.clearTimeout(retry);
     };
   }, []);
+  if (live) return <LiveNavigation onExit={() => setLiveMode(false)} />;
   return (
     <div className="ra-presentation">
       <RideAhead
         key={generation}
+        onLive={() => setLiveMode(true)}
         connection={offline ? undefined : connection}
         rideFeed={rideFeed}
         sessionControls={

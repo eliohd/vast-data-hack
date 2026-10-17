@@ -1079,3 +1079,264 @@
   border-radius: 6px;
   font-size: 10px;
 }
+
+/* Live mode (LiveNavigation): real GPS, OSM bike route, Clover watching the camera. */
+.ra-live {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  background: #e9efe3;
+  color: #264533;
+}
+.ra-live-map {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+.ra-live-top {
+  position: absolute;
+  z-index: 520;
+  top: max(14px, env(safe-area-inset-top));
+  left: 16px;
+  right: 16px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.ra-live-chip {
+  padding: 3px 9px;
+  border-radius: 999px;
+  background: #e04848;
+  color: white;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+}
+.ra-live-exit {
+  margin-left: auto;
+  width: 42px;
+  height: 42px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+}
+.ra-live-guide {
+  position: absolute;
+  z-index: 520;
+  top: calc(max(14px, env(safe-area-inset-top)) + 54px);
+  left: 10px;
+  right: 12px;
+  display: flex;
+  align-items: flex-start;
+  gap: 4px;
+}
+.ra-live-bubble {
+  flex: 1;
+  min-width: 0;
+  display: grid;
+  gap: 3px;
+  padding: 11px 14px;
+  border-radius: 20px;
+  background: #f8faf3f2;
+  box-shadow: 0 8px 26px #1c392126;
+  font-size: 17px;
+  line-height: 1.25;
+}
+.ra-live-bubble.is-heads-up {
+  background: #fcd34df2;
+  color: #2a2205;
+}
+.ra-live-bubble.is-slow {
+  background: #f97316f2;
+  color: white;
+}
+.ra-live-bubble.is-reroute {
+  background: #dc2626f2;
+  color: white;
+}
+.ra-live-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  opacity: 0.8;
+}
+.ra-live-note {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 12px;
+  opacity: 0.85;
+}
+.ra-live-search {
+  position: absolute;
+  z-index: 520;
+  top: calc(max(14px, env(safe-area-inset-top)) + 140px);
+  left: 12px;
+  right: 12px;
+}
+.ra-live-search form {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 6px 6px 14px;
+  border-radius: 18px;
+  background: white;
+  box-shadow: 0 8px 26px #1c392126;
+}
+.ra-live-search input {
+  flex: 1;
+  min-width: 0;
+  min-height: 40px;
+  border: 0;
+  outline: none;
+  background: transparent;
+  font-size: 16px; /* 16px stops iOS zooming into the field */
+}
+.ra-live-search form button {
+  min-height: 40px;
+  padding: 0 16px;
+  border-radius: 13px;
+  background: #307957;
+  color: white;
+  font-weight: 600;
+}
+.ra-live-search form button:disabled {
+  opacity: 0.5;
+}
+.ra-live-search ul {
+  margin-top: 8px;
+  max-height: 45dvh;
+  overflow: auto;
+  border-radius: 18px;
+  background: white;
+  box-shadow: 0 8px 26px #1c392126;
+}
+.ra-live-search li + li {
+  border-top: 1px solid #e4eddc;
+}
+.ra-live-search li button {
+  width: 100%;
+  display: grid;
+  gap: 2px;
+  padding: 12px 14px;
+  text-align: left;
+}
+.ra-live-search li span,
+.ra-live-muted {
+  font-size: 12px;
+  color: #5d7465;
+}
+.ra-live-search li.ra-live-muted {
+  padding: 12px 14px;
+}
+.ra-live-tools {
+  position: absolute;
+  z-index: 515;
+  right: 14px;
+  bottom: calc(max(24px, env(safe-area-inset-bottom)) + 270px);
+}
+.ra-live-tools button {
+  width: 46px;
+  height: 46px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+}
+.ra-live-camera {
+  position: absolute;
+  z-index: 515;
+  left: 12px;
+  bottom: calc(max(24px, env(safe-area-inset-bottom)) + 170px);
+  width: 120px;
+  height: 160px;
+  overflow: hidden;
+  border: 3px solid white;
+  border-radius: 18px;
+  background: #243d31;
+  box-shadow: 0 8px 26px #1c392140;
+}
+.ra-live-camera video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.ra-live-camera > span {
+  position: absolute;
+  left: 6px;
+  bottom: 6px;
+  padding: 1px 6px;
+  border-radius: 6px;
+  background: #000a;
+  color: white;
+  font-size: 9px;
+}
+.ra-live-sheet {
+  position: absolute;
+  z-index: 520;
+  left: 10px;
+  right: 10px;
+  bottom: max(16px, env(safe-area-inset-bottom));
+  display: grid;
+  gap: 12px;
+  padding: 16px;
+  border-radius: 26px;
+  background: #f8faf3f5;
+  box-shadow: 0 10px 34px #1c392130;
+}
+.ra-live-dest {
+  font-weight: 600;
+}
+.ra-live-stats {
+  display: flex;
+  justify-content: space-around;
+  text-align: center;
+}
+.ra-live-stats div {
+  display: grid;
+}
+.ra-live-stats strong {
+  font-size: 22px;
+}
+.ra-live-stats span {
+  font-size: 11px;
+  color: #5d7465;
+}
+.ra-live-actions {
+  display: flex;
+  gap: 8px;
+}
+.ra-live-actions button {
+  flex: 1;
+  min-height: 48px;
+  border-radius: 16px;
+  background: #e4eddc;
+  font-weight: 600;
+}
+.ra-live-actions .ra-live-primary {
+  flex: 2;
+  background: #307957;
+  color: white;
+}
+.ra-live-actions .ra-live-end {
+  background: #f3e1db;
+  color: #8a3b22;
+}
+.ra-live-pill {
+  height: 42px;
+  padding: 0 14px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 700;
+  color: #c62f2f;
+}
+.ra-phone-header .ra-live-pill {
+  width: auto;
+  border-radius: 999px;
+  margin-left: auto;
+  margin-right: 8px;
+  pointer-events: auto;
+}
