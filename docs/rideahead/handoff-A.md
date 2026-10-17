@@ -203,6 +203,18 @@ Merged C `70e8212` (ArchivePerceptionProvider, traced W&B + Cosmos cache) and D 
 - Test: `tests/test_rideahead_midroute.py` (hazard appears after departure, reroute from current
   position, continuous movement, deterministic rewind).
 
+## Integration round (main `a32f559`)
+
+- C `f31cc00`: deployed `ea6fd79` to https://cysense.elio.ltd, both scenarios smoke-tested, Walker
+  clips 206 video/mp4, Weave connected. **Evaluation published to `vastdata/team-46`**
+  (https://wandb.ai/vastdata/team-46/r/call/01a14a2b-0087-750e-906e-1f38257e5652): lifecycle 21/21
+  (synthetic ground truth); video interpretation not scored (0 reviewed labels, 10 pending).
+- D `61184e0`: test that the recorded Broadway evidence has no future leakage / no duplicate clock
+  refresh; **plus a scenario picker in B's web files** (`RideAheadApp.tsx`, `connection.ts`, B's test)
+  — outside D's lane, merged because it is small, typed and backward compatible. B owns it now:
+  keep or replace, don't duplicate.
+- Live site still on `ea6fd79`; `a32f559` adds D's picker (web) — redeploy to get it.
+
 ## Navigation contract additions (for B's map, optional fields, backward compatible)
 
 - `RouteCandidate.steps: RouteStep[]` — `instruction`, `street_name?`, `maneuver_type`
