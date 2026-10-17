@@ -10,6 +10,7 @@ Run these commands from `server/`:
 ```sh
 uv run python -m eval.demo --output eval/fixtures/engine-demo.synthetic.json
 uv run python -m eval.run --output eval/reports/local.json
+uv run python -m eval.run --model-cache fixtures/rideahead/cache/model_outputs_v2.json --output eval/reports/c-cache-comparison.json
 uv run python -m eval.run --synthetic --output eval/reports/synthetic.json
 uv run python -m eval.run --publish-weave --output eval/reports/local.json
 uv run python -m eval.run --labels eval/fixtures/clip_labels.reviewed.csv --predictions eval/predictions.jsonl --publish-weave
@@ -47,10 +48,24 @@ verification answers into ground-truth labels.
 5. Obtain saved extraction and verification predictions from C. The runner calls no
    models and never generates answers from the expected labels.
 
-C's source cache has eight actual Cosmos checks (three overlap the ten shortlisted
-clips), but C explicitly reports W&B `chat_json` extraction has not run. Its AI frame
-reviews are marked `ground_truth=false`. No three-way extraction accuracy can be
-reported until independent labels and structured extraction predictions exist.
+C's current `fixtures/rideahead/cache/model_outputs_v2.json` contains **11 W&B extraction
+and 11 Cosmos calls, traced in `vastdata/team-46`, for ten unique clips**. Use `--model-cache`
+to read it directly. This option and `--predictions` are mutually exclusive. The cache
+adapter checks the CSV source IDs/captions, takes the first run per source, and records the
+extra attempt and its cost without counting it as a second sample.
+
+The keyword method searches the original caption. Structured uses the saved W&B assertion
+and support. Verified requires that extraction and Cosmos agree, with road space visible:
+`present + supported verdict + obstruction_visible=true`, or
+`clear + contradicted verdict + obstruction_visible=false`. Other combinations abstain.
+C's frame reviews and manifest support are excluded from these prediction methods.
+This policy evaluates clip-level extraction; an absent clip does not clear a hazard.
+
+The checked-in comparison records prediction coverage/distributions for all ten clips.
+Only rows marked reviewed in the label CSV contribute to accuracy. Pending clips retain
+null accuracy/precision/recall; outputs are never converted into expected labels. A visual
+review by an AI agent must be identified as such and cannot be claimed as independent human
+review. Use independently human-reviewed labels for human-ground-truth accuracy.
 
 `fixtures/synthetic_captions.csv` has 12 authored **text fixtures**, not video labels.
 They exercise negation and abstention handling. The naive keyword baseline is deliberately
@@ -135,6 +150,18 @@ command run replaces this receipt until its new upload is independently verified
 These are synthetic lifecycle results; zero recorded clips have reviewed labels.
 Weave model latency here measures deterministic replay, not video inference.
 
+To target the shared project without using the personal default (POSIX shell):
+
+```sh
+WANDB_TEAM=vastdata WANDB_PROJECT=team-46 uv run python -m eval.run --model-cache fixtures/rideahead/cache/model_outputs_v2.json --publish-weave --output eval/reports/team.json
+```
+
+On PowerShell, set `$env:WANDB_TEAM='vastdata'` and `$env:WANDB_PROJECT='team-46'` before
+running the same Python command. Keep API keys in the ignored local `.env`.
+The current attempt is `local_only_publication_failed`: W&B denied the configured key
+access to `vastdata/team-46`. Team membership/key access must be fixed before retrying;
+the verified personal receipt above is retained, not relabelled as a team upload.
+
 ## Integration and verification
 
 A resolved the earlier fixture assertion mismatch in `b550ebb`, preserving the cost policy
@@ -142,7 +169,13 @@ and adding an offline API test with recorded genuine ORS routes. A also added sa
 hazard-transition tracing. D's cyclist-facing wording now gives distance, action and time
 cost, with technical explanations in assumptions; actions and numeric outputs are unchanged.
 
-Run `make verify` from the repository root. On this Windows machine, its server stage passes
-but the frontend formatter is unavailable because dependencies are not installed. The
-earlier install was blocked by the local pnpm minimum-release-age policy for six existing
-locked dependencies. No policy or dependency versions are changed to bypass it.
+Run `make verify` from the repository root. For isolated tests, use `DEMO_KEY=` and
+`TRACING=false` in the child process; use `PYTHONUTF8=1` on Windows because C's shared
+cache readers currently rely on the platform default encoding. Do not change the deployed
+key in `.env` to run tests.
+
+Current server result: **164 passed, 1 skipped**, clean ruff and pyright. Main's locked web
+dependencies now install successfully. Exact `make verify` stops on Windows CRLF formatting;
+the read-only override `pnpm exec prettier --check . --end-of-line auto` passes. Unchanged
+frontend lint, Astro diagnostics, **27 tests** and the production build all pass. No frontend
+source, dependency policy, lockfile or generated shared artifact was edited by D.
