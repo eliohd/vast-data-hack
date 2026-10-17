@@ -680,7 +680,7 @@ Log the labelled evaluation to Weave when configured. Local results remain clear
 - **45–90 minutes:** Integrate the first complete recorded-observation → decision → map flow. Replace interfaces incrementally; do not wait for full lane completion.
 - **90–150 minutes:** Add the real openrouteservice detour, explicit cached replay, route/direction relevance and a clearly sourced clearance scenario.
 - **150–180 minutes:** Complete the 10–15-clip evaluation, remaining lifecycle tests and Weave evidence. Add sliders or polish only if the core works.
-- **180–240 minutes:** Feature freeze. Fix integration bugs, run verification, test the demo device, deploy through A, document limitations and record/rehearse the two-minute demonstration.
+- **180–240 minutes:** Final integration (no hard feature freeze). Fix integration bugs, run verification, test the demo device, deploy through A, document limitations and record/rehearse the two-minute demonstration.
 
 The target is a working core within 2–3 hours, subject to functioning upstream access; the final hour is reserved for delivery.
 

@@ -54,4 +54,4 @@ camera works on a phone. The dev server proxies `/api` and `/ws` to `API_TARGET`
 
 - Mirror the phone on the laptop: iPhone → cable → QuickTime → New Movie Recording → iPhone.
 - Bring a hotspot; venue Wi-Fi will be busy.
-- Record a backup demo video at feature freeze.
+- Record a backup demo video once the full flow works on the phone.
