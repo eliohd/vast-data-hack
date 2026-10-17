@@ -10,6 +10,54 @@ The defining contribution is **shared hazards that are updated, corroborated, be
 
 We have approximately four hours and four AI coding agents, potentially running across separate laptops with limited communication. Deliver a complete, explainable demonstration before expanding features. These are four agents building the application; the deployed application does not require four autonomous runtime agents.
 
+## 0. Fast delivery plan — use this as the default
+
+This section sets the delivery priority for the four-hour build. The broader interfaces below are extension points, not a requirement to finish every optional feature before showing a working demonstration.
+
+### First demonstration
+
+Deliver one small story: Bike A observes a blocked cycle lane; Bike B receives an advisory or a genuine route alternative; the report becomes stale; a clearly labelled later observation clears it. The second rider is simulated. A synthetic clearance must be labelled at event level and must not be presented as recorded evidence.
+
+Keep the first implementation to:
+
+- **5–10 selected clips from one ride**, including a useful obstruction and ordinary/negative examples. Do not process the whole corpus.
+- **One manually anchored road section**, if usable GPS is absent; preserve location uncertainty.
+- **One hazard type: `lane_blocked`**. Add `work_zone` after the complete flow works.
+- **Two riders, A and B**, one tested origin/destination pair and one reliable detour.
+- **A minimal openrouteservice adapter behind the routing-provider boundary**, using a bicycle profile and provider-computed route alternatives/exclusions. Do not build a custom routing graph.
+- **An in-memory observation/hazard store**, optionally saved as a local JSON snapshot. No database migration or new writable VastDB tables.
+- **One screen**, existing UI components, simple session-state polling and the unchanged existing WebSocket.
+- **10–15 human-labelled clips** for the first evaluation, including negatives and uncertain scenes. A larger set is optional.
+- Cached genuine model outputs with source IDs, model/prompt versions and visible replay labels. Replaying cached results must not imply live inference or provide future evidence to the engine.
+
+Keep all five integrations in the same small flow: VAST retrieves the clips, Cosmos supplies scene interpretation/verification, YOLO11 supplies object evidence, W&B Inference extracts the observation, and Weave traces the operations. Selective checks and caching reduce calls; fixtures do not count as real sponsor integration.
+
+### Early integration, not four finished components
+
+Agent A publishes the minimum shared models, stub API, one fixture snapshot and generated browser types within **15 minutes**. Agent C returns one genuine evidence-linked observation before attempting a larger batch. Agent D returns the minimal observed → stale → cleared engine and a deterministic decision before adding additional lifecycle cases. Agent B connects one screen to the stub API immediately.
+
+Target the **first complete end-to-end flow in 60–90 minutes**. At that checkpoint it may have a basic interface and fixture route, but the source observation should be real when upstream access works. A fixture route remains labelled and does not satisfy the real-routing acceptance criterion. Replace remaining stubs incrementally; do not wait for all four lanes to finish.
+
+Timebox an upstream or routing integration problem to about 15 minutes of focused diagnosis before recording it in the lane handoff and continuing with an explicit adapter fallback. Never silently turn an unavailable integration into a successful one. A and C coordinate the unresolved real-integration work while B and D continue independently.
+
+Freeze feature development at **180 minutes** and reserve the last hour for integration fixes, relevant tests, final deployment, documentation and the recording.
+
+### Preparation before starting the build
+
+Preparation means access, setup and inspection; build the judged application during the event.
+
+**Everyone:** use a separate clone or worktree; sync the same starting commit; read the repository instructions and this prompt; record your A–D assignment; run the existing setup and baseline checks where feasible; use configured environment files for credentials; never paste secret values into prompts or handoffs. Confirm one integration owner and one shared code repository. Do not make agent-to-agent messaging infrastructure a prerequisite.
+
+**Agent A:** confirm the backend/stub flow starts, inspect existing models and clients, check deployment access and the routing API key if available, and prepare the minimal contract/bootstrap commit. Set the integration checkpoints and the shared fixture location. Only A deploys.
+
+**Agent B:** confirm the frontend starts with the existing API proxy and UI components; inspect the typed API client, media playback and demo-key handling; prepare to consume A's generated types and fixture snapshot. Test the eventual demo device/browser; backend credentials do not belong in the frontend environment.
+
+**Agent C:** obtain authorised access to the assigned lab VM and existing team configuration; inspect the organiser skills and existing VSS/GPU/W&B clients; verify connectivity without printing secrets; identify the 5–10-clip shortlist and evidence for a small route anchor. Leave inference implementation and judged feature work to build time. Do not ingest external footage or copy earlier teams' private outputs.
+
+**Agent D:** inspect the canonical model plan and existing test setup; prepare a small labelling sheet covering present/absent/uncertain obstruction cases and a separate lifecycle scenario table. Include duplicate, opposite-direction, stale, explicit-clear and provider-unavailable cases. Keep simulated truth independent of the persistence heuristic.
+
+After A's bootstrap commit, B, C and D pull that exact contract once, build independently against fixtures, and report through their own handoff files. Expand the framework only through the small interfaces already described below.
+
 ## 1. Start from the existing repository
 
 Repository: `https://github.com/eliohd/vast-data-hack`
@@ -42,7 +90,7 @@ Required:
 - Event-provided cycling or street footage.
 - One recorded observer, represented as Bike A.
 - A second simulated cyclist, Bike B.
-- Lane obstruction and work-zone observations.
+- Lane-obstruction observations first; work zones are the first optional additional hazard type.
 - Evidence playback with timestamps.
 - Hazard lifecycle and explicit freshness.
 - Location and direction matching.
@@ -86,7 +134,7 @@ Use each integration meaningfully:
 
 Use existing `VSSClient` methods to browse rides, search relevant moments, retrieve segments and detections, and access video through the server media proxy. VSS already searches the VastDB-backed archive.
 
-Do not require new writable VastDB tables to make the application work. Put application persistence behind a small repository interface, initially backed by local JSON or SQLite. A dedicated application-owned VastDB adapter is an extension.
+Do not require new writable VastDB tables to make the application work. Put application persistence behind a small repository interface, initially backed by in-memory state with an optional local JSON snapshot. SQLite is optional after the first demonstration works. A dedicated application-owned VastDB adapter is an extension.
 
 Never change or recreate organiser-owned index tables.
 
@@ -203,7 +251,7 @@ Each agent owns its corresponding test files. Avoid shared omnibus test files.
 
 ### Bootstrap gate
 
-Agent A first publishes canonical models, provider interfaces, example payloads and working stubs. Target completion within the first 20 minutes.
+Agent A first publishes canonical models, provider interfaces, example payloads and working stubs. Target completion within the first 15 minutes; publish only the minimum contracts and runnable stubs needed by the first demonstration.
 
 Agents B, C and D can inspect their code and prepare local work immediately, but must build shared integration against this committed contract.
 
@@ -242,7 +290,7 @@ Do not depend on Agent Mail or another messaging service being available. Git co
 
 ### Integration rhythm
 
-Use separate clones or worktrees. Commit small, complete changes and integrate approximately every 30–45 minutes.
+Use separate clones or worktrees. Commit small, complete changes and integrate approximately every 30 minutes, with the first complete flow targeted for 60–90 minutes. Do not wait for all four lanes to finish.
 
 Only Agent A merges shared integration changes and deploys the demo. Other agents continue their owned work while integration happens.
 
@@ -288,7 +336,7 @@ Missing or uncertain geography must remain visible. Do not fabricate exact posit
 Include:
 
 - Stable observation ID.
-- Hazard type, initially `lane_blocked` or `work_zone`.
+- Hazard type, initially `lane_blocked`; keep the type configuration extensible for `work_zone`.
 - Assertion: present, clear or unclear.
 - Evidence references.
 - Location estimate.
@@ -385,7 +433,7 @@ Use the same frozen models as Agent C. The engine must run without network acces
 
 - `candidate_routes(origin, destination, exclusions)` returns normalised cycling route candidates.
 
-Provide a real openrouteservice adapter and a clearly labelled fixture adapter. Verify current provider capabilities rather than assuming every option is available.
+Provide a real openrouteservice adapter and a clearly labelled fixture adapter. Start with one tested origin/destination and one provider-computed detour; do not create a custom road graph. Cache provider responses so polling does not repeatedly recalculate routes. Verify current provider capabilities rather than assuming every option is available.
 
 ### Runtime — Agent A
 
@@ -583,7 +631,7 @@ Agent D maintains two distinct evaluations.
 
 ### Video interpretation
 
-Use a small human-labelled set, aiming for 20–40 segments if time permits, including normal traffic, negated captions, uncertain scenes and actual obstructions.
+Start with 10–15 human-labelled segments, including normal traffic, negated captions, uncertain scenes and actual obstructions. Expand to 20–40 only after the end-to-end demonstration is reliable. The 5–10-clip development shortlist can overlap this set, but disclose that overlap; do not claim independent held-out accuracy from clips used for prompt tuning.
 
 Compare:
 
@@ -627,14 +675,16 @@ Log the labelled evaluation to Weave when configured. Local results remain clear
 
 ## 16. Four-hour execution and cut order
 
-- **0–20 minutes:** Agent A commits contracts, stubs, fixtures and ownership update. Others inspect and prepare their lanes.
-- **20–75 minutes:** B builds against fixtures; C produces initial recorded observations; D implements pure lifecycle and scoring; A builds runtime and API.
-- **75–130 minutes:** Integrate the first complete recorded-observation → decision → map flow.
-- **130–180 minutes:** Add real route alternatives, replay, freshness and a valid clearance scenario.
-- **180–210 minutes:** Run evaluations, resolve integration failures and check the phone interface.
-- **210–240 minutes:** Freeze features, deploy through the integrator, document and record the demo.
+- **0–15 minutes:** A commits minimum contracts, runnable stubs, one snapshot fixture and generated API types. B, C and D inspect their lanes and prepare independent work.
+- **15–45 minutes:** B connects one screen to stubs; C returns the first genuine observation and evidence reference; D implements observed/stale/cleared plus duplicate handling and simple decisions; A wires the session runtime.
+- **45–90 minutes:** Integrate the first complete recorded-observation → decision → map flow. Replace interfaces incrementally; do not wait for full lane completion.
+- **90–150 minutes:** Add the real openrouteservice detour, explicit cached replay, route/direction relevance and a clearly sourced clearance scenario.
+- **150–180 minutes:** Complete the 10–15-clip evaluation, remaining lifecycle tests and Weave evidence. Add sliders or polish only if the core works.
+- **180–240 minutes:** Feature freeze. Fix integration bugs, run verification, test the demo device, deploy through A, document limitations and record/rehearse the two-minute demonstration.
 
-If behind, cut optional integrations, additional hazard types, direct VastDB writes, live phone input, automatic fresh-look scheduling and visual polish in that order.
+The target is a working core within 2–3 hours, subject to functioning upstream access; the final hour is reserved for delivery.
+
+Defer automatic fresh-look scheduling, additional providers/integrations, jurisdiction packs, historical crash weighting, direct VastDB writes, live phone input and additional hazard types. Do not build them before the first demonstration. If behind, cut those deferred features and visual polish before cutting evidence, lifecycle correctness, trust checks or honest provenance.
 
 Preserve lifecycle correctness, evidence, provenance labels, the trust checks and one complete rider decision.
 
@@ -644,16 +694,16 @@ Copy the relevant prompt below into each coding-agent session after sharing this
 
 ### Agent A — integration lead
 
-You are Agent A, the RideAhead integration lead. Read the repository instructions and this master prompt. Your first deliverable is the bootstrap contract: Pydantic models, frozen provider signatures, sample payloads, working stubs, exact API paths and generated browser types. Commit it within approximately 20 minutes and record its SHA in your handoff. Then implement the session runtime, routing-provider adapter, typed API and service wiring. Own shared configuration, prompts, dependencies and generated artifacts. Keep `/ws/live` compatible. Integrate B’s UI, C’s perception and D’s hazard engine through the frozen interfaces. You may carry more work than the other agents, but avoid making them wait for optional changes. Merge small increments, preserve existing authentication and media handling, and run the complete flow repeatedly. Only you deploy the demo. Keep `docs/rideahead/handoff-A.md` current. Prioritise a working evidence-linked navigation flow over extra features.
+You are Agent A, the RideAhead integration lead. Read the repository instructions and this master prompt. Your first deliverable is the bootstrap contract: Pydantic models, frozen provider signatures, sample payloads, working stubs, exact API paths and generated browser types. Commit the minimum runnable contract within approximately 15 minutes and record its SHA in your handoff. Follow section 0: integrate a complete flow within 60–90 minutes, use an in-memory store with optional JSON snapshot, and test one real openrouteservice origin/destination and detour. Then implement the session runtime, routing-provider adapter, typed API and service wiring. Own shared configuration, prompts, dependencies and generated artifacts. Keep `/ws/live` compatible. Integrate B’s UI, C’s perception and D’s hazard engine through the frozen interfaces. You may carry more work than the other agents, but avoid making them wait for optional changes. Merge small increments, preserve existing authentication and media handling, and run the complete flow repeatedly. Only you deploy the demo. Keep `docs/rideahead/handoff-A.md` current. Prioritise a working evidence-linked navigation flow over extra features.
 
 ### Agent B — interface
 
-You are Agent B, responsible for RideAhead’s browser interface. Read the repository instructions and this master prompt. Own frontend source, components, page composition, frontend dependencies and frontend tests, except generated API types. Build a mobile-friendly React island in the existing Astro app using the existing UI system and typed API client. Start with Agent A’s canonical fixtures, then connect to its frozen API. Implement the map, recorded video, simulated riders, hazard lifecycle markers, evidence panel, route decision card, route alternatives, replay controls and radius sliders. Show provenance, uncertainty and integration failures clearly. Do not calculate authoritative hazard states or decisions in the browser, change backend contracts, expose upstream credentials or introduce another frontend framework. Keep your changes modular so new hazard types can reuse the same cards. Maintain `docs/rideahead/handoff-B.md`, commit complete increments and run frontend verification.
+You are Agent B, responsible for RideAhead’s browser interface. Read the repository instructions and this master prompt. Own frontend source, components, page composition, frontend dependencies and frontend tests, except generated API types. Build a mobile-friendly React island in the existing Astro app using the existing UI system and typed API client. Start with Agent A’s canonical fixture snapshot, connect one screen to its stub API immediately, then consume the same frozen API as real adapters land. Do not wait for perception or routing to finish. Follow the preparation checklist and scope limits in section 0. Implement the map, recorded video, simulated riders, hazard lifecycle markers, evidence panel, route decision card, route alternatives, replay controls and radius sliders. Show provenance, uncertainty and integration failures clearly. Do not calculate authoritative hazard states or decisions in the browser, change backend contracts, expose upstream credentials or introduce another frontend framework. Keep your changes modular so new hazard types can reuse the same cards. Maintain `docs/rideahead/handoff-B.md`, commit complete increments and run frontend verification.
 
 ### Agent C — archive and perception
 
-You are Agent C, responsible for RideAhead’s archive and perception provider. Read the repository instructions and this master prompt. Inspect the actual event corpus and existing VSS/GPU clients. Implement the frozen ride-discovery, inspection and evidence-verification interfaces using VAST retrieval, Cosmos descriptions/video checking, YOLO11 evidence and the existing W&B Inference client. Central prompts belong to Agent A; provide requested additions through your handoff. Normalize timings, source IDs, counts and evidence references. Inspect location metadata, create a small manually anchored route manifest when needed, and preserve uncertainty. Handle negation, unsupported claims and unknown outcomes explicitly. Prefer stored detections and selective verification; cache results and bound concurrency. Never expose authenticated media URLs or fabricate independent observations. You own VSS/GPU client changes and related tests. Only coordinate small re-ingestion batches for demonstrated gaps. Maintain `docs/rideahead/handoff-C.md` with sanitised response samples, real-versus-fixture status and test results.
+You are Agent C, responsible for RideAhead’s archive and perception provider. Read the repository instructions and this master prompt. Inspect the actual event corpus and existing VSS/GPU clients. Follow section 0: select 5–10 clips from one ride, return one real evidence-linked lane-obstruction observation first, and anchor only one small road section if GPS is absent. Cache genuine outputs with provenance; do not process the whole corpus before integration. Implement the frozen ride-discovery, inspection and evidence-verification interfaces using VAST retrieval, Cosmos descriptions/video checking, YOLO11 evidence and the existing W&B Inference client. Central prompts belong to Agent A; provide requested additions through your handoff. Normalize timings, source IDs, counts and evidence references. Inspect location metadata, create a small manually anchored route manifest when needed, and preserve uncertainty. Handle negation, unsupported claims and unknown outcomes explicitly. Prefer stored detections and selective verification; cache results and bound concurrency. Never expose authenticated media URLs or fabricate independent observations. You own VSS/GPU client changes and related tests. Only coordinate small re-ingestion batches for demonstrated gaps. Maintain `docs/rideahead/handoff-C.md` with sanitised response samples, real-versus-fixture status and test results.
 
 ### Agent D — lifecycle, scoring and evaluation
 
-You are Agent D, responsible for RideAhead’s deterministic hazard engine, route scoring and evaluation. Read the repository instructions and this master prompt. Implement the frozen engine interfaces as pure, network-independent logic using Agent A’s models. Own observation deduplication, source-aware corroboration, state transitions, configurable persistence priors, route relevance and deterministic action selection. Keep evidence strength separate from impact. Stale never means cleared; only adequately matched later evidence can clear a report. Prevent duplicate clock resets, future-observation leakage and false confirmation from adjacent chunks. Score the route candidates supplied by Agent A using estimated arrival and obstruction-delay assumptions, with explicit unavailable outcomes. Do not implement TTC, collision prediction or legal guarantees. Build human-labelled extraction evaluation and separate simulator-ground-truth lifecycle tests; publish Weave evaluations when configured and label local-only results honestly. Maintain `docs/rideahead/handoff-D.md`, documented evaluation commands and modular tests.
+You are Agent D, responsible for RideAhead’s deterministic hazard engine, route scoring and evaluation. Read the repository instructions and this master prompt. Implement the frozen engine interfaces as pure, network-independent logic using Agent A’s models. Follow section 0: ship the observed/stale/cleared flow, idempotency and a simple rider decision first; begin with 10–15 labelled clips and a separate scenario-ground-truth test set. Do not wait for real video or routing access; build against the shared fixtures. Own observation deduplication, source-aware corroboration, state transitions, configurable persistence priors, route relevance and deterministic action selection. Keep evidence strength separate from impact. Stale never means cleared; only adequately matched later evidence can clear a report. Prevent duplicate clock resets, future-observation leakage and false confirmation from adjacent chunks. Score the route candidates supplied by Agent A using estimated arrival and obstruction-delay assumptions, with explicit unavailable outcomes. Do not implement TTC, collision prediction or legal guarantees. Build human-labelled extraction evaluation and separate simulator-ground-truth lifecycle tests; publish Weave evaluations when configured and label local-only results honestly. Maintain `docs/rideahead/handoff-D.md`, documented evaluation commands and modular tests.
