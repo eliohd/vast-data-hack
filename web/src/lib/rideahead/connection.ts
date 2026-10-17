@@ -36,6 +36,9 @@ export function toSnapshotView(source: Schemas['SessionSnapshot']): SnapshotView
     source.decisions.find((item) =>
       source.riders.some((rider) => rider.rider_id === item.rider_id && rider.simulated),
     ) ?? source.decisions[0];
+  const latestVerified = [...observations]
+    .reverse()
+    .find((observation) => observation.verification);
   function point(location: Schemas['LocationEstimate']): Point | null {
     return location.lat != null && location.lon != null
       ? { lat: location.lat, lon: location.lon }
@@ -46,6 +49,13 @@ export function toSnapshotView(source: Schemas['SessionSnapshot']): SnapshotView
     revision: source.revision,
     timeS: source.replay_time_s,
     endS: source.duration_s,
+    cosmos: {
+      text:
+        latestVerified?.verification?.rationale ||
+        'Waiting for a Cosmos observation of the road ahead.',
+      source: latestVerified?.verification?.source ?? 'unavailable',
+      timeS: latestVerified?.session_time_s ?? null,
+    },
     provenance: (source.labels ?? []).join(' · ') || 'Provenance not supplied',
     locationLabel:
       (source.labels ?? [])

@@ -45,6 +45,20 @@ describe('frozen API integration', () => {
 });
 
 describe('canonical snapshot presentation', () => {
+  it('labels the Cosmos strip from actual model provenance', () => {
+    const source = structuredClone(canonical.t60) as unknown as Schemas['SessionSnapshot'];
+    expect(toSnapshotView(source).cosmos.source).toBe('fixture');
+    source.observations[0].verification!.source = 'cached_model';
+    expect(toSnapshotView(source).cosmos.source).toBe('cached_model');
+    source.observations[0].verification!.source = 'live_model';
+    expect(toSnapshotView(source).cosmos.source).toBe('live_model');
+  });
+  it('never shows future inference text in the bottom strip', () => {
+    const source = structuredClone(canonical.t60) as unknown as Schemas['SessionSnapshot'];
+    source.replay_time_s = 0;
+    expect(toSnapshotView(source).cosmos.source).toBe('unavailable');
+    expect(toSnapshotView(source).cosmos.timeS).toBeNull();
+  });
   it('preserves server decisions, missing locations and configured versus connected status', () => {
     const source = raw();
     source.riders[0].position = null;

@@ -30,6 +30,11 @@ export type SnapshotView = {
   endS: number;
   provenance: string;
   locationLabel: string;
+  cosmos: {
+    text: string;
+    source: 'live_model' | 'cached_model' | 'fixture' | 'unavailable';
+    timeS: number | null;
+  };
   riders: { id: string; name: string; simulated: boolean; point: Point | null }[];
   hazards: {
     id: string;
