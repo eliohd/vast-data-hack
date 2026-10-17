@@ -67,7 +67,7 @@ describe('frozen API integration', () => {
     mock.PATCH.mockResolvedValue({ response: new Response(null, { status: 422 }) });
     await expect(
       createRideAheadConnection().configure({ shortRadiusM: 150, planningRadiusM: 3000 }),
-    ).rejects.toThrow('RideAhead server returned 422');
+    ).rejects.toThrow('Cysense server returned 422');
   });
   it('reports denied access instead of substituting fixture success', async () => {
     mock.POST.mockResolvedValue({ response: new Response(null, { status: 401 }) });

@@ -7,8 +7,7 @@ interface Props {
   description?: string;
 }
 
-const { title, description = 'Real-time video agent — VAST Builders Challenge London.' } =
-  Astro.props;
+const { title, description = 'Cysense — evidence-linked cycling navigation.' } = Astro.props;
 ---
 
 <!doctype html>
@@ -16,8 +15,9 @@ const { title, description = 'Real-time video agent — VAST Builders Challenge 
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
     <meta name="description" content={description} />
-    <meta name="theme-color" content="#0a0a0a" />
+    <meta name="theme-color" content="#f1f3ee" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <title>{title}</title>
   </head>

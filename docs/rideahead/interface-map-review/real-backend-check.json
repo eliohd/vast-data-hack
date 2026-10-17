@@ -1,0 +1,17 @@
+{
+  "scenario": "nyc-broadway-work-zone-v1",
+  "requestBody": {
+    "ride_id": "nyc_streets_cam-1:walker-st",
+    "scenario_id": "nyc-broadway-work-zone-v1"
+  },
+  "action": "reroute",
+  "routeMatched": true,
+  "riderMarkers": 2,
+  "recordedEvidencePanel": true,
+  "provenance": [
+    "cached_provider",
+    "cached_provider",
+    "cached_provider"
+  ],
+  "errors": []
+}
