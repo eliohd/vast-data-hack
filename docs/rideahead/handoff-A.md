@@ -2,7 +2,7 @@
 
 ## Current branch and commit
 
-- Branch `main`. Bootstrap contract commit: **see "Bootstrap SHA" below** (pull exactly that).
+- Branch `main`. **Bootstrap contract SHA: `5b43e3f`** — B, C, D: `git pull` and build against it.
 
 ## Bootstrap contract (frozen)
 
