@@ -22,7 +22,7 @@
   "simulated_rider": {
     "rider_id": "bike_b",
     "label": "Bike B (simulated)",
-    "depart_s": 120,
+    "depart_s": 40,
     "speed_mps": 4.2
   },
   "cached_observations": [
@@ -158,6 +158,7 @@
   "persistence_overrides": {},
   "labels": [
     "Observer is a fixed street camera (recorded), not a bike",
+    "Bike B is already riding when the work zone is first observed (detour requested from its position)",
     "Work zone: two recorded clips ~24 min apart from the same camera = continued observation, not independent corroboration",
     "Cosmos verification cached (prompt c-verify-work-zone-1); frame review by lane C agrees; not ground truth",
     "Location from a street sign visible in the clip, map-matched (±30 m)",

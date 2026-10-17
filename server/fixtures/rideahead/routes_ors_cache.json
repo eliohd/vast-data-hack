@@ -1,6 +1,227 @@
 {
  "_note": "Genuine openrouteservice responses recorded by CachedRouting. Route data \u00a9 openrouteservice.org | \u00a9 OpenStreetMap contributors (ODbL).",
  "responses": {
+  "[40.71926, -74.002, 40.71741, -74.00356, [[40.71876, -74.00243, 30.0]]]": [
+   {
+    "avoids_hazard_ids": [
+     "hazard-71211ac9031e2a0a"
+    ],
+    "distance_m": 632.6,
+    "duration_s": 145.9,
+    "geometry": {
+     "coordinates": [
+      [
+       -74.002001,
+       40.719259
+      ],
+      [
+       -74.002091,
+       40.719153
+      ],
+      [
+       -74.002181,
+       40.719048
+      ],
+      [
+       -74.002285,
+       40.7191
+      ],
+      [
+       -74.002222,
+       40.719176
+      ],
+      [
+       -74.002193,
+       40.719206
+      ],
+      [
+       -74.002157,
+       40.719245
+      ],
+      [
+       -74.00205,
+       40.719369
+      ],
+      [
+       -74.002034,
+       40.719386
+      ],
+      [
+       -74.001967,
+       40.719463
+      ],
+      [
+       -74.001881,
+       40.719402
+      ],
+      [
+       -74.001806,
+       40.719345
+      ],
+      [
+       -74.001268,
+       40.718964
+      ],
+      [
+       -74.000618,
+       40.718499
+      ],
+      [
+       -74.000552,
+       40.718449
+      ],
+      [
+       -74.000633,
+       40.71836
+      ],
+      [
+       -74.00081,
+       40.718168
+      ],
+      [
+       -74.000967,
+       40.717992
+      ],
+      [
+       -74.001008,
+       40.717948
+      ],
+      [
+       -74.001052,
+       40.717899
+      ],
+      [
+       -74.001546,
+       40.71736
+      ],
+      [
+       -74.001583,
+       40.717318
+      ],
+      [
+       -74.001666,
+       40.71736
+      ],
+      [
+       -74.00235,
+       40.71769
+      ],
+      [
+       -74.002433,
+       40.717731
+      ],
+      [
+       -74.002951,
+       40.717992
+      ],
+      [
+       -74.003043,
+       40.718034
+      ],
+      [
+       -74.003085,
+       40.717983
+      ],
+      [
+       -74.003494,
+       40.717496
+      ],
+      [
+       -74.003533,
+       40.717449
+      ],
+      [
+       -74.003564,
+       40.717412
+      ]
+     ],
+     "type": "LineString"
+    },
+    "label": "bicycle route from provider, subject to map restrictions",
+    "profile": "cycling-regular",
+    "provenance": "live_provider",
+    "provider": "openrouteservice",
+    "role": "detour",
+    "route_id": "ors-ce728ea994",
+    "steps": [
+     {
+      "distance_m": 28.0,
+      "duration_s": 5.6,
+      "end_index": 2,
+      "instruction": "Head southwest on Broadway",
+      "maneuver_type": "depart",
+      "start_index": 0,
+      "street_name": "Broadway"
+     },
+     {
+      "distance_m": 10.6,
+      "duration_s": 2.1,
+      "end_index": 3,
+      "instruction": "Turn right",
+      "maneuver_type": "right",
+      "start_index": 2,
+      "street_name": null
+     },
+     {
+      "distance_m": 48.5,
+      "duration_s": 29.1,
+      "end_index": 9,
+      "instruction": "Turn right",
+      "maneuver_type": "right",
+      "start_index": 3,
+      "street_name": null
+     },
+     {
+      "distance_m": 164.1,
+      "duration_s": 32.8,
+      "end_index": 14,
+      "instruction": "Turn right onto Canal Street",
+      "maneuver_type": "right",
+      "start_index": 9,
+      "street_name": "Canal Street"
+     },
+     {
+      "distance_m": 152.9,
+      "duration_s": 30.6,
+      "end_index": 21,
+      "instruction": "Turn right onto Lafayette Street",
+      "maneuver_type": "right",
+      "start_index": 14,
+      "street_name": "Lafayette Street"
+     },
+     {
+      "distance_m": 146.6,
+      "duration_s": 29.3,
+      "end_index": 26,
+      "instruction": "Turn right onto White Street",
+      "maneuver_type": "right",
+      "start_index": 21,
+      "street_name": "White Street"
+     },
+     {
+      "distance_m": 81.9,
+      "duration_s": 16.4,
+      "end_index": 30,
+      "instruction": "Turn left onto Broadway",
+      "maneuver_type": "left",
+      "start_index": 26,
+      "street_name": "Broadway"
+     },
+     {
+      "distance_m": 0.0,
+      "duration_s": 0.0,
+      "end_index": 30,
+      "instruction": "Arrive at Broadway, straight ahead",
+      "maneuver_type": "arrive",
+      "start_index": 30,
+      "street_name": null
+     }
+    ],
+    "warnings": [
+     "Extra info requested but not available: roadaccessrestrictions"
+    ]
+   }
+  ],
   "[40.7199, -74.00146, 40.71741, -74.00356, [[40.71876, -74.00243, 30.0]]]": [
    {
     "avoids_hazard_ids": [
@@ -980,6 +1201,541 @@
       "instruction": "Arrive at 6th Avenue, straight ahead",
       "maneuver_type": "arrive",
       "start_index": 47,
+      "street_name": null
+     }
+    ],
+    "warnings": [
+     "Extra info requested but not available: roadaccessrestrictions"
+    ]
+   }
+  ],
+  "[40.74733, -73.98958, 40.75294, -73.98548, [[40.74791, -73.98914, 30.0]]]": [
+   {
+    "avoids_hazard_ids": [
+     "hazard-91c48492e7825d1c"
+    ],
+    "distance_m": 899.2,
+    "duration_s": 192.0,
+    "geometry": {
+     "coordinates": [
+      [
+       -73.989576,
+       40.747332
+      ],
+      [
+       -73.989572,
+       40.747338
+      ],
+      [
+       -73.989446,
+       40.747284
+      ],
+      [
+       -73.989489,
+       40.747225
+      ],
+      [
+       -73.988556,
+       40.746831
+      ],
+      [
+       -73.988473,
+       40.746796
+      ],
+      [
+       -73.98846,
+       40.746866
+      ],
+      [
+       -73.98845,
+       40.74692
+      ],
+      [
+       -73.988416,
+       40.74697
+      ],
+      [
+       -73.988387,
+       40.747124
+      ],
+      [
+       -73.988407,
+       40.747186
+      ],
+      [
+       -73.988368,
+       40.747352
+      ],
+      [
+       -73.988344,
+       40.747486
+      ],
+      [
+       -73.988333,
+       40.747546
+      ],
+      [
+       -73.988285,
+       40.747734
+      ],
+      [
+       -73.988219,
+       40.748096
+      ],
+      [
+       -73.988207,
+       40.748234
+      ],
+      [
+       -73.988193,
+       40.748305
+      ],
+      [
+       -73.988274,
+       40.748338
+      ],
+      [
+       -73.988371,
+       40.748379
+      ],
+      [
+       -73.988587,
+       40.748468
+      ],
+      [
+       -73.988695,
+       40.748508
+      ],
+      [
+       -73.988656,
+       40.74856
+      ],
+      [
+       -73.988279,
+       40.749063
+      ],
+      [
+       -73.988235,
+       40.749122
+      ],
+      [
+       -73.988196,
+       40.749176
+      ],
+      [
+       -73.987913,
+       40.749563
+      ],
+      [
+       -73.987802,
+       40.749715
+      ],
+      [
+       -73.987746,
+       40.749801
+      ],
+      [
+       -73.987699,
+       40.749882
+      ],
+      [
+       -73.987414,
+       40.750283
+      ],
+      [
+       -73.987326,
+       40.750406
+      ],
+      [
+       -73.987287,
+       40.750457
+      ],
+      [
+       -73.987245,
+       40.750515
+      ],
+      [
+       -73.987037,
+       40.750799
+      ],
+      [
+       -73.986868,
+       40.751028
+      ],
+      [
+       -73.986828,
+       40.751082
+      ],
+      [
+       -73.986794,
+       40.751131
+      ],
+      [
+       -73.986436,
+       40.751647
+      ],
+      [
+       -73.986399,
+       40.7517
+      ],
+      [
+       -73.986352,
+       40.751765
+      ],
+      [
+       -73.985989,
+       40.752259
+      ],
+      [
+       -73.985947,
+       40.752317
+      ],
+      [
+       -73.985905,
+       40.752373
+      ],
+      [
+       -73.98553,
+       40.752877
+      ],
+      [
+       -73.985484,
+       40.752944
+      ]
+     ],
+     "type": "LineString"
+    },
+    "label": "bicycle route from provider, subject to map restrictions",
+    "profile": "cycling-regular",
+    "provenance": "live_provider",
+    "provider": "openrouteservice",
+    "role": "detour",
+    "route_id": "ors-2d77000830",
+    "steps": [
+     {
+      "distance_m": 0.7,
+      "duration_s": 0.1,
+      "end_index": 1,
+      "instruction": "Head northeast on 6th Avenue",
+      "maneuver_type": "depart",
+      "start_index": 0,
+      "street_name": "6th Avenue"
+     },
+     {
+      "distance_m": 12.2,
+      "duration_s": 7.3,
+      "end_index": 2,
+      "instruction": "Turn right",
+      "maneuver_type": "right",
+      "start_index": 1,
+      "street_name": null
+     },
+     {
+      "distance_m": 7.5,
+      "duration_s": 4.5,
+      "end_index": 3,
+      "instruction": "Turn right",
+      "maneuver_type": "right",
+      "start_index": 2,
+      "street_name": null
+     },
+     {
+      "distance_m": 98.0,
+      "duration_s": 19.6,
+      "end_index": 5,
+      "instruction": "Turn left onto West 30th Street",
+      "maneuver_type": "left",
+      "start_index": 3,
+      "street_name": "West 30th Street"
+     },
+     {
+      "distance_m": 170.3,
+      "duration_s": 38.3,
+      "end_index": 17,
+      "instruction": "Turn sharp left onto Broadway",
+      "maneuver_type": "sharp_left",
+      "start_index": 5,
+      "street_name": "Broadway"
+     },
+     {
+      "distance_m": 47.9,
+      "duration_s": 9.6,
+      "end_index": 21,
+      "instruction": "Turn left onto West 32nd Street",
+      "maneuver_type": "left",
+      "start_index": 17,
+      "street_name": "West 32nd Street"
+     },
+     {
+      "distance_m": 562.6,
+      "duration_s": 112.5,
+      "end_index": 45,
+      "instruction": "Turn right onto 6th Avenue",
+      "maneuver_type": "right",
+      "start_index": 21,
+      "street_name": "6th Avenue"
+     },
+     {
+      "distance_m": 0.0,
+      "duration_s": 0.0,
+      "end_index": 45,
+      "instruction": "Arrive at 6th Avenue, straight ahead",
+      "maneuver_type": "arrive",
+      "start_index": 45,
+      "street_name": null
+     }
+    ],
+    "warnings": [
+     "Extra info requested but not available: roadaccessrestrictions"
+    ]
+   }
+  ],
+  "[40.74782, -73.98921, 40.75294, -73.98548, [[40.74791, -73.98914, 30.0]]]": [
+   {
+    "avoids_hazard_ids": [
+     "hazard-91c48492e7825d1c"
+    ],
+    "distance_m": 1120.0,
+    "duration_s": 255.9,
+    "geometry": {
+     "coordinates": [
+      [
+       -73.989673,
+       40.748114
+      ],
+      [
+       -73.990293,
+       40.748376
+      ],
+      [
+       -73.99158,
+       40.748921
+      ],
+      [
+       -73.991884,
+       40.74905
+      ],
+      [
+       -73.991848,
+       40.749096
+      ],
+      [
+       -73.99181,
+       40.749094
+      ],
+      [
+       -73.991458,
+       40.749594
+      ],
+      [
+       -73.991471,
+       40.749617
+      ],
+      [
+       -73.991441,
+       40.749655
+      ],
+      [
+       -73.99095,
+       40.749448
+      ],
+      [
+       -73.989755,
+       40.748953
+      ],
+      [
+       -73.988837,
+       40.748561
+      ],
+      [
+       -73.988695,
+       40.748508
+      ],
+      [
+       -73.988656,
+       40.74856
+      ],
+      [
+       -73.988279,
+       40.749063
+      ],
+      [
+       -73.988235,
+       40.749122
+      ],
+      [
+       -73.988196,
+       40.749176
+      ],
+      [
+       -73.987913,
+       40.749563
+      ],
+      [
+       -73.987802,
+       40.749715
+      ],
+      [
+       -73.987746,
+       40.749801
+      ],
+      [
+       -73.987699,
+       40.749882
+      ],
+      [
+       -73.987414,
+       40.750283
+      ],
+      [
+       -73.987326,
+       40.750406
+      ],
+      [
+       -73.987287,
+       40.750457
+      ],
+      [
+       -73.987245,
+       40.750515
+      ],
+      [
+       -73.987037,
+       40.750799
+      ],
+      [
+       -73.986868,
+       40.751028
+      ],
+      [
+       -73.986828,
+       40.751082
+      ],
+      [
+       -73.986794,
+       40.751131
+      ],
+      [
+       -73.986436,
+       40.751647
+      ],
+      [
+       -73.986399,
+       40.7517
+      ],
+      [
+       -73.986352,
+       40.751765
+      ],
+      [
+       -73.985989,
+       40.752259
+      ],
+      [
+       -73.985947,
+       40.752317
+      ],
+      [
+       -73.985905,
+       40.752373
+      ],
+      [
+       -73.98553,
+       40.752877
+      ],
+      [
+       -73.985484,
+       40.752944
+      ]
+     ],
+     "type": "LineString"
+    },
+    "label": "bicycle route from provider, subject to map restrictions",
+    "profile": "cycling-regular",
+    "provenance": "live_provider",
+    "provider": "openrouteservice",
+    "role": "detour",
+    "route_id": "ors-7c37af8d1d",
+    "steps": [
+     {
+      "distance_m": 213.3,
+      "duration_s": 42.7,
+      "end_index": 3,
+      "instruction": "Head northwest on West 31st Street",
+      "maneuver_type": "depart",
+      "start_index": 0,
+      "street_name": "West 31st Street"
+     },
+     {
+      "distance_m": 6.0,
+      "duration_s": 3.6,
+      "end_index": 4,
+      "instruction": "Turn right",
+      "maneuver_type": "right",
+      "start_index": 3,
+      "street_name": null
+     },
+     {
+      "distance_m": 3.2,
+      "duration_s": 1.9,
+      "end_index": 5,
+      "instruction": "Turn right",
+      "maneuver_type": "right",
+      "start_index": 4,
+      "street_name": null
+     },
+     {
+      "distance_m": 63.0,
+      "duration_s": 37.8,
+      "end_index": 6,
+      "instruction": "Turn left",
+      "maneuver_type": "left",
+      "start_index": 5,
+      "street_name": null
+     },
+     {
+      "distance_m": 2.8,
+      "duration_s": 1.7,
+      "end_index": 7,
+      "instruction": "Turn left",
+      "maneuver_type": "left",
+      "start_index": 6,
+      "street_name": null
+     },
+     {
+      "distance_m": 4.9,
+      "duration_s": 3.0,
+      "end_index": 8,
+      "instruction": "Turn right",
+      "maneuver_type": "right",
+      "start_index": 7,
+      "street_name": null
+     },
+     {
+      "distance_m": 264.2,
+      "duration_s": 52.8,
+      "end_index": 12,
+      "instruction": "Turn right onto West 32nd Street",
+      "maneuver_type": "right",
+      "start_index": 8,
+      "street_name": "West 32nd Street"
+     },
+     {
+      "distance_m": 562.6,
+      "duration_s": 112.5,
+      "end_index": 36,
+      "instruction": "Turn left onto 6th Avenue",
+      "maneuver_type": "left",
+      "start_index": 12,
+      "street_name": "6th Avenue"
+     },
+     {
+      "distance_m": 0.0,
+      "duration_s": 0.0,
+      "end_index": 36,
+      "instruction": "Arrive at 6th Avenue, straight ahead",
+      "maneuver_type": "arrive",
+      "start_index": 36,
       "street_name": null
      }
     ],

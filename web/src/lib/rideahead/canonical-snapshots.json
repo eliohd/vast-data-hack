@@ -3062,6 +3062,12 @@
         "session_time_s": 368.0
       },
       {
+        "kind": "route",
+        "message": "1 detour(s) from Bike B (simulated)'s position (328 m along)",
+        "ref_ids": ["ors-2d77000830"],
+        "session_time_s": 398.0
+      },
+      {
         "kind": "hazard",
         "message": "hazard-91c48492e7825d1c \u2192 stale",
         "ref_ids": ["hazard-91c48492e7825d1c"],
@@ -4072,10 +4078,22 @@
         "session_time_s": 368.0
       },
       {
+        "kind": "route",
+        "message": "1 detour(s) from Bike B (simulated)'s position (328 m along)",
+        "ref_ids": ["ors-2d77000830"],
+        "session_time_s": 398.0
+      },
+      {
         "kind": "hazard",
         "message": "hazard-91c48492e7825d1c \u2192 stale",
         "ref_ids": ["hazard-91c48492e7825d1c"],
         "session_time_s": 400.0
+      },
+      {
+        "kind": "route",
+        "message": "1 detour(s) from Bike B (simulated)'s position (391 m along)",
+        "ref_ids": ["ors-7c37af8d1d"],
+        "session_time_s": 413.0
       },
       {
         "kind": "decision",
@@ -5084,10 +5102,22 @@
         "session_time_s": 368.0
       },
       {
+        "kind": "route",
+        "message": "1 detour(s) from Bike B (simulated)'s position (328 m along)",
+        "ref_ids": ["ors-2d77000830"],
+        "session_time_s": 398.0
+      },
+      {
         "kind": "hazard",
         "message": "hazard-91c48492e7825d1c \u2192 stale",
         "ref_ids": ["hazard-91c48492e7825d1c"],
         "session_time_s": 400.0
+      },
+      {
+        "kind": "route",
+        "message": "1 detour(s) from Bike B (simulated)'s position (391 m along)",
+        "ref_ids": ["ors-7c37af8d1d"],
+        "session_time_s": 413.0
       },
       {
         "kind": "decision",
@@ -6320,10 +6350,22 @@
         "session_time_s": 368.0
       },
       {
+        "kind": "route",
+        "message": "1 detour(s) from Bike B (simulated)'s position (328 m along)",
+        "ref_ids": ["ors-2d77000830"],
+        "session_time_s": 398.0
+      },
+      {
         "kind": "hazard",
         "message": "hazard-91c48492e7825d1c \u2192 stale",
         "ref_ids": ["hazard-91c48492e7825d1c"],
         "session_time_s": 400.0
+      },
+      {
+        "kind": "route",
+        "message": "1 detour(s) from Bike B (simulated)'s position (391 m along)",
+        "ref_ids": ["ors-7c37af8d1d"],
+        "session_time_s": 413.0
       },
       {
         "kind": "decision",

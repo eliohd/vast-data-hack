@@ -183,9 +183,25 @@ Merged C `70e8212` (ArchivePerceptionProvider, traced W&B + Cosmos cache) and D 
 - Real ORS: 40.719895,-74.001462 → 40.717412,-74.003564 (Broadway, near Canal → south of White).
   Primary 328 m / 66 s through the work zone; provider alternative = avoid-area detour 601 m / 120 s
   (Canal → Lafayette → White → Broadway). ORS prefers Lafayette from further north, so the trip is short.
-- Story (D's engine): t=60 work zone observed → Bike B **reroute** "Blockage 150 m ahead. Take the
-  detour; about 55 sec extra." → rides the detour with live next-turn data → t=1489 confirmed
-  (persistence). Observer is a fixed street camera, labelled.
+- Story (D's engine): see "Mid-journey rerouting" (B departs t=40, reroute from its position at
+  t=60) → t=1489 confirmed (persistence). Observer is a fixed street camera, labelled.
+
+## Mid-journey rerouting
+
+- Detours were only requested origin → destination, so after Bike B passed the original turn-off
+  the engine (correctly) refused to "teleport" it onto them. The runtime now also requests a
+  detour **from Bike B's exact position** when: B is riding, a non-cleared hazard is still ahead on
+  B's active route, and no candidate B can join (≤ 5 m, the engine's rule) avoids it. Throttled to
+  one request per 15 s of session time unless the hazards ahead change. Ticks are whole seconds,
+  so replay is deterministic and hits the same recorded keys (VM has no ORS key).
+- Broadway: Bike B departs t=40; at t=60 (work zone observed) B is 84 m down Broadway, past the
+  Canal St turn-off → detour from B's position (around the block to Canal → Lafayette → White →
+  Broadway, includes two short unnamed provider connectors) → **reroute** "Blockage 60 m ahead.
+  Take the detour; about 1 min 40 sec extra." Real recorded evidence, no forced numbers.
+- 6th Ave: current-position detours are fetched at 328 m and 391 m (past W 30th St); D's engine
+  keeps `slow` (brief obstruction). Offline replay matches live exactly.
+- Test: `tests/test_rideahead_midroute.py` (hazard appears after departure, reroute from current
+  position, continuous movement, deterministic rewind).
 
 ## Navigation contract additions (for B's map, optional fields, backward compatible)
 

@@ -188,6 +188,8 @@ def test_broadway_work_zone_scenario_real_cached_evidence(tmp_path) -> None:  # 
         decision = snap["decisions"][0]
         assert decision["action"] == "reroute"
         assert snap["riders"][1]["active_route_id"] == decision["selected_route_id"]
+        # Bike B was already riding past the Canal St turn-off: detour from its position
+        assert any("detour(s) from" in e["message"] for e in snap["events"])
 
         snap = _advance(c, sid, 1489)  # same camera ~24 min later: persistence, not independent
         assert snap["hazards"][0]["state"] == "confirmed"

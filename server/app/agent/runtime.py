@@ -50,6 +50,8 @@ log = logging.getLogger(__name__)
 MAX_SESSIONS = 32
 MAX_EVENTS = 200
 EXCLUSION_RADIUS_M = 30.0
+MID_ROUTE_INTERVAL_S = 15.0  # at most one mid-journey detour request per this session time
+JOIN_TOLERANCE_M = 5.0  # matches the engine's "never teleport onto a disconnected route"
 
 
 # -- scenario ------------------------------------------------------------------------------
@@ -151,6 +153,8 @@ class Session:
         self.decision: Decision | None = None
         self.history: list[Decision] = []
         self._cumulative: dict[str, list[float]] = {}
+        self._mid_route_last: tuple[float, tuple[str, ...]] | None = None
+        self._last_mid_route_error: str | None = None
         self.events: list[SessionEvent] = []
         spec = self.scenario.simulated_rider
         self.rider_b = Rider(
@@ -205,6 +209,7 @@ class Session:
                 seen = {r.route_id for r in routes}
                 detours = await self.routing.candidate_routes(sc.origin, sc.destination, exclusions)
                 routes += [d for d in detours if d.route_id not in seen]
+                routes += await self._detours_from_here(routes, exclusions)
             self.routing_error = None
             return routes
         except RoutingUnavailable as exc:
@@ -212,6 +217,70 @@ class Session:
                 self._event("route", f"routing unavailable: {exc}")
             self.routing_error = str(exc)
             return list(self.base_routes or [])
+
+    async def _detours_from_here(
+        self, routes: list[RouteCandidate], exclusions: list[RouteExclusion]
+    ) -> list[RouteCandidate]:
+        """Mid-journey: detours requested from Bike B's current position.
+
+        Only when B is riding, an excluded hazard is still ahead on B's active route, and no
+        candidate B can actually join (≤ JOIN_TOLERANCE_M from its position) avoids it, e.g.
+        after passing the original detour's turn-off. Requests start at B's exact position and
+        are throttled to one per MID_ROUTE_INTERVAL_S of session time unless the hazards ahead
+        change. Ticks are whole seconds from 0, so replay hits the same cached/recorded keys.
+        """
+        b = self.rider_b
+        active = next((r for r in self.routes if r.route_id == b.active_route_id), None)
+        if b.status != "riding" or b.position is None or active is None:
+            return []
+        coords = active.geometry.coordinates
+        ahead = [
+            ex
+            for ex in exclusions
+            if (p := project(ex.center, coords)).offset_m <= ex.radius_m
+            and p.along_m > b.progress_m
+        ]
+        if not ahead:
+            return []
+
+        def avoids(r: RouteCandidate) -> bool:
+            return all(
+                project(ex.center, r.geometry.coordinates).offset_m > ex.radius_m for ex in ahead
+            )
+
+        def joinable(r: RouteCandidate) -> bool:
+            return project(b.position, r.geometry.coordinates).offset_m <= JOIN_TOLERANCE_M  # type: ignore[arg-type]
+
+        if any(r.route_id != active.route_id and joinable(r) and avoids(r) for r in routes):
+            return []
+        ahead_ids = tuple(sorted(ex.hazard_id for ex in ahead))
+        if (
+            self._mid_route_last is not None
+            and self._mid_route_last[1] == ahead_ids
+            and self.t - self._mid_route_last[0] < MID_ROUTE_INTERVAL_S
+        ):
+            return []
+        self._mid_route_last = (self.t, ahead_ids)
+        start = LatLon(lat=round(b.position.lat, 6), lon=round(b.position.lon, 6))
+        try:
+            here = await self.routing.candidate_routes(start, self.scenario.destination, ahead)
+        except RoutingUnavailable as exc:
+            if self._last_mid_route_error != str(exc):
+                self._event("route", f"detour from current position unavailable: {exc}")
+            self._last_mid_route_error = str(exc)
+            return []
+        self._last_mid_route_error = None
+        seen = {r.route_id for r in routes}
+        fresh = [r for r in here if r.route_id not in seen and avoids(r)]
+        for r in fresh:
+            r.role = "detour"
+        if fresh:
+            self._event(
+                "route",
+                f"{len(fresh)} detour(s) from {b.label}'s position ({b.progress_m:.0f} m along)",
+                [r.route_id for r in fresh],
+            )
+        return fresh
 
     # -- simulation ------------------------------------------------------------------------
 
