@@ -117,6 +117,21 @@ Config (env or `server/.env`): `ORS_API_KEY` (empty → fixture routes), `RIDEAH
 - Open (optional, D request 2): directed-road passages / segment ETAs / hazard evidence IDs.
 - D's frontend pnpm min-release-age issue is local to D's machine; `make verify` is green here.
 
+## Lane B + C integration (merged `agent-b/rideahead-interface` @ `77b8f8c`, `rishik/rideahead-notes` @ `c0922c2`)
+
+- Both merged unchanged; `make verify` green (138 server, 27 web tests). B's pinned frontend
+  versions accepted (B owns web deps).
+- Full stack checked in the browser at phone size against the live server + live ORS:
+  session creation, polling, replay, detour route, decision card, provenance strip.
+- `make gen-api` now also refreshes B's offline copy `web/src/lib/rideahead/canonical-snapshots.json`
+  (it was stale: hand-drawn routes, bootstrap engine).
+- Prompt: `EVIDENCE_VERIFICATION_PROMPT` v2 (`rideahead-verify-2`) from C's proposal; use
+  `prompts.verification_prompt(question)` (JSON braces make `.format` unsafe).
+- **Corpus is NYC** (C): demo scenario must move from the Southwark fixture to an anchored
+  Manhattan section once C delivers a real observation + anchor. No verified real obstruction yet.
+- Evidence media: set `Evidence.segment_id` to the VSS `source` (segment file) and
+  `media_ref` to `/api/archive/media?source=<segment_file>`; no contract change needed.
+
 ## Known limitations
 
 - Fixture geography is synthetic (Southwark, London). If the corpus is not London, lane C's

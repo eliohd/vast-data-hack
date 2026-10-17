@@ -33,22 +33,35 @@ Reply with JSON only:
  "evidence_quote": "<the clause you relied on>",
  "confidence": <0.0-1.0, self-reported>}"""
 
-EVIDENCE_VERIFICATION_PROMPT_VERSION = "rideahead-verify-1"
-EVIDENCE_VERIFICATION_PROMPT = """Watch this bike-camera clip. Question: {question}
+EVIDENCE_VERIFICATION_PROMPT_VERSION = "rideahead-verify-2"
+# v2 (lane C proposal): locate the lane markings first, then ask about wheels inside them, so
+# vehicles beside the lane or in the buffer are not reported as blocking it.
+EVIDENCE_VERIFICATION_PROMPT = """You are checking a short forward-facing bicycle camera clip.
+Claim to check: {question}
 
-Answer only from what is visible:
-1. Is the relevant road space (the cycle lane / the rider's lane ahead) visible?
-2. Is the specific obstruction visible in it?
-3. What visible detail supports your answer?
-If the view is obscured or you cannot tell, the verdict is "unclear".
+Answer step by step from what is visible, then give JSON:
+1. Where are the bicycle-lane markings (green paint, bike symbols, lane lines, flexible posts)?
+   If you cannot see them, the lane is not visible.
+2. Is any vehicle (or object) with its wheels or body inside those markings, not merely beside
+   them or in a hatched buffer?
+3. At which second(s) is it visible?
+Use "supported" only if something occupies part of the bike lane, "contradicted" only if the
+bike lane is clearly visible and unobstructed, otherwise "unclear".
 
 Reply with JSON only:
 {"road_space_visible": true | false | null,
  "obstruction_visible": true | false | null,
  "verdict": "supported" | "contradicted" | "unclear",
- "rationale": "<one or two sentences about visible evidence>"}"""
+ "object": "<vehicle or object type, or null>",
+ "evidence_seconds": [<start>, <end>] | null,
+ "rationale": "<one short factual sentence about visible evidence>"}"""
 
 DECISION_EXPLANATION_PROMPT_VERSION = "rideahead-explain-1"
 DECISION_EXPLANATION_PROMPT = """Rephrase this navigation decision for a cyclist in one short,
 calm sentence. Use only the facts given; do not add locations, times, probabilities, legal
 rules or advice that is not in the facts. Facts (JSON): {facts}"""
+
+
+def verification_prompt(question: str) -> str:
+    """EVIDENCE_VERIFICATION_PROMPT with the claim filled in (JSON braces make .format unsafe)."""
+    return EVIDENCE_VERIFICATION_PROMPT.replace("{question}", question)

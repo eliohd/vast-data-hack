@@ -38,8 +38,9 @@ fmt: ## Auto-format both halves
 	cd server && uv run ruff format . && uv run ruff check --fix .
 	cd web && pnpm format
 
-gen-api: ## Export server OpenAPI → regenerate web/src/lib/api/schema.d.ts
+gen-api: ## Export server OpenAPI + RideAhead fixture snapshots → regenerate web types/fixtures
 	cd server && uv run python -m app.export_openapi && uv run python -m app.export_fixtures
+	cp server/fixtures/rideahead/snapshots.json web/src/lib/rideahead/canonical-snapshots.json && cd web && pnpm exec prettier --write src/lib/rideahead/canonical-snapshots.json >/dev/null
 	cd web && pnpm gen:api
 
 build: ## Static web build into web/dist (FastAPI serves it)
