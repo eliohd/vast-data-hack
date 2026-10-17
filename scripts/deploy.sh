@@ -4,7 +4,7 @@
 set -euo pipefail
 
 VM="${VM:?set VM to your lab SSH alias, e.g. VM=bc-elio}"
-VM_DIR="${VM_DIR:-~/hack}"
+VM_DIR="${VM_DIR:-hack}"  # relative to the remote home; never a laptop-expanded ~
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 
 echo "→ syncing to ${VM}:${VM_DIR}"

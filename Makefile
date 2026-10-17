@@ -6,7 +6,7 @@ API_PORT ?= 8000
 WEB_PORT ?= 4321
 # Lab VM SSH alias from the workshop page (e.g. bc-elio). Override: make deploy VM=bc-you
 VM ?= bc-$(USER)
-VM_DIR ?= ~/hack
+VM_DIR ?= hack  # relative to the VM user's home (a literal ~ would expand on the laptop)
 
 .PHONY: help setup dev dev-server dev-web verify verify-web verify-server fmt gen-api build serve probe phone-tunnel deploy vm-run
 

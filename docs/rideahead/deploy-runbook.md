@@ -46,7 +46,7 @@ seen by the tmux session the deploy starts.
 make deploy VM=bc-<you>
 ```
 
-This builds `web/dist` locally, rsyncs the repo to `~/hack` (excluding `.env`, `.venv`,
+This builds `web/dist` locally, rsyncs the repo to `hack/` in the VM user's home (override with `VM_DIR=<path relative to home>`) (excluding `.env`, `.venv`,
 `server/data`), runs `scripts/vm-run.sh` (uv sync, uvicorn on `127.0.0.1:8000` in tmux `hack`,
 log `/tmp/hack-server.log`) and prints `/api/health`.
 
