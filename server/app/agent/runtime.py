@@ -324,6 +324,8 @@ class Session:
         labels = list(self.scenario.labels)
         if self.routes and all(r.provenance == "fixture" for r in self.routes):
             labels.append("Fixture routes (hand-drawn) — not real routing")
+        elif any(r.provenance == "cached_provider" for r in self.routes):
+            labels.append("Routes: recorded openrouteservice responses replayed (not live)")
         if self.routing_error:
             labels.append(f"Routing unavailable: {self.routing_error}")
         return SessionSnapshot(

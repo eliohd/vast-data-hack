@@ -68,9 +68,14 @@ class Services:
         routing: RoutingProvider
         store = None
         ors_key = s.ors_api_key.get_secret_value()
-        if s.rideahead_routing == "ors" or (s.rideahead_routing == "auto" and ors_key):
+        ors_store = fixtures / "routes_ors_cache.json"
+        # auto: live ORS with a key; without one, replay recorded ORS responses (labelled cached)
+        use_ors = s.rideahead_routing == "ors" or (
+            s.rideahead_routing == "auto" and (ors_key or ors_store.is_file())
+        )
+        if use_ors:
             routing = OpenRouteServiceProvider(self.http, ors_key, s.ors_base_url, s.ors_profile)
-            store = fixtures / "routes_ors_cache.json"
+            store = ors_store
         else:
             routing = FixtureRoutingProvider(fixtures / "routes.json")
         return RideAheadRuntime(
