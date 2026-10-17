@@ -3,7 +3,7 @@ from pathlib import Path
 
 import pytest
 
-from app.perception.assertions import caption_assertion, classify_clause, split_clauses
+from app.agent.perception_claims import caption_assertion, classify_clause, split_clauses
 
 # The five trust cases required by master-prompt.md section 9.
 REQUIRED = [
@@ -33,7 +33,8 @@ def test_causal_clause_is_split_from_its_negation() -> None:
     ]
 
 
-# Real captions from ride GX010001 (nyc_bike_gopro-1), see manifests/ride_gx010001.json.
+# Real captions from ride GX010001 (nyc_bike_gopro-1).
+# See server/fixtures/rideahead/cache/ride_gx010001_manifest.json.
 def test_real_positive_bike_lane_obstruction() -> None:
     caption = (
         "A yellow taxi is visible further ahead. A large black delivery truck is in the left "
@@ -87,7 +88,8 @@ SHORTLIST_EXPECTED = {
 
 
 def test_shortlist_captions_match_manual_reading() -> None:
-    fixture = Path(__file__).parent / "fixtures" / "gx010001_shortlist.json"
+    cache = Path(__file__).parent.parent / "fixtures" / "rideahead" / "cache"
+    fixture = cache / "captions_gx010001_shortlist.json"
     segments = json.loads(fixture.read_text())["segments"]
     got = {s["id"]: caption_assertion(s["caption"]).assertion for s in segments}
     assert got == SHORTLIST_EXPECTED

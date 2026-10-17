@@ -5,17 +5,17 @@ candidate extraction, model verification, VSS/GPU client changes.
 
 ## Current branch and commit
 
-- Branch `rishik/rideahead-notes`, based on `main` @ `0f564a7` (pre-bootstrap: Agent A's contract
+- Branch `rishik/rideahead-notes`, rebased on `main` @ `a032693` (after A bootstrap `5b43e3f`; earlier work predates the contract
   was not on `main` when this was written). Commit SHA: see `git log` for this file.
 
 ## Working entry points
 
 | Path | What it is | Status |
 |---|---|---|
-| `server/app/perception/assertions.py` | Clause-level lane-obstruction reading of captions: `caption_assertion(caption)` returns `present / denied / hedged / adjacent / unclear / none` plus `bike_lane / lane / roadway / unknown` and the clause | Real, pure, tested |
-| `server/app/perception/manifests/ride_gx010001.json` | Ride manifest: timing rules, reconstructed route, demo-section anchors, 10-segment shortlist with roles | Real corpus data; coordinates hand-placed |
-| `server/tests/fixtures/gx010001_shortlist.json` | Sanitised cached captions + YOLO11 counts for the 10 shortlisted segments (no media URLs) | Cached recorded |
-| `server/tests/test_perception_assertions.py` | 5 required trust cases (master prompt section 9) + all 10 real captions | 12 tests pass |
+| `server/app/agent/perception_claims.py` | Clause-level lane-obstruction reading of captions: `caption_assertion(caption)` returns `present / denied / hedged / adjacent / unclear / none` plus `bike_lane / lane / roadway / unknown` and the clause | Real, pure, tested |
+| `server/fixtures/rideahead/cache/ride_gx010001_manifest.json` | Ride manifest: timing rules, reconstructed route, demo-section anchors, 10-segment shortlist with roles | Real corpus data; coordinates hand-placed |
+| `server/fixtures/rideahead/cache/captions_gx010001_shortlist.json` | Sanitised cached captions + YOLO11 counts for the 10 shortlisted segments (no media URLs) | Cached recorded |
+| `server/tests/test_perception_claims.py` | 5 required trust cases (master prompt section 9) + all 10 real captions | 12 tests pass |
 
 Not yet built (waiting for A's frozen models): `list_rides()`, `inspect_ride(ride_id)`,
 `verify_evidence(evidence_id, question)` provider; Cosmos `ask_video` verification; W&B
@@ -49,7 +49,7 @@ Not yet built (waiting for A's frozen models): `list_rides()`, `inspect_ride(rid
 
 ## First real Cosmos verification (2026-10-17)
 
-Cache: `server/app/perception/cache/verify_v1.json` (prompt `c-verify-lane-blocked-v1`, model
+Cache: `server/fixtures/rideahead/cache/verify_lane_blocked_v1.json` (prompt `c-verify-lane-blocked-v1`, model
 discovered from `/v1/models`, temperature 0, one call at a time, video SHA-256 recorded; no media
 URLs, tokens or video bytes stored). Media fetched server-side through `VSSClient.stream_url`.
 
