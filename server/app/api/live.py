@@ -10,6 +10,8 @@ import uuid
 from fastapi import APIRouter, WebSocket, WebSocketDisconnect
 from pydantic import ValidationError
 
+from app.agent.analyser import FrameAnalyser
+from app.agent.ride_live import build_ride_analyser
 from app.api.guard import client_key, websocket_allowed
 from app.core.protocol import (
     ClientFrame,
@@ -34,6 +36,18 @@ frame_limiter = SlidingWindowLimiter(limit=180, window_s=60.0)
 @router.websocket("/ws/live")
 async def live(websocket: WebSocket) -> None:
     services = get_ws_services(websocket)
+    await serve_frames(websocket, services.analyser)
+
+
+@router.websocket("/ws/ride")
+async def ride(websocket: WebSocket) -> None:
+    """Single-rider live mode: same protocol, but each result's `data` is a hazard warning."""
+    services = get_ws_services(websocket)
+    await serve_frames(websocket, build_ride_analyser(services.cosmos))
+
+
+async def serve_frames(websocket: WebSocket, analyser: FrameAnalyser) -> None:
+    services = get_ws_services(websocket)
     if not websocket_allowed(services.settings, websocket):
         await websocket.close(code=4401, reason="demo key required")
         return
@@ -41,9 +55,7 @@ async def live(websocket: WebSocket) -> None:
     await websocket.accept()
     session_id = uuid.uuid4().hex[:8]
     who = client_key(websocket.headers, websocket.client.host if websocket.client else None)
-    await websocket.send_json(
-        ServerHello(session_id=session_id, analyser=services.analyser_name).dump()
-    )
+    await websocket.send_json(ServerHello(session_id=session_id, analyser=analyser.name).dump())
 
     try:
         while True:
@@ -70,7 +82,7 @@ async def live(websocket: WebSocket) -> None:
 
             started = time.perf_counter()
             try:
-                analysis = await services.analyser.analyse(message)
+                analysis = await analyser.analyse(message)
             except Exception as exc:
                 log.exception("analyser failed")
                 await websocket.send_json(

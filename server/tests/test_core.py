@@ -103,3 +103,30 @@ class TestTeamConfig:
         from app.config import Settings
 
         assert set(TEAM_CONFIG_KEYS) <= set(Settings.model_fields)
+
+
+class TestRideWarning:
+    def test_valid_warning_passes_through(self) -> None:
+        from app.agent.ride_live import normalise_ride_warning
+
+        w = normalise_ride_warning(
+            {"hazard": "lane_blocked", "advice": "slow", "message": "Van ahead", "confidence": 0.8}
+        )
+        assert (w["hazard"], w["advice"], w["message"]) == ("lane_blocked", "slow", "Van ahead")
+
+    def test_unknown_or_unsure_means_continue(self) -> None:
+        from app.agent.ride_live import normalise_ride_warning
+
+        assert (
+            normalise_ride_warning({"hazard": "dragon", "advice": "slow"})["advice"] == "continue"
+        )
+        low = normalise_ride_warning({"hazard": "pedestrian", "advice": "slow", "confidence": 0.1})
+        assert (low["hazard"], low["advice"]) == ("none", "continue")
+        assert normalise_ride_warning(None)["message"] == "All clear"
+
+    def test_unknown_advice_on_real_hazard_is_heads_up(self) -> None:
+        from app.agent.ride_live import normalise_ride_warning
+
+        w = normalise_ride_warning({"hazard": "work_zone", "advice": "panic", "confidence": 0.9})
+        assert w["advice"] == "heads_up"
+        assert w["message"] == "Work zone"
