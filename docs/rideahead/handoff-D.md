@@ -3,7 +3,10 @@
 ## Branch and integration base
 
 - Lane **D**, branch `agent-d/hazard-engine-eval`.
-- Previous D delivery: `714e4e8`, merged by A. This follow-up pulls **main `b550ebb`**.
+- Previous D delivery `2f9c706` is merged by A. This follow-up pulls **main `6cd6329`**.
+- Accepted A's `test_hazard_runtime.py` integration edit: its London cost-policy cases
+  explicitly select `scenario.json` while the app default is now NYC. No runtime,
+  scenario, models, generated files, or policy changes in this follow-up.
 - Read A's “Lane D integration” notes. A resolved the fixture/test mismatch without
   changing D's policy, added the recorded-ORS runtime test, and added sanitized
   `record_hazard_transition` tracing. Those requests are closed.
@@ -25,36 +28,49 @@
 - Public entry points: `hazards.build_engine(config)`, `engine.score_routes(...)`, and
   `scoring.score_routes(...)`; A's runtime still sets changed/revision/session time.
 
-## 2. C shortlist, reviewed labels and extraction comparison — partial, inputs needed
+## 2. C cached three-way comparison — inputs integrated, visual labels pending
 
-**C source located:** branch `rishik/rideahead-notes`, commit
-`c0922c221424b639b0153f3d50a80b08fda61dc2`, `docs/rideahead/handoff-C.md`.
+- C's genuine cache is now on main: `server/fixtures/rideahead/cache/model_outputs_v2.json`,
+  built 2026-10-17 and marked traced in `vastdata/team-46`. It contains **11 W&B extraction
+  calls and 11 Cosmos verification calls on 10 unique shortlist clips**. `c14-s3` occurs twice.
+- `server/eval/cached_predictions.py` adapts the saved output into D's evaluation schema.
+  It uses the **first cached run per source** (same as C's provider), verifies source/caption
+  alignment, rejects source identity conflicts, and accounts for all attempts separately.
+  No models, media downloads or runtime operations are called by this adapter.
+- Three methods: naive keyword baseline; W&B structured extraction; structured extraction
+  gated by the Cosmos answer to the positive-obstruction question. Verification requires
+  visible road space and agreement between extraction/verdict/obstruction visibility.
+  Disagreement or an uncertain extraction abstains. An absence result is only a clip-level
+  extraction answer, never a lifecycle clearance event.
+- C's manifest/frame-review support values are **not inputs** to the methods being scored.
+  In particular, the three c15 positive model agreements remain positive predictions even
+  though C's AI frame review disagrees. This avoids improving scores using review answers.
+- Ran the comparison via `--model-cache`; see `server/eval/reports/c-cache-comparison.json`.
+  Prediction counts across the ten clips:
 
-- Obtained C's ten GX010001 segment references, full cached captions, source filenames,
-  nominal offsets and stored YOLO counts. `eval/fixtures/clip_labels.pending.csv` now
-  has those **10 real source rows**, replacing the old empty template slots.
-- The CSV preserves `expected`, reviewer and review-date blanks with `status=pending`.
-  **Zero footage labels are represented as reviewed.** Negated-caption flags are text
-  metadata; they do not establish that a lane is physically clear.
-- Copied the sanitized C caches to D-owned `eval/fixtures/c_inputs/`, alongside a
-  provenance record pinning source paths and commit. No footage, tokens or authenticated
-  media URLs were copied; no C-owned files were edited or merged.
-- C has eight real cached Cosmos checks, three on the ten shortlist clips. C's AI
-  frame reviews explicitly say `ground_truth=false`; they are not independent human
-  labels. Several caption claims and Cosmos votes conflict. No clean positive control
-  is established, and an uncertain parked-car candidate is outside the anchored ride.
-- C's handoff explicitly says **W&B `chat_json` extraction has not run**. The Cosmos cache
-  is a verifier result, not a substitute for W&B structured extraction predictions.
-- Therefore the real extraction comparison remains **unavailable**, not successful:
-  no actual clip pixels/playable media or reviewed ground truth are available here,
-  and the structured predictions are missing. No labels or accuracy are fabricated.
-- C/A request: provide the ten playable clips through the authorized media route (or
-  independently reviewed labels), plus saved structured and verified pipeline outputs
-  with source IDs/model/prompt versions/call counts/latency. See `server/eval/README.md`
-  for the accepted JSONL schema. Keep future clear-lane footage at another location
-  separate from clearance of an earlier obstruction.
+  | Method | Present | Absent | Uncertain |
+  |---|---:|---:|---:|
+  | Keyword | 5 | 5 | 0 |
+  | Structured | 4 | 4 | 2 |
+  | Structured + Cosmos | 3 | 3 | 4 |
 
-## 3. Lifecycle evaluation publication — complete, remote read-back verified
+- **These counts are not accuracy.** The ten CSV rows remain `status=pending`, with expected,
+  reviewer and review-date fields blank. The user supplied a demo key privately, but the
+  documented public URL `https://hack.elio.ltd` is unreachable from this machine; no
+  alternate deployment URL or independently human-reviewed labels are available yet. All accuracy/precision/recall values
+  therefore remain null, with zero reviewed clips explicitly recorded.
+- Cached timings describe the original model calls (11.539 s total extraction; 48.490 s
+  total verification), not replay latency. Verified-pipeline cost includes extraction;
+  do not add structured and verified totals together. The duplicate is excluded from
+  sample scoring but retained in the executed-call totals.
+- `DEMO_KEY` is now configured privately; app health and media-proxy connection checks
+  both returned `ConnectError` at the documented URL. Await C's reachable deployment URL.
+  Agent visual review, if performed, must be identified as AI review;
+  it must not be represented as independently human-labelled ground truth.
+- Existing pinned C caption/v1 caches under D's `eval/fixtures/c_inputs/` remain as historical
+  provenance; the new adapter reads C's current shared v2 cache directly without editing it.
+
+## 3. Lifecycle publication — personal receipt verified; team access denied
 
 - The user configured this machine's own ignored `server/.env`. Corrected the team
   settings-page URL to the authenticated account's default team, preserving the key
@@ -67,6 +83,15 @@
 - `server/eval/reports/local.json` records `published_verified` with the durable call
   reference. The command itself still returns `submitted_unverified` until a separate
   remote read-back is performed; this receipt was verified after upload.
+- Requested team migration to `vastdata/team-46`: attempted with this machine's own key.
+  W&B rejected it: **the provided API key cannot access this resource**. No shared-team
+  publication or success is claimed. `eval/reports/team.json` preserves local results and
+  records `local_only_publication_failed`; the earlier personal receipt is unchanged.
+- Local ignored `.env` now targets `WANDB_TEAM=vastdata`, `WANDB_PROJECT=team-46`, with
+  existing API key preserved. The user does not have a team-authorized replacement key.
+  **A/team:** grant account `eliohd` access or run the documented publication command
+  using your own already configured team environment. Do not copy keys into chat/handoffs.
+  Retry/read-back after access is resolved.
 - These are deterministic scenario results, not real-video extraction accuracy.
   Recorded clip labels remain pending. Weave's model latency measures replay harness
   execution here, not video-model inference.
@@ -85,31 +110,35 @@
 - **21/21 synthetic scenarios pass**, including deterministic reset/replay. No model
   estimates serve as ground-truth labels. These are scenario tests, not real-video accuracy.
 - Real clip input and publication blockers from steps 2–3 were recorded before doing
-  this independent local test work. Publication is now verified; clip inputs remain open.
+  this independent local test work. Personal publication is verified; team access and clip inputs remain open.
 
 ## Verification
 
-- Actual **`make verify`** invoked through the installed MSYS make/bash toolchain.
-- Server stage: ruff formatting/lint and pyright clean; **138 pytest passed, 1 live ORS
-  test skipped**. Installed Weave emits existing Pydantic deprecation warnings.
-- Publication follow-up verification: server formatting/lint/type checks still pass,
-  with **138 tests passed, 1 skipped**. The frontend stage reaches `pnpm verify`
-  through a temporary Windows shell adapter but stops because `prettier` is absent.
-- Earlier frontend dependency installation was blocked locally by
-  `ERR_PNPM_MINIMUM_RELEASE_AGE_VIOLATION` for six unchanged locked packages:
-  `@shadcn/registry`, `cn`, `electron-to-chromium`, `eslint`, `lucide-react`, `shadcn`.
-  No supply-chain policy override or lockfile/package change was made. A reports its
-  own full verification green; this local frontend limitation is still distinct.
-- D-owned reports and the synthetic demo fixture are regenerated; A-owned generated
-  OpenAPI/types/shared snapshots are untouched. Evaluation commands and formats are in
-  `server/eval/README.md`.
+- Ran actual `make verify` through installed MSYS make/bash. First pass exposed local
+  auth settings and Windows cp1252 decoding in C-owned cache readers. Retried with
+  child-process `DEMO_KEY=` / `TRACING=false` and `PYTHONUTF8=1`; no product code changes.
+- Server: ruff format/lint and pyright clean; **164 pytest passed, 1 live ORS test skipped**.
+  This includes six new cache-evaluation tests: source dedup/call accounting, disagreement,
+  no frame-review leakage, no fabricated pending-label accuracy, source/caption rejection,
+  and reviewed-subset selection. Existing Weave Pydantic deprecation warnings remain.
+- Main's updated locked frontend dependencies now install successfully; the earlier
+  package-age/missing-prettier blockers are closed. No dependency or lockfile edits by D.
+- Exact `make verify` stops at frontend Prettier because the Windows checkout has CRLF
+  in 54 tracked frontend files. **No files were reformatted.** Supplemental read-only
+  `prettier --check . --end-of-line auto` passes, followed by unchanged eslint, Astro
+  diagnostics (zero), **27/27 web tests**, and a successful production build. Existing
+  dependency annotation warnings are non-failing. This is distinct from claiming an
+  unmodified `make verify` pass on Windows; A's Linux verification remains authoritative.
+- D-owned comparison/team-attempt reports are saved; A-owned generated API/types/shared
+  snapshots are untouched. The untracked user `MASTERPROMPT.md` and ignored `.env`
+  remain outside the commit. Reproducible evaluation commands are in `server/eval/README.md`.
 
 ## Remaining requests outside ownership
 
-1. **C/A:** actual playable shortlist footage or independently reviewed labels, and W&B
-   structured/cached pipeline predictions, as described in step 2.
-2. **A (optional contract extensions):** directed-road passages, segment ETAs, direct
-   hazard evidence references and versioned continuation-gap settings. Existing
-   geometry/bearing/anchor-uncertainty and uniform-speed approximations remain labelled.
-3. **A/B:** run full frontend verification in the approved team environment or resolve
-   this machine's package-age restriction under team policy. D has not changed it.
+1. **C/user:** reachable deployed public app URL (`DEMO_KEY` is now supplied privately),
+   or independently reviewed labels for the ten shortlist clips. Saved model outputs
+   are now integrated; the old structured-output request is closed.
+2. **User/team:** grant the configured W&B account access to `vastdata/team-46`, or supply
+   an authorized key privately in `.env`, so the lifecycle evaluation can be republished.
+3. **A:** optional road passages, segment arrival times and hazard evidence-ID contract
+   extensions stay **deferred**, as instructed. No request to change the frozen models.
