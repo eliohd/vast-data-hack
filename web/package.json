@@ -25,7 +25,7 @@
     "@astrojs/react": "^5.0.7",
     "@fontsource-variable/geist": "^5.3.0",
     "@tailwindcss/vite": "^4.3.3",
-    "astro": "^6.4.8",
+    "astro": "^7.2.8",
     "bot-avatars": "^0.2.2",
     "class-variance-authority": "^0.7.1",
     "cn": "0.4.0",
