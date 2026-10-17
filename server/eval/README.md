@@ -11,6 +11,7 @@ Run these commands from `server/`:
 uv run python -m eval.demo --output eval/fixtures/engine-demo.synthetic.json
 uv run python -m eval.run --output eval/reports/local.json
 uv run python -m eval.run --model-cache fixtures/rideahead/cache/model_outputs_v2.json --output eval/reports/c-cache-comparison.json
+uv run python -m eval.run --labels eval/fixtures/clip_labels.ai.csv --model-cache fixtures/rideahead/cache/model_outputs_v2.json --output eval/reports/ai-visual-reference.json
 uv run python -m eval.run --synthetic --output eval/reports/synthetic.json
 uv run python -m eval.run --publish-weave --output eval/reports/local.json
 uv run python -m eval.run --labels eval/fixtures/clip_labels.reviewed.csv --predictions eval/predictions.jsonl --publish-weave
@@ -71,6 +72,30 @@ review. Use independently human-reviewed labels for human-ground-truth accuracy.
 They exercise negation and abstention handling. The naive keyword baseline is deliberately
 susceptible to negation. The structured and verified methods stay `unavailable` until
 actual predictions are supplied; fixture predictions cannot be counted as real inference.
+
+## Sampled AI visual references (separate from human labels)
+
+The ten clips are playable through `https://cysense.elio.ltd/api/archive/media?source=...`
+with the privately configured demo key. Provide another clip's segment ID or filename
+and relevant seconds; signed VAST stream URLs and downloaded videos are unnecessary.
+
+`fixtures/clip_labels.ai.csv` contains ten **AI sampled-frame reference labels**, based
+on browser-decoded frames at 0.1, 2.5 and 4.8 s per clip: seven absent, three uncertain,
+zero positive controls. Method, notes, reviewer kind and timestamps are explicit;
+`clip_reviews.ai.provenance.json` records limitations and the source cache checksum.
+This is not full-motion review, independent human ground truth or a held-out dataset.
+
+Run the AI-reference command above to reproduce local agreement: keyword 3/10,
+structured 6/10, structured + Cosmos 6/10. Ordinary accuracy/precision/recall fields are
+null; comparison values appear only under `ai_visual_reference`, with `label_agreement`.
+No positive examples means recall is undefined. Human/AI references cannot be mixed.
+The human-review sheet remains pending; new human CSVs may omit `reviewer_kind` (human
+is the backward-compatible default). AI rows must explicitly identify kind, method and notes.
+
+The review page hid captions/answers, but the reviewer had prior development context.
+Vehicles beside a green lane are not evidence of occupying it; generic caption language
+such as “No clear violations” does not negate a lane-obstruction claim. Absence at another
+location is not clearance. No media bytes or credentials are committed.
 
 ## Prediction input
 
@@ -174,7 +199,7 @@ Run `make verify` from the repository root. For isolated tests, use `DEMO_KEY=` 
 cache readers currently rely on the platform default encoding. Do not change the deployed
 key in `.env` to run tests.
 
-Current server result: **164 passed, 1 skipped**, clean ruff and pyright. Main's locked web
+Current server result: **169 passed, 1 skipped**, clean ruff and pyright. Main's locked web
 dependencies now install successfully. Exact `make verify` stops on Windows CRLF formatting;
 the read-only override `pnpm exec prettier --check . --end-of-line auto` passes. Unchanged
 frontend lint, Astro diagnostics, **27 tests** and the production build all pass. No frontend

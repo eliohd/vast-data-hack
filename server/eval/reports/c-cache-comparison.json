@@ -7,6 +7,9 @@
     "sample_size": 0,
     "recorded_sample_size": 0,
     "synthetic_sample_size": 0,
+    "human_reviewed_sample_size": 0,
+    "ai_reviewed_sample_size": 0,
+    "human_ground_truth_metrics_available": false,
     "development_overlap_count": 0,
     "held_out_claim": false,
     "methods": {

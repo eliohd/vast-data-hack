@@ -1,0 +1,26 @@
+{
+  "review_kind": "ai_sampled_frame_visual_reference",
+  "human_ground_truth": false,
+  "reviewed_at": "2026-10-17T13:22:25+00:00",
+  "sample_size": 10,
+  "frames_inspected_per_clip_s": [
+    0.1,
+    2.5,
+    4.8
+  ],
+  "source_base_url": "https://cysense.elio.ltd",
+  "access": "deployed /api/archive/media with private demo key held server-side",
+  "cache_sha256": "e3f117ba88f7e37928b1d56524060c32f53c72606f38778e892cfcffbd9711ea",
+  "limitations": [
+    "Sparse frame sampling, not full-motion review.",
+    "Captions and predictions hidden in review page; reviewer had prior development context.",
+    "No independent human review, no held-out claim, no positive control.",
+    "No videos, upstream credentials, or authenticated URLs saved.",
+    "Visual absence at another place or time is not hazard clearance."
+  ],
+  "label_counts": {
+    "absent": 7,
+    "uncertain": 3,
+    "present": 0
+  }
+}

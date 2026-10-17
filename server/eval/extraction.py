@@ -28,13 +28,18 @@ class ClipLabel(BaseModel):
     reviewed_at: str = Field(min_length=1)
     development_overlap: bool
     provenance: Literal["recorded", "synthetic"]
+    reviewer_kind: Literal["human", "ai"] = "human"
+    review_method: str | None = None
+    review_notes: str | None = None
 
     @model_validator(mode="after")
     def valid_range(self) -> ClipLabel:
         if self.clip_end_s <= self.clip_start_s:
             raise ValueError("label clip end must follow start")
         if self.provenance == "recorded" and self.reviewer.lower() in ("placeholder", "pending"):
-            raise ValueError("recorded labels require an actual human reviewer")
+            raise ValueError("recorded labels require an identified reviewer")
+        if self.reviewer_kind == "ai" and (not self.review_method or not self.review_notes):
+            raise ValueError("AI reference labels require explicit review method and notes")
         return self
 
 
@@ -111,6 +116,12 @@ def predicted_label(prediction: Prediction) -> Label:
 
 
 def evaluate_extraction(labels: list[ClipLabel], predictions: list[Prediction]) -> dict:
+    human_count = sum(
+        row.provenance == "recorded" and row.reviewer_kind == "human" for row in labels
+    )
+    ai_count = sum(row.provenance == "recorded" and row.reviewer_kind == "ai" for row in labels)
+    if human_count and ai_count:
+        raise ValueError("evaluate human ground truth and AI reference labels separately")
     by_id = {label.sample_id: label for label in labels}
     if len(by_id) != len(labels):
         raise ValueError("duplicate labelled sample")
@@ -137,6 +148,9 @@ def evaluate_extraction(labels: list[ClipLabel], predictions: list[Prediction]) 
         "sample_size": len(labels),
         "recorded_sample_size": sum(label.provenance == "recorded" for label in labels),
         "synthetic_sample_size": sum(label.provenance == "synthetic" for label in labels),
+        "human_reviewed_sample_size": human_count,
+        "ai_reviewed_sample_size": ai_count,
+        "human_ground_truth_metrics_available": human_count > 0,
         "development_overlap_count": sum(label.development_overlap for label in labels),
         "held_out_claim": False,
         "methods": {},
@@ -185,6 +199,24 @@ def evaluate_extraction(labels: list[ClipLabel], predictions: list[Prediction]) 
             "mean_latency_ms": latency_ms / available if available else None,
             "model_prompt_versions": [list(version) for version in sorted(model_versions)],
         }
+        if ai_count:
+            metrics = report["methods"][method]
+            reference_keys = (
+                "true_positives",
+                "false_positives",
+                "false_negatives",
+                "precision",
+                "recall",
+                "accuracy",
+                "false_positives_from_negation",
+            )
+            reference = {key: metrics[key] for key in reference_keys}
+            reference["label_agreement"] = reference.pop("accuracy")
+            metrics["ai_visual_reference"] = reference
+            metrics["metric_basis"] = "AI sampled-frame review; not human ground truth"
+            # Keep conventional accuracy fields unavailable for AI-only reviews.
+            for key in reference_keys:
+                metrics[key] = None
     return report
 
 

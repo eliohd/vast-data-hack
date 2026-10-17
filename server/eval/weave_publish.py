@@ -30,6 +30,9 @@ def evaluation_rows(
                 "expected": label.expected,
                 "saved_output": {"label": answer, "available": available},
                 "provenance": label.provenance,
+                "reference_kind": label.reviewer_kind
+                if label.provenance == "recorded"
+                else "synthetic",
             }
         )
     return rows
@@ -78,7 +81,12 @@ async def publish_evaluations(
             if not rows or not any(row["saved_output"]["available"] for row in rows):
                 continue
             evaluation = weave.Evaluation(
-                name=f"rideahead-{method}",
+                name=f"rideahead-{method}"
+                + (
+                    "-ai-visual-reference"
+                    if any(row.reviewer_kind == "ai" for row in labels)
+                    else ""
+                ),
                 dataset=weave.Dataset(rows=weave.Table(rows)),
                 scorers=[label_correct],
             )

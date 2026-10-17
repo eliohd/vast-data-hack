@@ -28,7 +28,7 @@
 - Public entry points: `hazards.build_engine(config)`, `engine.score_routes(...)`, and
   `scoring.score_routes(...)`; A's runtime still sets changed/revision/session time.
 
-## 2. C cached three-way comparison — inputs integrated, visual labels pending
+## 2. C comparison — ten sampled AI visual reviews complete; human labels pending
 
 - C's genuine cache is now on main: `server/fixtures/rideahead/cache/model_outputs_v2.json`,
   built 2026-10-17 and marked traced in `vastdata/team-46`. It contains **11 W&B extraction
@@ -54,19 +54,34 @@
   | Structured | 4 | 4 | 2 |
   | Structured + Cosmos | 3 | 3 | 4 |
 
-- **These counts are not accuracy.** The ten CSV rows remain `status=pending`, with expected,
-  reviewer and review-date fields blank. The user supplied a demo key privately, but the
-  documented public URL `https://hack.elio.ltd` is unreachable from this machine; no
-  alternate deployment URL or independently human-reviewed labels are available yet. All accuracy/precision/recall values
-  therefore remain null, with zero reviewed clips explicitly recorded.
+- **These counts are not accuracy.** The user supplied `https://cysense.elio.ltd` and
+  configured the demo key privately. Authenticated app health returned 200 and the
+  media proxy returned 206 video/mp4. Media access is now unblocked.
+- D inspected browser-decoded frames at **0.1, 2.5 and 4.8 s from each of the ten clips**,
+  streamed through the deployed proxy with credentials held server-side. No MP4s,
+  signed upstream URLs or credentials were saved. The temporary review page hid
+  captions/model answers; D already had development context, so this is not held out.
+- Saved `eval/fixtures/clip_labels.ai.csv` and `clip_reviews.ai.provenance.json` with
+  `reviewer_kind=ai`, explicit sparse-frame method, per-clip notes and timestamps.
+  **7 absent / 3 uncertain / 0 present**. Uncertain: c14-s2 intersection van; c14-s3
+  curbside van/open door with ambiguous boundaries; c15-s3 crossing traffic/pedestrians.
+  The three c15 model-positive examples show vehicles beside the painted green lane.
+- `eval/reports/ai-visual-reference.json` records **agreement with these AI references**:
+  keyword **3/10**, structured **6/10**, structured + Cosmos **6/10**. There is no positive
+  control, so recall is undefined. These are not independently human-labelled accuracy.
+- AI-reference metrics are explicitly nested under `ai_visual_reference`; conventional
+  accuracy/precision/recall fields remain null. Human and AI references cannot be mixed
+  into one aggregate. Weave rows expose the reference kind; any future AI-reference
+  Evaluation names carry `-ai-visual-reference`. No new successful publication is claimed.
+- The human sheet `clip_labels.pending.csv` remains **10 pending / zero human-reviewed**,
+  with expected/reviewer/date blank. Corrected only c15-s6's caption-negation metadata:
+  “No clear violations” does not negate its lane-blockage claim. No ground truth invented.
 - Cached timings describe the original model calls (11.539 s total extraction; 48.490 s
   total verification), not replay latency. Verified-pipeline cost includes extraction;
   do not add structured and verified totals together. The duplicate is excluded from
   sample scoring but retained in the executed-call totals.
-- `DEMO_KEY` is now configured privately; app health and media-proxy connection checks
-  both returned `ConnectError` at the documented URL. Await C's reachable deployment URL.
-  Agent visual review, if performed, must be identified as AI review;
-  it must not be represented as independently human-labelled ground truth.
+- Visual absence in c16-s2 (another location) is not clearance of an earlier report.
+  The engine/runtime/scoring policy and frozen models are untouched.
 - Existing pinned C caption/v1 caches under D's `eval/fixtures/c_inputs/` remain as historical
   provenance; the new adapter reads C's current shared v2 cache directly without editing it.
 
@@ -117,8 +132,8 @@
 - Ran actual `make verify` through installed MSYS make/bash. First pass exposed local
   auth settings and Windows cp1252 decoding in C-owned cache readers. Retried with
   child-process `DEMO_KEY=` / `TRACING=false` and `PYTHONUTF8=1`; no product code changes.
-- Server: ruff format/lint and pyright clean; **164 pytest passed, 1 live ORS test skipped**.
-  This includes six new cache-evaluation tests: source dedup/call accounting, disagreement,
+- Server: ruff format/lint and pyright clean; **169 pytest passed, 1 live ORS test skipped**.
+  This includes cache-evaluation and AI-reference isolation tests: source dedup/call accounting, disagreement,
   no frame-review leakage, no fabricated pending-label accuracy, source/caption rejection,
   and reviewed-subset selection. Existing Weave Pydantic deprecation warnings remain.
 - Main's updated locked frontend dependencies now install successfully; the earlier
@@ -135,9 +150,9 @@
 
 ## Remaining requests outside ownership
 
-1. **C/user:** reachable deployed public app URL (`DEMO_KEY` is now supplied privately),
-   or independently reviewed labels for the ten shortlist clips. Saved model outputs
-   are now integrated; the old structured-output request is closed.
+1. **C/user:** independently human-reviewed labels and a clean positive control. App/media
+   access and cached model-output requests are closed. A segment ID or filename plus
+   relevant seconds is enough to retrieve another authorized clip via the deployed proxy.
 2. **User/team:** grant the configured W&B account access to `vastdata/team-46`, or supply
    an authorized key privately in `.env`, so the lifecycle evaluation can be republished.
 3. **A:** optional road passages, segment arrival times and hazard evidence-ID contract
