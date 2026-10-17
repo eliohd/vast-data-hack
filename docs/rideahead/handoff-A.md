@@ -89,10 +89,18 @@ Config (env or `server/.env`): `ORS_API_KEY` (empty → fixture routes), `RIDEAH
   1676 m / 407 s, 73 m clear of it (≈ +8 s). Opt-in check:
   `RIDEAHEAD_LIVE_ORS=1 uv run pytest -q -k live`. Genuine responses are saved to
   `server/fixtures/rideahead/routes_ors_cache.json` and replayed as `cached_provider` (status
-  `cached`) only when ORS is unreachable. Without a key: hand-drawn fixture routes, labelled.
+  `cached`) when ORS is unreachable **or no key is set** (`RIDEAHEAD_ROUTING=auto`). Hand-drawn
+  fixture routes only with `RIDEAHEAD_ROUTING=fixture` (tests, `snapshots.json`).
+- Deploy: `make deploy` excludes `server/.env`, so the VM needs `ORS_API_KEY` in
+  `~/hack/server/.env` for live routing; otherwise it replays the recorded responses (labelled).
 - Hazard engine: bootstrap rule engine (lane D replaces).
 - Weave: `@weave.op` on `create_session`, `advance`, `record_decision`, ORS calls; status shows
   `connected` only when `weave.init` succeeded.
+
+## Latest commits
+
+- `5b43e3f` bootstrap contract · `5a8b35e` live ORS + detour, recorded-response fallback ·
+  `d8d97b0` no-key replay, `docs/rideahead/extensions.md`. No B/C/D commits on main yet.
 
 ## Known limitations
 
