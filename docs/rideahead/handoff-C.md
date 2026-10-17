@@ -30,12 +30,40 @@ obstruction. It is a **work zone** (`hazard_type="work_zone"`), not a parked veh
 - Not yet emitted by `ArchivePerceptionProvider` (that needs a scenario/ride on Broadway, A's call). If A wants
   it, C can add it as a second ride (`nyc_streets_cam-1`) with `work_zone` observations.
 
-## Deploy report (2026-10-17, ~12:50 UTC)
+## Deploy report (current: named tunnel, 2026-10-17 ~13:13 UTC)
+
+- **Deployed SHA: `c448774`** (`main`); `make verify` green locally first (server 160 passed / 1 skipped,
+  web 27 passed, build OK). `make deploy VM=bc-rishiksiripurapu` with no `VM_DIR` override (A's fix works).
+- **URL: https://cysense.elio.ltd** (named Cloudflare tunnel, tmux `tunnel` on the VM via
+  `~/.cysense-tunnel.sh`, mode 700). The token file `~/.cysense-tunnel-token` was written by the human
+  teammate at a hidden prompt; checked only for presence (non-empty, mode 600), never read.
+  cloudflared log: "Registered tunnel connection" ×2 (sjc07, sjc10), ingress `cysense.elio.ltd → http://localhost:8000`.
+- **Quick tunnel stopped**: the old `tunnel` tmux session was killed. Only two cloudflared processes remain:
+  ours (`tunnel run`) and the organisers' workshop tunnel (another user).
+- `curl https://cysense.elio.ltd/api/health` → `{"status":"ok","team":"team-46","analyser":"cosmos","tracing":true}`.
+  Without the demo key the API returns 401.
+
+Smoke test against https://cysense.elio.ltd (demo key read on the VM, not printed):
+
+```
+perception: archive | routing: openrouteservice
+vast cached / cosmos cached / yolo cached / wandb_inference cached / weave connected / routing configured
+140.0 [] ['continue'] {'cached_provider'}
+160.0 ['observed'] ['heads_up'] {'cached_provider'}
+400.0 ['stale'] ['slow'] {'cached_provider'}
+480.0 ['cleared'] ['continue'] {'cached_provider'}
+```
+
+**Media** (`/api/archive/media?source=…GX010001_chunk_0015_segment_001_of_006.mp4`, `Range: bytes=0-65535`):
+**206 video/mp4**, 65536 bytes.
+
+## Deploy report (earlier: 6cd6329 on a quick tunnel, superseded)
+
 
 - **Deployed SHA: `6cd6329`** (`main`), `make verify` green locally first (server 158 passed / 1
   skipped, web 27 passed, build OK). VM: `bc-pool-218` (alias `bc-rishiksiripurapu`), `~/hack`,
   tmux `hack`, log `/tmp/hack-server.log`.
-- **Public URL: https://causing-include-tear-consequence.trycloudflare.com** (Cloudflare quick tunnel,
+- Public URL then: a Cloudflare quick tunnel (now **stopped**; see the current report above),
   tmux `tunnel` on the VM; the URL changes if the tunnel restarts). Without the demo key the API
   returns 401. The key is in the VM `.env` and was shared privately, not here.
 - VM `~/hack/server/.env` variable names: `DEMO_KEY RIDEAHEAD_SCENARIO RIDEAHEAD_PERCEPTION
