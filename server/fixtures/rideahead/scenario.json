@@ -15,26 +15,21 @@
   "observer_track": [
     {
       "session_time_s": 0,
-      "lat": 51.5057,
-      "lon": -0.102
+      "lat": 51.5054,
+      "lon": -0.096
     },
     {
       "session_time_s": 60,
-      "lat": 51.5055,
-      "lon": -0.0975
+      "lat": 51.504695,
+      "lon": -0.091513
     },
     {
-      "session_time_s": 85,
-      "lat": 51.5052,
-      "lon": -0.0945
-    },
-    {
-      "session_time_s": 150,
+      "session_time_s": 75,
       "lat": 51.5046,
       "lon": -0.0907
     },
     {
-      "session_time_s": 190,
+      "session_time_s": 105,
       "lat": 51.505,
       "lon": -0.088
     }
@@ -73,10 +68,10 @@
         }
       ],
       "location": {
-        "lat": 51.5055,
-        "lon": -0.0975,
+        "lat": 51.504695,
+        "lon": -0.091513,
         "road_segment_id": "southwark-st:eb",
-        "bearing_deg": 92.0,
+        "bearing_deg": 85.0,
         "method": "manual_anchor",
         "uncertainty_m": 30.0,
         "notes": "FIXTURE anchor: synthetic position for development, not derived from footage"

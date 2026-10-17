@@ -151,8 +151,8 @@
         "label": "Bike A (recorded \u2014 fixture positions)",
         "origin": null,
         "position": {
-          "lat": 51.5057,
-          "lon": -0.102
+          "lat": 51.5054,
+          "lon": -0.096
         },
         "progress_m": 0.0,
         "rider_id": "bike_a",
@@ -350,7 +350,7 @@
       },
       {
         "action": "reroute",
-        "arrival_in_s": 115.6,
+        "arrival_in_s": 209.9,
         "assumptions": [
           "rider speed 4.5 m/s (simulated)",
           "provider duration estimates used for arrival",
@@ -367,7 +367,7 @@
         "hazard_ids": [
           "hz-lane_blocked-obs-fx-001"
         ],
-        "reason": "Blocked cycle lane reported 520 m ahead; alternative adds about 86s.",
+        "reason": "Blocked cycle lane reported 945 m ahead; alternative adds about 86s.",
         "revision": 2,
         "rider_id": "bike_b",
         "schema_version": "1",
@@ -438,7 +438,7 @@
       },
       {
         "kind": "decision",
-        "message": "bike_b: reroute \u2014 Blocked cycle lane reported 520 m ahead; alternative adds about 86s.",
+        "message": "bike_b: reroute \u2014 Blocked cycle lane reported 945 m ahead; alternative adds about 86s.",
         "ref_ids": [
           "dec-bike_b-60"
         ],
@@ -474,9 +474,9 @@
         "impact": "medium",
         "last_supported_s": 60.0,
         "location": {
-          "bearing_deg": 92.0,
-          "lat": 51.5055,
-          "lon": -0.0975,
+          "bearing_deg": 85.0,
+          "lat": 51.504695,
+          "lon": -0.091513,
           "method": "manual_anchor",
           "notes": "FIXTURE anchor: synthetic position for development, not derived from footage",
           "road_segment_id": "southwark-st:eb",
@@ -566,9 +566,9 @@
         "hazard_type": "lane_blocked",
         "label": "Fixture observation",
         "location": {
-          "bearing_deg": 92.0,
-          "lat": 51.5055,
-          "lon": -0.0975,
+          "bearing_deg": 85.0,
+          "lat": 51.504695,
+          "lon": -0.091513,
           "method": "manual_anchor",
           "notes": "FIXTURE anchor: synthetic position for development, not derived from footage",
           "road_segment_id": "southwark-st:eb",
@@ -624,9 +624,9 @@
         "hazard_type": "lane_blocked",
         "label": "Fixture observation (adjacent chunk, same sighting)",
         "location": {
-          "bearing_deg": 92.0,
-          "lat": 51.5055,
-          "lon": -0.0975,
+          "bearing_deg": 85.0,
+          "lat": 51.504695,
+          "lon": -0.091513,
           "method": "manual_anchor",
           "notes": "FIXTURE anchor: synthetic position for development, not derived from footage",
           "road_segment_id": "southwark-st:eb",
@@ -855,7 +855,7 @@
       },
       {
         "action": "reroute",
-        "arrival_in_s": 115.6,
+        "arrival_in_s": 209.9,
         "assumptions": [
           "rider speed 4.5 m/s (simulated)",
           "provider duration estimates used for arrival",
@@ -872,7 +872,7 @@
         "hazard_ids": [
           "hz-lane_blocked-obs-fx-001"
         ],
-        "reason": "Blocked cycle lane reported 520 m ahead; alternative adds about 86s.",
+        "reason": "Blocked cycle lane reported 945 m ahead; alternative adds about 86s.",
         "revision": 2,
         "rider_id": "bike_b",
         "schema_version": "1",
@@ -969,7 +969,7 @@
       },
       {
         "kind": "decision",
-        "message": "bike_b: reroute \u2014 Blocked cycle lane reported 520 m ahead; alternative adds about 86s.",
+        "message": "bike_b: reroute \u2014 Blocked cycle lane reported 945 m ahead; alternative adds about 86s.",
         "ref_ids": [
           "dec-bike_b-60"
         ],
@@ -1021,9 +1021,9 @@
         "impact": "medium",
         "last_supported_s": 60.0,
         "location": {
-          "bearing_deg": 92.0,
-          "lat": 51.5055,
-          "lon": -0.0975,
+          "bearing_deg": 85.0,
+          "lat": 51.504695,
+          "lon": -0.091513,
           "method": "manual_anchor",
           "notes": "FIXTURE anchor: synthetic position for development, not derived from footage",
           "road_segment_id": "southwark-st:eb",
@@ -1113,9 +1113,9 @@
         "hazard_type": "lane_blocked",
         "label": "Fixture observation",
         "location": {
-          "bearing_deg": 92.0,
-          "lat": 51.5055,
-          "lon": -0.0975,
+          "bearing_deg": 85.0,
+          "lat": 51.504695,
+          "lon": -0.091513,
           "method": "manual_anchor",
           "notes": "FIXTURE anchor: synthetic position for development, not derived from footage",
           "road_segment_id": "southwark-st:eb",
@@ -1171,9 +1171,9 @@
         "hazard_type": "lane_blocked",
         "label": "Fixture observation (adjacent chunk, same sighting)",
         "location": {
-          "bearing_deg": 92.0,
-          "lat": 51.5055,
-          "lon": -0.0975,
+          "bearing_deg": 85.0,
+          "lat": 51.504695,
+          "lon": -0.091513,
           "method": "manual_anchor",
           "notes": "FIXTURE anchor: synthetic position for development, not derived from footage",
           "road_segment_id": "southwark-st:eb",
@@ -1402,7 +1402,7 @@
       },
       {
         "action": "reroute",
-        "arrival_in_s": 115.6,
+        "arrival_in_s": 209.9,
         "assumptions": [
           "rider speed 4.5 m/s (simulated)",
           "provider duration estimates used for arrival",
@@ -1419,7 +1419,7 @@
         "hazard_ids": [
           "hz-lane_blocked-obs-fx-001"
         ],
-        "reason": "Blocked cycle lane reported 520 m ahead; alternative adds about 86s.",
+        "reason": "Blocked cycle lane reported 945 m ahead; alternative adds about 86s.",
         "revision": 2,
         "rider_id": "bike_b",
         "schema_version": "1",
@@ -1532,7 +1532,7 @@
       },
       {
         "kind": "decision",
-        "message": "bike_b: reroute \u2014 Blocked cycle lane reported 520 m ahead; alternative adds about 86s.",
+        "message": "bike_b: reroute \u2014 Blocked cycle lane reported 945 m ahead; alternative adds about 86s.",
         "ref_ids": [
           "dec-bike_b-60"
         ],
@@ -1609,9 +1609,9 @@
         "impact": "medium",
         "last_supported_s": 60.0,
         "location": {
-          "bearing_deg": 92.0,
-          "lat": 51.5055,
-          "lon": -0.0975,
+          "bearing_deg": 85.0,
+          "lat": 51.504695,
+          "lon": -0.091513,
           "method": "manual_anchor",
           "notes": "FIXTURE anchor: synthetic position for development, not derived from footage",
           "road_segment_id": "southwark-st:eb",
@@ -1702,9 +1702,9 @@
         "hazard_type": "lane_blocked",
         "label": "Fixture observation",
         "location": {
-          "bearing_deg": 92.0,
-          "lat": 51.5055,
-          "lon": -0.0975,
+          "bearing_deg": 85.0,
+          "lat": 51.504695,
+          "lon": -0.091513,
           "method": "manual_anchor",
           "notes": "FIXTURE anchor: synthetic position for development, not derived from footage",
           "road_segment_id": "southwark-st:eb",
@@ -1760,9 +1760,9 @@
         "hazard_type": "lane_blocked",
         "label": "Fixture observation (adjacent chunk, same sighting)",
         "location": {
-          "bearing_deg": 92.0,
-          "lat": 51.5055,
-          "lon": -0.0975,
+          "bearing_deg": 85.0,
+          "lat": 51.504695,
+          "lon": -0.091513,
           "method": "manual_anchor",
           "notes": "FIXTURE anchor: synthetic position for development, not derived from footage",
           "road_segment_id": "southwark-st:eb",
@@ -1807,9 +1807,9 @@
         "hazard_type": "lane_blocked",
         "label": "Synthetic clearance (scenario event) \u2014 not recorded evidence",
         "location": {
-          "bearing_deg": 92.0,
-          "lat": 51.5055,
-          "lon": -0.0975,
+          "bearing_deg": 85.0,
+          "lat": 51.504695,
+          "lon": -0.091513,
           "method": "manual_anchor",
           "notes": "FIXTURE anchor: synthetic position for development, not derived from footage",
           "road_segment_id": "southwark-st:eb",
@@ -2038,7 +2038,7 @@
       },
       {
         "action": "reroute",
-        "arrival_in_s": 115.6,
+        "arrival_in_s": 209.9,
         "assumptions": [
           "rider speed 4.5 m/s (simulated)",
           "provider duration estimates used for arrival",
@@ -2055,7 +2055,7 @@
         "hazard_ids": [
           "hz-lane_blocked-obs-fx-001"
         ],
-        "reason": "Blocked cycle lane reported 520 m ahead; alternative adds about 86s.",
+        "reason": "Blocked cycle lane reported 945 m ahead; alternative adds about 86s.",
         "revision": 2,
         "rider_id": "bike_b",
         "schema_version": "1",
@@ -2066,7 +2066,7 @@
     "decisions": [
       {
         "action": "reroute",
-        "arrival_in_s": 115.6,
+        "arrival_in_s": 209.9,
         "assumptions": [
           "rider speed 4.5 m/s (simulated)",
           "provider duration estimates used for arrival",
@@ -2083,7 +2083,7 @@
         "hazard_ids": [
           "hz-lane_blocked-obs-fx-001"
         ],
-        "reason": "Blocked cycle lane reported 520 m ahead; alternative adds about 86s.",
+        "reason": "Blocked cycle lane reported 945 m ahead; alternative adds about 86s.",
         "revision": 2,
         "rider_id": "bike_b",
         "schema_version": "1",
@@ -2126,7 +2126,7 @@
       },
       {
         "kind": "decision",
-        "message": "bike_b: reroute \u2014 Blocked cycle lane reported 520 m ahead; alternative adds about 86s.",
+        "message": "bike_b: reroute \u2014 Blocked cycle lane reported 945 m ahead; alternative adds about 86s.",
         "ref_ids": [
           "dec-bike_b-60"
         ],
@@ -2145,9 +2145,9 @@
         "impact": "medium",
         "last_supported_s": 60.0,
         "location": {
-          "bearing_deg": 92.0,
-          "lat": 51.5055,
-          "lon": -0.0975,
+          "bearing_deg": 85.0,
+          "lat": 51.504695,
+          "lon": -0.091513,
           "method": "manual_anchor",
           "notes": "FIXTURE anchor: synthetic position for development, not derived from footage",
           "road_segment_id": "southwark-st:eb",
@@ -2236,9 +2236,9 @@
         "hazard_type": "lane_blocked",
         "label": "Fixture observation",
         "location": {
-          "bearing_deg": 92.0,
-          "lat": 51.5055,
-          "lon": -0.0975,
+          "bearing_deg": 85.0,
+          "lat": 51.504695,
+          "lon": -0.091513,
           "method": "manual_anchor",
           "notes": "FIXTURE anchor: synthetic position for development, not derived from footage",
           "road_segment_id": "southwark-st:eb",
@@ -2279,8 +2279,8 @@
         "label": "Bike A (recorded \u2014 fixture positions)",
         "origin": null,
         "position": {
-          "lat": 51.5055,
-          "lon": -0.0975
+          "lat": 51.504695,
+          "lon": -0.091513
         },
         "progress_m": 0.0,
         "rider_id": "bike_a",
@@ -2478,7 +2478,7 @@
       },
       {
         "action": "reroute",
-        "arrival_in_s": 115.6,
+        "arrival_in_s": 209.9,
         "assumptions": [
           "rider speed 4.5 m/s (simulated)",
           "provider duration estimates used for arrival",
@@ -2495,7 +2495,7 @@
         "hazard_ids": [
           "hz-lane_blocked-obs-fx-001"
         ],
-        "reason": "Blocked cycle lane reported 520 m ahead; alternative adds about 86s.",
+        "reason": "Blocked cycle lane reported 945 m ahead; alternative adds about 86s.",
         "revision": 2,
         "rider_id": "bike_b",
         "schema_version": "1",
@@ -2608,7 +2608,7 @@
       },
       {
         "kind": "decision",
-        "message": "bike_b: reroute \u2014 Blocked cycle lane reported 520 m ahead; alternative adds about 86s.",
+        "message": "bike_b: reroute \u2014 Blocked cycle lane reported 945 m ahead; alternative adds about 86s.",
         "ref_ids": [
           "dec-bike_b-60"
         ],
@@ -2693,9 +2693,9 @@
         "impact": "medium",
         "last_supported_s": 60.0,
         "location": {
-          "bearing_deg": 92.0,
-          "lat": 51.5055,
-          "lon": -0.0975,
+          "bearing_deg": 85.0,
+          "lat": 51.504695,
+          "lon": -0.091513,
           "method": "manual_anchor",
           "notes": "FIXTURE anchor: synthetic position for development, not derived from footage",
           "road_segment_id": "southwark-st:eb",
@@ -2786,9 +2786,9 @@
         "hazard_type": "lane_blocked",
         "label": "Fixture observation",
         "location": {
-          "bearing_deg": 92.0,
-          "lat": 51.5055,
-          "lon": -0.0975,
+          "bearing_deg": 85.0,
+          "lat": 51.504695,
+          "lon": -0.091513,
           "method": "manual_anchor",
           "notes": "FIXTURE anchor: synthetic position for development, not derived from footage",
           "road_segment_id": "southwark-st:eb",
@@ -2844,9 +2844,9 @@
         "hazard_type": "lane_blocked",
         "label": "Fixture observation (adjacent chunk, same sighting)",
         "location": {
-          "bearing_deg": 92.0,
-          "lat": 51.5055,
-          "lon": -0.0975,
+          "bearing_deg": 85.0,
+          "lat": 51.504695,
+          "lon": -0.091513,
           "method": "manual_anchor",
           "notes": "FIXTURE anchor: synthetic position for development, not derived from footage",
           "road_segment_id": "southwark-st:eb",
@@ -2891,9 +2891,9 @@
         "hazard_type": "lane_blocked",
         "label": "Synthetic clearance (scenario event) \u2014 not recorded evidence",
         "location": {
-          "bearing_deg": 92.0,
-          "lat": 51.5055,
-          "lon": -0.0975,
+          "bearing_deg": 85.0,
+          "lat": 51.504695,
+          "lon": -0.091513,
           "method": "manual_anchor",
           "notes": "FIXTURE anchor: synthetic position for development, not derived from footage",
           "road_segment_id": "southwark-st:eb",

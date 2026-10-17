@@ -66,14 +66,16 @@ class Services:
         else:
             perception = FixturePerceptionProvider(fixtures / "observations.json")
         routing: RoutingProvider
+        store = None
         ors_key = s.ors_api_key.get_secret_value()
         if s.rideahead_routing == "ors" or (s.rideahead_routing == "auto" and ors_key):
             routing = OpenRouteServiceProvider(self.http, ors_key, s.ors_base_url, s.ors_profile)
+            store = fixtures / "routes_ors_cache.json"
         else:
             routing = FixtureRoutingProvider(fixtures / "routes.json")
         return RideAheadRuntime(
             perception=perception,
-            routing=CachedRouting(routing),
+            routing=CachedRouting(routing, store_path=store),
             engine_factory=build_engine,
             scenario=Scenario.load(fixtures / s.rideahead_scenario),
             integrations=self.rideahead_integrations,
@@ -108,6 +110,12 @@ class Services:
         if routing.name == "fixture":
             statuses["routing"] = IntegrationStatus(
                 name="routing", state="fixture", detail="hand-drawn fixture routes"
+            )
+        elif routing.serving_cached:
+            statuses["routing"] = IntegrationStatus(
+                name="routing",
+                state="cached",
+                detail=f"recorded {routing.name} responses; live call failed: {routing.last_error}",
             )
         elif routing.last_error:
             statuses["routing"] = IntegrationStatus(

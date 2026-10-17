@@ -161,16 +161,56 @@ class OpenRouteServiceProvider:
 
 class CachedRouting:
     """Caches by (origin, destination, exclusions). Failures are cached briefly so a dead
-    provider is not hammered by replay ticks."""
+    provider is not hammered by replay ticks.
 
-    def __init__(self, inner: RoutingProvider, failure_ttl_s: float = 30.0) -> None:
+    With `store_path`, genuine provider responses are also saved to disk. When the provider is
+    unavailable later, a stored response is replayed with provenance `cached_provider` and a
+    warning — never presented as a live call.
+    """
+
+    def __init__(
+        self, inner: RoutingProvider, failure_ttl_s: float = 30.0, store_path: Path | None = None
+    ) -> None:
         self.inner = inner
         self.name = inner.name
         self.failure_ttl_s = failure_ttl_s
+        self.store_path = store_path
         self._ok: dict[str, list[RouteCandidate]] = {}
         self._failed: dict[str, tuple[float, str]] = {}
+        self._store: dict[str, list[dict[str, Any]]] = {}
+        if store_path is not None and store_path.is_file():
+            try:
+                self._store = json.loads(store_path.read_text()).get("responses", {})
+            except (OSError, ValueError) as exc:
+                log.warning("route store unreadable: %s", exc)
         self.last_error: str | None = None
+        self.serving_cached = False
         self.calls = 0
+
+    def _from_store(self, k: str) -> list[RouteCandidate] | None:
+        if k not in self._store:
+            return None
+        routes = [RouteCandidate.model_validate(r) for r in self._store[k]]
+        for r in routes:
+            r.provenance = "cached_provider"
+            r.warnings.append("recorded provider response replayed (provider unavailable now)")
+        self.serving_cached = True
+        return routes
+
+    def _save(self, k: str, routes: list[RouteCandidate]) -> None:
+        if self.store_path is None:
+            return
+        self._store[k] = [r.model_dump(mode="json") for r in routes]
+        try:
+            self.store_path.parent.mkdir(parents=True, exist_ok=True)
+            payload = {
+                "_note": f"Genuine {self.name} responses recorded by CachedRouting. "
+                "Route data © openrouteservice.org | © OpenStreetMap contributors (ODbL).",
+                "responses": self._store,
+            }
+            self.store_path.write_text(json.dumps(payload, indent=1, sort_keys=True) + "\n")
+        except OSError as exc:
+            log.warning("route store write failed: %s", exc)
 
     @staticmethod
     def key(origin: LatLon, destination: LatLon, exclusions: list[RouteExclusion]) -> str:
@@ -196,6 +236,9 @@ class CachedRouting:
             return [r.model_copy(deep=True) for r in self._ok[k]]
         failed = self._failed.get(k)
         if failed and time.monotonic() - failed[0] < self.failure_ttl_s:
+            stored = self._from_store(k)
+            if stored is not None:
+                return stored
             raise RoutingUnavailable(failed[1])
         self.calls += 1
         try:
@@ -203,7 +246,12 @@ class CachedRouting:
         except RoutingUnavailable as exc:
             self._failed[k] = (time.monotonic(), str(exc))
             self.last_error = str(exc)
+            stored = self._from_store(k)
+            if stored is not None:
+                return stored
             raise
         self.last_error = None
+        self.serving_cached = False
         self._ok[k] = routes
+        self._save(k, routes)
         return [r.model_copy(deep=True) for r in routes]

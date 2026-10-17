@@ -104,3 +104,22 @@ async def test_ors_without_key_is_unavailable() -> None:
     ors = OpenRouteServiceProvider(httpx.AsyncClient(), "")
     with pytest.raises(RoutingUnavailable):
         await ors.candidate_routes(LatLon(lat=0, lon=0), LatLon(lat=0, lon=0.01), [])
+
+
+async def test_store_replays_recorded_response_labelled_cached(tmp_path) -> None:  # type: ignore[no-untyped-def]
+    up = True
+
+    def handler(req: httpx.Request) -> httpx.Response:
+        return httpx.Response(200, json=ORS_SAMPLE) if up else httpx.Response(503, text="down")
+
+    store = tmp_path / "ors.json"
+    o, d = LatLon(lat=51.5058, lon=-0.105), LatLon(lat=51.505, lon=-0.088)
+    first = await CachedRouting(_provider(handler), store_path=store).candidate_routes(o, d, [])
+    assert first[0].provenance == "live_provider"
+
+    up = False
+    later = CachedRouting(_provider(handler), store_path=store)  # fresh process, provider down
+    routes = await later.candidate_routes(o, d, [])
+    assert routes[0].provenance == "cached_provider"
+    assert later.serving_cached and later.last_error
+    assert any("replayed" in w for w in routes[0].warnings)

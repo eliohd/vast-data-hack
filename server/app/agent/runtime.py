@@ -187,7 +187,7 @@ class Session:
                     radius_m=EXCLUSION_RADIUS_M,
                 )
                 for h in hazards
-                if h.state in ("observed", "confirmed")
+                if h.state != "cleared"
                 and h.location.lat is not None
                 and h.location.lon is not None
             ]
@@ -263,7 +263,11 @@ class Session:
         self.rider_a.position = (
             track_position(self.scenario.observer_track, t) or self.rider_a.position
         )
-        self.routes = await self._routes_for(self.hazards)
+        routes = await self._routes_for(self.hazards)
+        active = next((r for r in self.routes if r.route_id == self.rider_b.active_route_id), None)
+        if active is not None and all(r.route_id != active.route_id for r in routes):
+            routes.append(active)  # the route the rider is on never disappears under them
+        self.routes = routes
         b = self.rider_b
         b.candidate_route_ids = [r.route_id for r in self.routes]
         if b.active_route_id is None and self.routes:

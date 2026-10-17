@@ -40,10 +40,10 @@
         }
       ],
       "location": {
-        "lat": 51.5055,
-        "lon": -0.0975,
+        "lat": 51.504695,
+        "lon": -0.091513,
         "road_segment_id": "southwark-st:eb",
-        "bearing_deg": 92.0,
+        "bearing_deg": 85.0,
         "method": "manual_anchor",
         "uncertainty_m": 30.0,
         "notes": "FIXTURE anchor: synthetic position for development, not derived from footage"
@@ -94,10 +94,10 @@
         }
       ],
       "location": {
-        "lat": 51.5055,
-        "lon": -0.0975,
+        "lat": 51.504695,
+        "lon": -0.091513,
         "road_segment_id": "southwark-st:eb",
-        "bearing_deg": 92.0,
+        "bearing_deg": 85.0,
         "method": "manual_anchor",
         "uncertainty_m": 30.0,
         "notes": "FIXTURE anchor: synthetic position for development, not derived from footage"

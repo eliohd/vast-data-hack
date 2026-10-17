@@ -55,7 +55,8 @@ ticks server-side; `to_s` is rounded to whole seconds.
 ## Fixtures (all labelled synthetic)
 
 `server/fixtures/rideahead/`
-- `scenario.json` — Southwark (London) fixture story: Bike A observes `lane_blocked` at t=60,
+- `scenario.json` — Southwark (London) fixture story, hazard anchor moved onto the real ORS
+  primary (Southwark St east end): Bike A observes `lane_blocked` at t=60,
   adjacent-chunk duplicate at t=70, Bike B (simulated) departs t=200, report stale at t=300
   (time-compressed prior, labelled), synthetic clearance at t=450, duration 600 s.
 - `observations.json` — fixture rides + observations (provenance `synthetic`, source `fixture`).
@@ -81,8 +82,14 @@ Config (env or `server/.env`): `ORS_API_KEY` (empty → fixture routes), `RIDEAH
 ## Real integrations vs fixtures
 
 - Perception: **fixture** (lane C replaces via `RIDEAHEAD_PERCEPTION=archive`).
-- Routing: openrouteservice adapter implemented + unit-tested with a mocked response; **no real
-  ORS call made yet** (no key on this machine). Fixture routes in use and labelled.
+- Routing: **real openrouteservice verified** (`cycling-regular`). Tested O/D: origin
+  51.5058,-0.1050 (Blackfriars Rd) → destination 51.5050,-0.0880 (Borough High St).
+  Primary 1638 m / 399 s via The Cut, Redcross Way, Southwark St; provider alternative 1842 m /
+  446 s; avoid-polygon detour around the hazard anchor (51.504695,-0.091513, Southwark St eb)
+  1676 m / 407 s, 73 m clear of it (≈ +8 s). Opt-in check:
+  `RIDEAHEAD_LIVE_ORS=1 uv run pytest -q -k live`. Genuine responses are saved to
+  `server/fixtures/rideahead/routes_ors_cache.json` and replayed as `cached_provider` (status
+  `cached`) only when ORS is unreachable. Without a key: hand-drawn fixture routes, labelled.
 - Hazard engine: bootstrap rule engine (lane D replaces).
 - Weave: `@weave.op` on `create_session`, `advance`, `record_decision`, ORS calls; status shows
   `connected` only when `weave.init` succeeded.
@@ -91,7 +98,11 @@ Config (env or `server/.env`): `ORS_API_KEY` (empty → fixture routes), `RIDEAH
 
 - Fixture geography is synthetic (Southwark, London). If the corpus is not London, lane C's
   anchor manifest will replace `scenario.json` coordinates — do not relabel footage.
-- Bike B reroute switches route by projecting its position onto the new route.
+- Bike B reroute switches route by projecting its position onto the new route; its active
+  route is always kept in `routes` (detours are requested for every non-cleared hazard).
+- ORS returns a harmless warning ("Extra info requested but not available:
+  roadaccessrestrictions") in `RouteCandidate.warnings`; B may tuck warnings into the evidence panel.
+- Route data attribution: © openrouteservice.org | © OpenStreetMap contributors.
 - In-memory sessions (max 32), optional JSON snapshot per session; no database.
 
 ## Requested changes outside ownership
