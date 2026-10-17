@@ -22,6 +22,27 @@ Segment id format: `<camera> | <recording> | c<chunk>-s<segment>` (segment = 5 s
 **No real crash footage:** all 80 caption mentions of "accident", 33 of "collision" and 42 of
 "near-miss" are negated. The emergency category is emergency *vehicles*, not crashes.
 
+## Verified (Cosmos `c-verify-hazard-1`, Weave-traced + Agent C frame review, 2026-10-17)
+
+Cache: `server/fixtures/rideahead/cache/hazard_verify_v1.json`.
+
+| Clip | Cosmos | Frame review | Notes |
+|---|---|---|---|
+| nyc_streets_cam-1 VID_20261006_174811_003 c12-s5 | supported | ✅ ambulance with lights on crossing the intersection | Broadway & Walker St ("Walker St", "401" readable). Momentary: emergency vehicle passing, not a closure |
+| nyc_streets_cam-2 IMG_0509 c28-s1 | supported | ✅ FDNY fire engine entering at the left (≈3.5 s) | "New Yorker" hotel sign → 8th Ave & W 34th St area |
+| sf_streets_cam-1 sf1 c06-s5 | supported | ✅ black SUV stopped in the lane, rear door open, passenger exiting | dooring risk; caption said driver door, frames show rear door |
+| nyc_bike_gopro-1 GX010001 c00-s1 | supported | ⚠️ partly: USPS truck + orange barrier occupy the narrow street, but the cyclist is **stopped on the sidewalk talking to a person on camera** (ride intro, identifiable faces) | real road obstruction, poor demo clip (privacy, not a riding moment) |
+| nyc_bike_gopro-1 GX050001 c19-s3 | unclear | agrees: barriers far ahead on the right at night, lane occupancy not visible | not usable |
+
+## Accidents of any kind (not only cyclists)
+
+**None found.** (1) Every caption mention of accident (80), collision (33) and near-miss (42) is a
+denial. (2) VSS hybrid search over video embeddings for "car crash collision between vehicles" returns
+ordinary I-24 highway and residential driving at similarity ≤ 0.25 (no crash scenes). Three more
+queries (damaged vehicle, crash scene with police/ambulance, tow truck) timed out on the shared
+search service. The closest crash-adjacent clips are emergency vehicles passing (above) and a CAA tow
+truck (Toronto `pie_cam-3` set06 c11-s5, unverified).
+
 ## Best examples
 
 ### Emergency vehicles (likely incident or road closure ahead)
