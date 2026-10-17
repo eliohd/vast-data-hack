@@ -1,0 +1,226 @@
+{
+ "schema_version": "1",
+ "manifest_version": "c-2026-10-17.1",
+ "ride_id": "nyc_bike_gopro-1:68c66490-7e43-428d-b7af-b477ae296369",
+ "camera_id": "nyc_bike_gopro-1",
+ "stream_id": "68c66490-7e43-428d-b7af-b477ae296369",
+ "recording_id": "GX010001",
+ "location": "new_york",
+ "provenance": "recorded",
+ "chunk_count": 24,
+ "chunk_duration_s": 30,
+ "segment_duration_s": 5,
+ "timing_notes": [
+  "ride_offset_s = chunk_index * 30 + segment_start_sec (nominal; chunks are 30 s each).",
+  "Filename timestamps (e.g. 20261008_073646) and upload_timestamp are upload/processing times, not recording time. Original recording time is unknown.",
+  "No GPS or GoPro telemetry is present in segment metadata (checked /api/v1/videos/metadata)."
+ ],
+ "route_reconstruction": {
+  "label": "manually reconstructed route",
+  "method": "street-name and landmark text read from Cosmos segment captions",
+  "observed_sequence": [
+   {
+    "chunk": 0,
+    "text": "AMSTERDAM BILLIARDS & BAR (E 11th St area)"
+   },
+   {
+    "chunk": 3,
+    "text": "Union Square"
+   },
+   {
+    "chunk": 5,
+    "text": "39 W 14th St"
+   },
+   {
+    "chunk": 6,
+    "text": "531 6th Ave"
+   },
+   {
+    "chunk": 11,
+    "text": "W 29 St"
+   },
+   {
+    "chunk": 12,
+    "text": "100 W 33"
+   },
+   {
+    "chunk": 13,
+    "text": "Macy's, West 34th St"
+   },
+   {
+    "chunk": 14,
+    "text": "W 36 St, W 37 St"
+   },
+   {
+    "chunk": 15,
+    "text": "W 38 St, Hudson River (arrow)"
+   },
+   {
+    "chunk": 17,
+    "text": "WeWork 1460"
+   },
+   {
+    "chunk": 20,
+    "text": "Yard House"
+   },
+   {
+    "chunk": 21,
+    "text": "Aladdin"
+   }
+  ],
+  "caveats": [
+   "Sign text comes from model captions, not OCR; individual readings can be wrong.",
+   "Segment 13.2 says the camera 'turns right onto another street' at W 34th St (Herald Square, where Broadway crosses 6th Ave). North of W 34th the ride may be on Broadway rather than 6th Ave; the anchored section keeps this as location uncertainty."
+  ]
+ },
+ "demo_section": {
+  "name": "6th Ave northbound, W 29th St to W 38th St (Manhattan)",
+  "travel_bearing_deg": 29,
+  "bearing_note": "Manhattan grid 'north' is about 29 degrees east of true north.",
+  "bike_lane": "green protected lane on the left (west) side, per captions 12.5-16.2",
+  "anchors": [
+   {
+    "chunk": 11,
+    "segment": 3,
+    "ride_offset_s": 340,
+    "label": "W 29 St",
+    "lat": 40.7466,
+    "lon": -73.9899,
+    "uncertainty_m": 120,
+    "evidence": "caption text 'W 29 St'"
+   },
+   {
+    "chunk": 12,
+    "segment": 5,
+    "ride_offset_s": 380,
+    "label": "100 W 33rd St",
+    "lat": 40.7491,
+    "lon": -73.9881,
+    "uncertainty_m": 100,
+    "evidence": "storefront '100 W 33'"
+   },
+   {
+    "chunk": 13,
+    "segment": 2,
+    "ride_offset_s": 395,
+    "label": "W 34th St / Herald Square",
+    "lat": 40.7498,
+    "lon": -73.9877,
+    "uncertainty_m": 80,
+    "evidence": "Macy's sign, street sign 'West 34th St'"
+   },
+   {
+    "chunk": 14,
+    "segment": 3,
+    "ride_offset_s": 430,
+    "label": "W 36 St",
+    "lat": 40.751,
+    "lon": -73.9867,
+    "uncertainty_m": 150,
+    "evidence": "street sign 'W 36 St'"
+   },
+   {
+    "chunk": 15,
+    "segment": 3,
+    "ride_offset_s": 460,
+    "label": "W 38 St",
+    "lat": 40.7522,
+    "lon": -73.9858,
+    "uncertainty_m": 150,
+    "evidence": "street sign 'W 38 St'"
+   }
+  ],
+  "coordinate_note": "Coordinates are hand-placed approximations at the named intersections on 6th Ave; verify on a map before relying on them. Uncertainty widens north of W 34th (possible Broadway turn).",
+  "interpolation": "Linear between neighbouring anchors by ride offset; unmapped outside chunks 11-15."
+ },
+ "shortlist": [
+  {
+   "id": "gx010001-c03-s1",
+   "chunk": 3,
+   "segment": 1,
+   "ride_offset_s": 90,
+   "role": "negation test (outside demo section)",
+   "caption_assertion": "denied",
+   "note": "'No vehicles are blocking the lanes' - a denial, not a clearance."
+  },
+  {
+   "id": "gx010001-c12-s5",
+   "chunk": 12,
+   "segment": 5,
+   "ride_offset_s": 380,
+   "role": "ordinary / clear bike lane",
+   "caption_assertion": "none"
+  },
+  {
+   "id": "gx010001-c13-s2",
+   "chunk": 13,
+   "segment": 2,
+   "ride_offset_s": 395,
+   "role": "ordinary / anchor (Herald Square)",
+   "caption_assertion": "none"
+  },
+  {
+   "id": "gx010001-c14-s2",
+   "chunk": 14,
+   "segment": 2,
+   "ride_offset_s": 425,
+   "role": "uncertain: van 'partially blocking the lane' at intersection, lane unspecified",
+   "caption_assertion": "present",
+   "lane_ref": "lane"
+  },
+  {
+   "id": "gx010001-c14-s3",
+   "chunk": 14,
+   "segment": 3,
+   "ride_offset_s": 430,
+   "role": "ordinary / anchor (W 36 St)",
+   "caption_assertion": "none"
+  },
+  {
+   "id": "gx010001-c15-s1",
+   "chunk": 15,
+   "segment": 1,
+   "ride_offset_s": 450,
+   "role": "caption false positive (was primary): caption claims bike-lane blocking; video shows vehicle beside the lane",
+   "caption_assertion": "present",
+   "lane_ref": "bike_lane",
+   "verification": "cosmos v1: contradicted; frame review agrees (vehicle adjacent to / in buffer of the bike lane)"
+  },
+  {
+   "id": "gx010001-c15-s3",
+   "chunk": 15,
+   "segment": 3,
+   "ride_offset_s": 460,
+   "role": "ordinary / anchor (W 38 St)",
+   "caption_assertion": "none"
+  },
+  {
+   "id": "gx010001-c15-s5",
+   "chunk": 15,
+   "segment": 5,
+   "ride_offset_s": 470,
+   "role": "second obstruction: caption claims bike-lane blocking; video shows vehicle beside the lane",
+   "caption_assertion": "present",
+   "lane_ref": "lane",
+   "verification": "cosmos v1: contradicted; frame review agrees (vehicle adjacent to / in buffer of the bike lane)"
+  },
+  {
+   "id": "gx010001-c15-s6",
+   "chunk": 15,
+   "segment": 6,
+   "ride_offset_s": 475,
+   "role": "mixed denial + claim (trust test)",
+   "caption_assertion": "present",
+   "lane_ref": "lane"
+  },
+  {
+   "id": "gx010001-c16-s2",
+   "chunk": 16,
+   "segment": 2,
+   "ride_offset_s": 485,
+   "role": "ordinary / clear bike lane further north (different location: must NOT clear the c15 hazard)",
+   "caption_assertion": "none",
+   "verification": "cosmos v1: contradicted (clear lane), as expected"
+  }
+ ]
+}
