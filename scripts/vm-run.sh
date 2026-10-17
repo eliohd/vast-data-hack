@@ -29,5 +29,10 @@ else
   echo "✓ server running with nohup — log: ${LOG}"
 fi
 
-sleep 2
-curl -fsS "http://127.0.0.1:${PORT}/api/health" && echo
+# A fresh VM may still be syncing deps / starting uvicorn: retry for up to 60 s.
+for _ in $(seq 1 30); do
+  if curl -fs "http://127.0.0.1:${PORT}/api/health"; then echo; exit 0; fi
+  sleep 2
+done
+echo "✗ server did not answer /api/health within 60 s — see ${LOG}" >&2
+exit 1

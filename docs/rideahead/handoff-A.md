@@ -163,6 +163,16 @@ Merged C `70e8212` (ArchivePerceptionProvider, traced W&B + Cosmos cache) and D 
   t0, 60, 140, 160, 300, 400, 450, 480, 660.
 - Deploy is run by lane C per `docs/rideahead/deploy-runbook.md`; A picks the SHA.
 
+## Deploy status
+
+- C deployed `6cd6329` to the lab VM (quick tunnel; smoke test identical to local; Weave
+  `connected`, routing `cached`, VSS/Cosmos/YOLO/W&B upstreams ok). Report in `handoff-C.md`.
+- Merged C `113de70`: media proxy maps S3 `binary/octet-stream` to `video/mp4` by extension
+  (iOS Safari playback). Fixed deploy scripts: `VM_DIR` defaults to `hack` (relative to the
+  remote home; `~/hack` was expanded on the laptop); `vm-run.sh` health check retries for 60 s.
+- **Next deploy SHA: see `git log -1` on main after this commit** — redeploy together with the
+  switch to the named tunnel `hack.elio.ltd`.
+
 ## Known limitations
 
 - Fixture geography is synthetic (Southwark, London). If the corpus is not London, lane C's
