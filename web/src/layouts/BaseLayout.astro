@@ -1,0 +1,28 @@
+---
+import '@/styles/global.css';
+import AppToaster from '@/components/AppToaster';
+
+interface Props {
+  title: string;
+  description?: string;
+}
+
+const { title, description = 'Real-time video agent — VAST Builders Challenge London.' } =
+  Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="description" content={description} />
+    <meta name="theme-color" content="#0a0a0a" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <title>{title}</title>
+  </head>
+  <body class="min-h-dvh antialiased">
+    <slot />
+    <AppToaster client:only="react" />
+  </body>
+</html>
