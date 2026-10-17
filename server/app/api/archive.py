@@ -60,6 +60,17 @@ async def detections(source: str, services: Services = Depends(get_services)) ->
     return await services.vss.detections(source)
 
 
+def media_type(source: str, upstream: str | None) -> str:
+    """The S3 store labels clips `binary/octet-stream`, which Safari will not play in <video>."""
+    generic = {"", "binary/octet-stream", "application/octet-stream"}
+    if (upstream or "").split(";")[0].strip().lower() in generic:
+        ext = source.rsplit(".", 1)[-1].lower()
+        return {"mp4": "video/mp4", "mov": "video/quicktime", "webm": "video/webm"}.get(
+            ext, upstream or "application/octet-stream"
+        )
+    return upstream or "application/octet-stream"
+
+
 @router.get("/media")
 async def media(
     source: str, request: Request, services: Services = Depends(get_services)
@@ -74,6 +85,9 @@ async def media(
         for k, v in upstream.headers.items()
         if k.lower() in {"content-type", "content-length", "content-range", "accept-ranges"}
     }
+    for k in [k for k in passthrough if k.lower() == "content-type"]:
+        del passthrough[k]
+    passthrough["content-type"] = media_type(source, upstream.headers.get("content-type"))
     return StreamingResponse(
         upstream.aiter_bytes(),
         status_code=upstream.status_code,

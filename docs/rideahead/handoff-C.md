@@ -7,6 +7,46 @@ candidate extraction, model verification, VSS/GPU client changes.
 
 - Branch `rishik/rideahead-notes`, rebased on `main` @ `5fd686f`. See `git log` for the head.
 
+## Deploy report (2026-10-17, ~12:50 UTC)
+
+- **Deployed SHA: `6cd6329`** (`main`), `make verify` green locally first (server 158 passed / 1
+  skipped, web 27 passed, build OK). VM: `bc-pool-218` (alias `bc-rishiksiripurapu`), `~/hack`,
+  tmux `hack`, log `/tmp/hack-server.log`.
+- **Public URL: https://causing-include-tear-consequence.trycloudflare.com** (Cloudflare quick tunnel,
+  tmux `tunnel` on the VM; the URL changes if the tunnel restarts). Without the demo key the API
+  returns 401. The key is in the VM `.env` and was shared privately, not here.
+- VM `~/hack/server/.env` variable names: `DEMO_KEY RIDEAHEAD_SCENARIO RIDEAHEAD_PERCEPTION
+  RIDEAHEAD_ROUTING GPU_BEARER_TOKEN COSMOS_REASON_URL YOLO_URL COSMOS_EMBED_URL WANDB_API_KEY
+  WANDB_TEAM WANDB_PROJECT`. No `ORS_API_KEY`, so routes replay the recorded ORS responses (cached).
+
+Smoke test (identical on `127.0.0.1:8000` and the public URL):
+
+```
+health: {"status":"ok","team":"team-46","analyser":"cosmos","tracing":true}
+perception: archive | routing: openrouteservice
+vast cached / cosmos cached / yolo cached / wandb_inference cached / weave connected / routing cached
+140.0 [] ['continue'] {'cached_provider'}
+160.0 ['observed'] ['heads_up'] {'cached_provider'}
+400.0 ['stale'] ['slow'] {'cached_provider'}
+480.0 ['cleared'] ['continue'] {'cached_provider'}
+media c15-s1 (/api/archive/media, Range 0-65535): 206 binary/octet-stream 65536B
+```
+
+Upstreams (`/api/health/upstreams` on the VM): **vss ok, cosmos_reason ok, cosmos_embed ok, yolo ok,
+wandb ok, canary FAILED** (no `CANARY_URL` in the VM `.env`; RideAhead does not use Canary).
+
+Issues found, for A:
+1. **`deploy.sh` / Makefile `VM_DIR ?= ~/hack`**: the `~` is expanded on the laptop, so rsync tried
+   `/Users/<me>/hack` on the VM and failed. Worked around with
+   `make deploy VM=bc-rishiksiripurapu VM_DIR=/home/rishiksiripurapu/hack`. Suggested fix: default
+   `VM_DIR=hack` (relative to the remote home) or quote it so the remote shell expands it.
+2. **Media content type**: the proxy passes through `binary/octet-stream` from the S3 store; iOS
+   Safari can refuse to play that in `<video>`. Fixed in lane C on `rishik/rideahead-notes`
+   (`app/api/archive.py` `media_type()` maps generic types to `video/mp4` by extension, plus
+   `tests/test_archive_media.py`). **Not deployed**: needs A to verify and merge, then redeploy.
+3. The first deploy's health check ran before `uv sync` finished on the fresh VM (curl exit 7); the
+   server came up a few seconds later. Harmless.
+
 ## TL;DR for A (critical path)
 
 - `ArchivePerceptionProvider` is implemented (`server/app/agent/perception.py`). It reads the cache only
