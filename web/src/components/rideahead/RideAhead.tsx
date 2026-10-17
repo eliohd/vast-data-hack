@@ -25,7 +25,13 @@ import NavigationMap from './NavigationMap';
 import GuideBubble from './GuideBubble';
 import JourneySheet from './JourneySheet';
 import MapLegend from './MapLegend';
-import VideoWidget, { type CameraInference } from './VideoWidget';
+import VideoWidget, {
+  FeedPlayer,
+  RecordedClip,
+  type CameraInference,
+  type RideFeed,
+} from './VideoWidget';
+import { clipsFromEvidence, feedIndex, type FeedClip } from '@/lib/rideahead/feed';
 import EvidencePanel from './EvidencePanel';
 import '@/styles/rideahead.css';
 import '@/styles/street-navigation.css';
@@ -50,9 +56,12 @@ function readShowInference(): boolean {
 export default function RideAhead({
   connection,
   sessionControls,
+  rideFeed,
 }: {
   connection?: RideAheadConnection;
   sessionControls?: ReactNode;
+  /** Recorded segments of the connected ride and the ride offset at session t=0. */
+  rideFeed?: { clips: FeedClip[]; startOffsetS: number };
 }) {
   const [snapshot, setSnapshot] = useState<SnapshotView | null>(connection ? null : previewAt(0));
   const [playing, setPlaying] = useState(false);
@@ -170,6 +179,15 @@ export default function RideAhead({
   }, [highlightKey]);
 
   const roadView = snapshot ? roadViewFor(snapshot) : noRoadView;
+  const feed: RideFeed = (() => {
+    if (rideFeed?.clips.length)
+      return {
+        clips: rideFeed.clips,
+        index: feedIndex(rideFeed.clips, rideFeed.startOffsetS + (snapshot?.timeS ?? 0)),
+      };
+    const revealed = clipsFromEvidence(snapshot?.evidence ?? []);
+    return { clips: revealed, index: Math.max(0, revealed.length - 1) };
+  })();
   const panelRef = useRef<HTMLDialogElement>(null);
   const [panel, setPanel] = useState<'evidence' | 'settings' | 'routes'>('evidence');
   const openPanel = (name: typeof panel) => {
@@ -224,6 +242,23 @@ export default function RideAhead({
           <span>The next bike knows.</span>
         </h1>
         <p className="ra-command-intro">A shared view of the road, grounded in evidence.</p>
+        {!isPhone && (
+          <section className="ra-control-card ra-desktop-feed" aria-label="Ride camera">
+            <div className="ra-control-title">
+              <h2>Ride camera</h2>
+              <span className="ra-tag">
+                {roadView.kind === 'recorded' ? 'Event clip' : 'Recorded ride feed'}
+              </span>
+            </div>
+            {roadView.kind === 'recorded' ? (
+              <RecordedClip key={roadView.key} view={roadView} />
+            ) : feed.clips.length ? (
+              <FeedPlayer feed={feed} />
+            ) : (
+              <p className="ra-subtle">Footage appears when the replay reveals a recorded clip.</p>
+            )}
+          </section>
+        )}
         {!isPhone && <section className="ra-control-card">{sessionControls}</section>}
         {snapshot && (
           <section className="ra-control-card">
@@ -233,7 +268,7 @@ export default function RideAhead({
             </div>
             <button
               className="ra-primary-action"
-              disabled={busy || snapshot.timeS >= snapshot.endS}
+              disabled={!playing && (busy || snapshot.timeS >= snapshot.endS)}
               onClick={() => setPlaying(!playing)}
             >
               {playing ? <Pause size={16} /> : <Play size={16} />}
@@ -379,6 +414,7 @@ export default function RideAhead({
                 onToggleCollapsed={() => setOverlayCollapsed((value) => !value)}
                 onInference={setCameraInference}
                 toolsTarget={isPhone ? phoneCameraTools : cameraTools}
+                feed={feed}
               />
             </div>
             {isPhone && showInference && (
@@ -471,7 +507,7 @@ export default function RideAhead({
             {snapshot && (
               <div className="ra-phone-demo-row">
                 <Button
-                  disabled={busy || snapshot.timeS >= snapshot.endS}
+                  disabled={!playing && (busy || snapshot.timeS >= snapshot.endS)}
                   onClick={() => {
                     setPlaying(!playing);
                     if (!playing) panelRef.current?.close();

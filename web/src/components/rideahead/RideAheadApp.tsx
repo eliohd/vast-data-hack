@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { api, type Schemas } from '@/lib/api/client';
 import { createRideAheadConnection } from '@/lib/rideahead/connection';
+import { clipsFromSegments, rideStartOffset } from '@/lib/rideahead/feed';
 import RideAhead from './RideAhead';
 
 export default function RideAheadApp() {
@@ -15,6 +16,19 @@ export default function RideAheadApp() {
   const [scenariosError, setScenariosError] = useState(false);
   const [scenarios, setScenarios] = useState<Schemas['ScenarioSummary'][]>([]);
   const [scenarioId, setScenarioId] = useState('');
+  // What the current connection was opened with ('' = server default = first scenario listed).
+  const [connected, setConnected] = useState({ scenarioId: '', rideId: '' });
+  const connectedScenario = connected.rideId
+    ? undefined
+    : (scenarios.find((item) => item.scenario_id === connected.scenarioId) ?? scenarios[0]);
+  const feedRideId = connected.rideId || connectedScenario?.ride_id;
+  const feedRide = rides.find((ride) => ride.ride_id === feedRideId);
+  const rideFeed = offline
+    ? undefined
+    : {
+        clips: clipsFromSegments(feedRide?.segments ?? []),
+        startOffsetS: rideStartOffset(connectedScenario?.labels ?? []),
+      };
   useEffect(() => {
     const controller = new AbortController();
     void api
@@ -28,24 +42,34 @@ export default function RideAheadApp() {
       .catch(() => {
         if (!controller.signal.aborted) setScenariosError(true);
       });
-    void api
-      .GET('/api/rideahead/rides', {
-        signal: AbortSignal.any([controller.signal, AbortSignal.timeout(15000)]),
-      })
-      .then(({ data }) => {
-        if (data) setRides(data);
-        else setRidesError(true);
-      })
-      .catch(() => {
-        if (!controller.signal.aborted) setRidesError(true);
-      });
-    return () => controller.abort();
+    let retry: number | undefined;
+    const loadRides = (attempt: number) =>
+      void api
+        .GET('/api/rideahead/rides', {
+          signal: AbortSignal.any([controller.signal, AbortSignal.timeout(15000)]),
+        })
+        .then(({ data }) => {
+          if (data) return setRides(data);
+          if (attempt < 5) retry = window.setTimeout(() => loadRides(attempt + 1), 3000);
+          else setRidesError(true);
+        })
+        .catch(() => {
+          if (controller.signal.aborted) return;
+          if (attempt < 5) retry = window.setTimeout(() => loadRides(attempt + 1), 3000);
+          else setRidesError(true);
+        });
+    loadRides(0);
+    return () => {
+      controller.abort();
+      window.clearTimeout(retry);
+    };
   }, []);
   return (
     <div className="ra-presentation">
       <RideAhead
         key={generation}
         connection={offline ? undefined : connection}
+        rideFeed={rideFeed}
         sessionControls={
           <>
             <h2>Session source</h2>
@@ -91,6 +115,7 @@ export default function RideAheadApp() {
                       scenarioId || undefined,
                     ),
                   );
+                  setConnected({ scenarioId, rideId });
                   setOffline(false);
                   setGeneration((value) => value + 1);
                 }}
