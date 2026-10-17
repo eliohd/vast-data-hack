@@ -4,12 +4,12 @@
   "ride_id": "nyc_bike_gopro-1:68c66490-7e43-428d-b7af-b477ae296369",
   "duration_s": 660,
   "origin": {
-    "lat": 40.7445,
-    "lon": -73.9919
+    "lat": 40.744753,
+    "lon": -73.991456
   },
   "destination": {
-    "lat": 40.7537,
-    "lon": -73.9846
+    "lat": 40.752944,
+    "lon": -73.985484
   },
   "observer_label": "Bike A (recorded ride GX010001)",
   "observer_track": [
@@ -47,7 +47,7 @@
   "simulated_rider": {
     "rider_id": "bike_b",
     "label": "Bike B (simulated)",
-    "depart_s": 300,
+    "depart_s": 320,
     "speed_mps": 4.2
   },
   "fixture_observations": [],

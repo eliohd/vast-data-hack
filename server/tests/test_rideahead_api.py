@@ -139,6 +139,12 @@ def test_nyc_scenario_archive_perception_on_recorded_ors_routes(tmp_path) -> Non
         assert all(o["source"] == "cached_model" for o in snap["observations"])
         assert snap["hazards"] == []
 
+        bike_b = snap["riders"][1]
+        active = next(r for r in snap["routes"] if r["route_id"] == bike_b["active_route_id"])
+        assert active["steps"] and active["steps"][-1]["maneuver_type"] == "arrive"
+        assert bike_b["distance_remaining_m"] == pytest.approx(active["distance_m"], abs=5)
+        assert bike_b["next_step_index"] is not None
+
         snap = _advance(c, sid, 160)  # labelled synthetic scenario event
         assert [h["state"] for h in snap["hazards"]] == ["observed"]
         event = snap["observations"][-1]
@@ -149,6 +155,8 @@ def test_nyc_scenario_archive_perception_on_recorded_ors_routes(tmp_path) -> Non
         snap = _advance(c, sid, 400)
         assert snap["hazards"][0]["state"] == "stale"
         assert snap["decisions"][0]["action"] in ("heads_up", "slow")  # stale is not clear
+        assert snap["riders"][1]["distance_remaining_m"] < active["distance_m"]  # moving
         snap = _advance(c, sid, 480)
         assert snap["hazards"][0]["state"] == "cleared"
         assert snap["decisions"][0]["action"] == "continue"
+        assert snap["riders"][1]["duration_remaining_s"] is not None

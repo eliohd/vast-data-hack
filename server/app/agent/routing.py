@@ -18,7 +18,7 @@ import weave
 
 from app.agent.geo import circle_polygon, project
 from app.agent.interfaces import RoutingProvider, RoutingUnavailable
-from app.agent.models import LatLon, LineString, RouteCandidate, RouteExclusion
+from app.agent.models import LatLon, LineString, Maneuver, RouteCandidate, RouteExclusion, RouteStep
 
 log = logging.getLogger(__name__)
 
@@ -61,6 +61,45 @@ class FixtureRoutingProvider:
         return out
 
 
+# ORS instruction type codes → our maneuver names
+ORS_MANEUVERS: dict[int, Maneuver] = {
+    0: "left",
+    1: "right",
+    2: "sharp_left",
+    3: "sharp_right",
+    4: "slight_left",
+    5: "slight_right",
+    6: "straight",
+    7: "roundabout_enter",
+    8: "roundabout_exit",
+    9: "u_turn",
+    10: "arrive",
+    11: "depart",
+    12: "keep_left",
+    13: "keep_right",
+}
+
+
+def ors_steps(feature: dict[str, Any]) -> list[RouteStep]:
+    steps: list[RouteStep] = []
+    for segment in feature.get("properties", {}).get("segments", []):
+        for st in segment.get("steps", []):
+            way = st.get("way_points") or [0, 0]
+            name = st.get("name")
+            steps.append(
+                RouteStep(
+                    instruction=str(st.get("instruction", "")),
+                    street_name=name if name and name != "-" else None,
+                    maneuver_type=ORS_MANEUVERS.get(int(st.get("type", -1)), "unknown"),
+                    distance_m=float(st.get("distance", 0.0)),
+                    duration_s=float(st.get("duration", 0.0)),
+                    start_index=int(way[0]),
+                    end_index=int(way[-1]),
+                )
+            )
+    return steps
+
+
 class OpenRouteServiceProvider:
     """openrouteservice directions v2, `cycling-*` profile, GeoJSON output.
 
@@ -93,7 +132,9 @@ class OpenRouteServiceProvider:
     ) -> dict[str, Any]:
         body: dict[str, Any] = {
             "coordinates": [[origin.lon, origin.lat], [destination.lon, destination.lat]],
-            "instructions": False,
+            "instructions": True,
+            "instructions_format": "text",
+            "language": "en",
             "elevation": False,
         }
         if exclusions:
@@ -153,6 +194,7 @@ class OpenRouteServiceProvider:
                 profile=self.profile,
                 provenance="live_provider",
                 warnings=warnings,
+                steps=ors_steps(feat),
             )
             route.avoids_hazard_ids = _avoids(route, exclusions)
             out.append(route)

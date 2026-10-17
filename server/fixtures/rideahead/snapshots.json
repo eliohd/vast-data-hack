@@ -45,7 +45,7 @@
           "Alternatives start at the rider's current position; directed-road coverage is supplied.",
           "Planning area 2000 m; nearby radius 200 m.",
           "Route provenance: recorded_provider; provider: openrouteservice.",
-          "Route ors-bd1881712f: recorded_provider, openrouteservice, cycling-regular.",
+          "Route ors-b767873be4: recorded_provider, openrouteservice, cycling-regular.",
           "Extra info requested but not available: roadaccessrestrictions",
           "recorded provider response replayed (provider unavailable now)",
           "Decision detail: No active report matches the directed route ahead within the planning area.",
@@ -63,7 +63,7 @@
         "revision": 1,
         "rider_id": "bike_b",
         "schema_version": "1",
-        "selected_route_id": "ors-bd1881712f",
+        "selected_route_id": "ors-b767873be4",
         "session_time_s": 0.0
       }
     ],
@@ -77,7 +77,7 @@
           "Alternatives start at the rider's current position; directed-road coverage is supplied.",
           "Planning area 2000 m; nearby radius 200 m.",
           "Route provenance: recorded_provider; provider: openrouteservice.",
-          "Route ors-bd1881712f: recorded_provider, openrouteservice, cycling-regular.",
+          "Route ors-b767873be4: recorded_provider, openrouteservice, cycling-regular.",
           "Extra info requested but not available: roadaccessrestrictions",
           "recorded provider response replayed (provider unavailable now)",
           "Decision detail: No active report matches the directed route ahead within the planning area.",
@@ -95,7 +95,7 @@
         "revision": 1,
         "rider_id": "bike_b",
         "schema_version": "1",
-        "selected_route_id": "ors-bd1881712f",
+        "selected_route_id": "ors-b767873be4",
         "session_time_s": 0.0
       }
     ],
@@ -168,7 +168,11 @@
         "bearing_deg": null,
         "candidate_route_ids": [],
         "destination": null,
+        "distance_remaining_m": null,
+        "distance_to_next_step_m": null,
+        "duration_remaining_s": null,
         "label": "Bike A (recorded ride GX010001)",
+        "next_step_index": null,
         "origin": null,
         "position": {
           "lat": 40.7466,
@@ -181,23 +185,27 @@
         "status": "recorded"
       },
       {
-        "active_route_id": "ors-bd1881712f",
+        "active_route_id": "ors-b767873be4",
         "bearing_deg": null,
         "candidate_route_ids": [
-          "ors-bd1881712f"
+          "ors-b767873be4"
         ],
         "destination": {
-          "lat": 40.7537,
-          "lon": -73.9846
+          "lat": 40.752944,
+          "lon": -73.985484
         },
+        "distance_remaining_m": 1040.6,
+        "distance_to_next_step_m": 1040.6,
+        "duration_remaining_s": 208.1,
         "label": "Bike B (simulated)",
+        "next_step_index": 1,
         "origin": {
-          "lat": 40.7445,
-          "lon": -73.9919
+          "lat": 40.744753,
+          "lon": -73.991456
         },
         "position": {
-          "lat": 40.7445,
-          "lon": -73.9919
+          "lat": 40.744753,
+          "lon": -73.991456
         },
         "progress_m": 0.0,
         "rider_id": "bike_b",
@@ -209,22 +217,10 @@
     "routes": [
       {
         "avoids_hazard_ids": [],
-        "distance_m": 1318.3,
-        "duration_s": 314.2,
+        "distance_m": 1040.6,
+        "duration_s": 208.1,
         "geometry": {
           "coordinates": [
-            [
-              -73.99184,
-              40.744474
-            ],
-            [
-              -73.99196,
-              40.744311
-            ],
-            [
-              -73.991822,
-              40.744253
-            ],
             [
               -73.991456,
               40.744753
@@ -416,74 +412,6 @@
             [
               -73.985484,
               40.752944
-            ],
-            [
-              -73.985446,
-              40.752993
-            ],
-            [
-              -73.985082,
-              40.7535
-            ],
-            [
-              -73.98504,
-              40.753559
-            ],
-            [
-              -73.984909,
-              40.753503
-            ],
-            [
-              -73.98487,
-              40.753559
-            ],
-            [
-              -73.984864,
-              40.753567
-            ],
-            [
-              -73.984764,
-              40.753524
-            ],
-            [
-              -73.984745,
-              40.75355
-            ],
-            [
-              -73.984498,
-              40.753447
-            ],
-            [
-              -73.984493,
-              40.753454
-            ],
-            [
-              -73.98441,
-              40.753567
-            ],
-            [
-              -73.984431,
-              40.753576
-            ],
-            [
-              -73.984501,
-              40.753591
-            ],
-            [
-              -73.984492,
-              40.753602
-            ],
-            [
-              -73.98464,
-              40.753664
-            ],
-            [
-              -73.984614,
-              40.753698
-            ],
-            [
-              -73.984604,
-              40.753694
             ]
           ],
           "type": "LineString"
@@ -493,7 +421,27 @@
         "provenance": "cached_provider",
         "provider": "openrouteservice",
         "role": "primary",
-        "route_id": "ors-bd1881712f",
+        "route_id": "ors-b767873be4",
+        "steps": [
+          {
+            "distance_m": 1040.6,
+            "duration_s": 208.1,
+            "end_index": 47,
+            "instruction": "Head northeast on 6th Avenue",
+            "maneuver_type": "depart",
+            "start_index": 0,
+            "street_name": "6th Avenue"
+          },
+          {
+            "distance_m": 0.0,
+            "duration_s": 0.0,
+            "end_index": 47,
+            "instruction": "Arrive at 6th Avenue, straight ahead",
+            "maneuver_type": "arrive",
+            "start_index": 47,
+            "street_name": null
+          }
+        ],
         "warnings": [
           "Extra info requested but not available: roadaccessrestrictions",
           "recorded provider response replayed (provider unavailable now)"
@@ -549,7 +497,7 @@
           "Alternatives start at the rider's current position; directed-road coverage is supplied.",
           "Planning area 2000 m; nearby radius 200 m.",
           "Route provenance: recorded_provider; provider: openrouteservice.",
-          "Route ors-bd1881712f: recorded_provider, openrouteservice, cycling-regular.",
+          "Route ors-b767873be4: recorded_provider, openrouteservice, cycling-regular.",
           "Extra info requested but not available: roadaccessrestrictions",
           "recorded provider response replayed (provider unavailable now)",
           "Decision detail: No active report matches the directed route ahead within the planning area.",
@@ -567,7 +515,7 @@
         "revision": 1,
         "rider_id": "bike_b",
         "schema_version": "1",
-        "selected_route_id": "ors-bd1881712f",
+        "selected_route_id": "ors-b767873be4",
         "session_time_s": 0.0
       }
     ],
@@ -581,7 +529,7 @@
           "Alternatives start at the rider's current position; directed-road coverage is supplied.",
           "Planning area 2000 m; nearby radius 200 m.",
           "Route provenance: recorded_provider; provider: openrouteservice.",
-          "Route ors-bd1881712f: recorded_provider, openrouteservice, cycling-regular.",
+          "Route ors-b767873be4: recorded_provider, openrouteservice, cycling-regular.",
           "Extra info requested but not available: roadaccessrestrictions",
           "recorded provider response replayed (provider unavailable now)",
           "Decision detail: No active report matches the directed route ahead within the planning area.",
@@ -599,7 +547,7 @@
         "revision": 3,
         "rider_id": "bike_b",
         "schema_version": "1",
-        "selected_route_id": "ors-bd1881712f",
+        "selected_route_id": "ors-b767873be4",
         "session_time_s": 140.0
       }
     ],
@@ -1039,7 +987,11 @@
         "bearing_deg": null,
         "candidate_route_ids": [],
         "destination": null,
+        "distance_remaining_m": null,
+        "distance_to_next_step_m": null,
+        "duration_remaining_s": null,
         "label": "Bike A (recorded ride GX010001)",
+        "next_step_index": null,
         "origin": null,
         "position": {
           "lat": 40.7528,
@@ -1052,23 +1004,27 @@
         "status": "recorded"
       },
       {
-        "active_route_id": "ors-bd1881712f",
+        "active_route_id": "ors-b767873be4",
         "bearing_deg": null,
         "candidate_route_ids": [
-          "ors-bd1881712f"
+          "ors-b767873be4"
         ],
         "destination": {
-          "lat": 40.7537,
-          "lon": -73.9846
+          "lat": 40.752944,
+          "lon": -73.985484
         },
+        "distance_remaining_m": 1040.6,
+        "distance_to_next_step_m": 1040.6,
+        "duration_remaining_s": 208.1,
         "label": "Bike B (simulated)",
+        "next_step_index": 1,
         "origin": {
-          "lat": 40.7445,
-          "lon": -73.9919
+          "lat": 40.744753,
+          "lon": -73.991456
         },
         "position": {
-          "lat": 40.7445,
-          "lon": -73.9919
+          "lat": 40.744753,
+          "lon": -73.991456
         },
         "progress_m": 0.0,
         "rider_id": "bike_b",
@@ -1080,22 +1036,10 @@
     "routes": [
       {
         "avoids_hazard_ids": [],
-        "distance_m": 1318.3,
-        "duration_s": 314.2,
+        "distance_m": 1040.6,
+        "duration_s": 208.1,
         "geometry": {
           "coordinates": [
-            [
-              -73.99184,
-              40.744474
-            ],
-            [
-              -73.99196,
-              40.744311
-            ],
-            [
-              -73.991822,
-              40.744253
-            ],
             [
               -73.991456,
               40.744753
@@ -1287,74 +1231,6 @@
             [
               -73.985484,
               40.752944
-            ],
-            [
-              -73.985446,
-              40.752993
-            ],
-            [
-              -73.985082,
-              40.7535
-            ],
-            [
-              -73.98504,
-              40.753559
-            ],
-            [
-              -73.984909,
-              40.753503
-            ],
-            [
-              -73.98487,
-              40.753559
-            ],
-            [
-              -73.984864,
-              40.753567
-            ],
-            [
-              -73.984764,
-              40.753524
-            ],
-            [
-              -73.984745,
-              40.75355
-            ],
-            [
-              -73.984498,
-              40.753447
-            ],
-            [
-              -73.984493,
-              40.753454
-            ],
-            [
-              -73.98441,
-              40.753567
-            ],
-            [
-              -73.984431,
-              40.753576
-            ],
-            [
-              -73.984501,
-              40.753591
-            ],
-            [
-              -73.984492,
-              40.753602
-            ],
-            [
-              -73.98464,
-              40.753664
-            ],
-            [
-              -73.984614,
-              40.753698
-            ],
-            [
-              -73.984604,
-              40.753694
             ]
           ],
           "type": "LineString"
@@ -1364,7 +1240,27 @@
         "provenance": "cached_provider",
         "provider": "openrouteservice",
         "role": "primary",
-        "route_id": "ors-bd1881712f",
+        "route_id": "ors-b767873be4",
+        "steps": [
+          {
+            "distance_m": 1040.6,
+            "duration_s": 208.1,
+            "end_index": 47,
+            "instruction": "Head northeast on 6th Avenue",
+            "maneuver_type": "depart",
+            "start_index": 0,
+            "street_name": "6th Avenue"
+          },
+          {
+            "distance_m": 0.0,
+            "duration_s": 0.0,
+            "end_index": 47,
+            "instruction": "Arrive at 6th Avenue, straight ahead",
+            "maneuver_type": "arrive",
+            "start_index": 47,
+            "street_name": null
+          }
+        ],
         "warnings": [
           "Extra info requested but not available: roadaccessrestrictions",
           "recorded provider response replayed (provider unavailable now)"
@@ -1420,7 +1316,7 @@
           "Alternatives start at the rider's current position; directed-road coverage is supplied.",
           "Planning area 2000 m; nearby radius 200 m.",
           "Route provenance: recorded_provider; provider: openrouteservice.",
-          "Route ors-bd1881712f: recorded_provider, openrouteservice, cycling-regular.",
+          "Route ors-b767873be4: recorded_provider, openrouteservice, cycling-regular.",
           "Extra info requested but not available: roadaccessrestrictions",
           "recorded provider response replayed (provider unavailable now)",
           "Decision detail: No active report matches the directed route ahead within the planning area.",
@@ -1438,19 +1334,22 @@
         "revision": 1,
         "rider_id": "bike_b",
         "schema_version": "1",
-        "selected_route_id": "ors-bd1881712f",
+        "selected_route_id": "ors-b767873be4",
         "session_time_s": 0.0
       },
       {
         "action": "heads_up",
-        "arrival_in_s": 119.00853320713608,
+        "arrival_in_s": 80.31617563277253,
         "assumptions": [
           "Provider bicycle durations approximate arrival; traffic and map restrictions may differ.",
           "Persistence and delay are versioned demonstration assumptions, not probabilities.",
           "Alternatives start at the rider's current position; directed-road coverage is supplied.",
           "Planning area 2000 m; nearby radius 200 m.",
           "Route provenance: recorded_provider; provider: openrouteservice.",
-          "Route ors-bd1881712f: recorded_provider, openrouteservice, cycling-regular.",
+          "Route ors-257ec72f94: recorded_provider, openrouteservice, cycling-regular.",
+          "Route ors-b767873be4: recorded_provider, openrouteservice, cycling-regular.",
+          "Extra info requested but not available: roadaccessrestrictions",
+          "recorded provider response replayed (provider unavailable now)",
           "Extra info requested but not available: roadaccessrestrictions",
           "recorded provider response replayed (provider unavailable now)",
           "Prior lane_blocked:demo-compressed-1; impact serious; evidence synthetic.",
@@ -1461,7 +1360,7 @@
         "changed": true,
         "decision_id": "dec-bike_b-160",
         "detour_cost_s": null,
-        "estimated_delay_s": 31.91105073650169,
+        "estimated_delay_s": 35.68392397521404,
         "evidence_ids": [
           "ev-obs-nyc-syn-block-001"
         ],
@@ -1469,25 +1368,28 @@
         "hazard_ids": [
           "hazard-91c48492e7825d1c"
         ],
-        "reason": "Blockage 500 m ahead. Stay alert; allow about 32 sec.",
+        "reason": "Blockage 400 m ahead. Stay alert; allow about 36 sec.",
         "revision": 4,
         "rider_id": "bike_b",
         "schema_version": "1",
-        "selected_route_id": "ors-bd1881712f",
+        "selected_route_id": "ors-b767873be4",
         "session_time_s": 160.0
       }
     ],
     "decisions": [
       {
         "action": "heads_up",
-        "arrival_in_s": 119.00853320713608,
+        "arrival_in_s": 80.31617563277253,
         "assumptions": [
           "Provider bicycle durations approximate arrival; traffic and map restrictions may differ.",
           "Persistence and delay are versioned demonstration assumptions, not probabilities.",
           "Alternatives start at the rider's current position; directed-road coverage is supplied.",
           "Planning area 2000 m; nearby radius 200 m.",
           "Route provenance: recorded_provider; provider: openrouteservice.",
-          "Route ors-bd1881712f: recorded_provider, openrouteservice, cycling-regular.",
+          "Route ors-257ec72f94: recorded_provider, openrouteservice, cycling-regular.",
+          "Route ors-b767873be4: recorded_provider, openrouteservice, cycling-regular.",
+          "Extra info requested but not available: roadaccessrestrictions",
+          "recorded provider response replayed (provider unavailable now)",
           "Extra info requested but not available: roadaccessrestrictions",
           "recorded provider response replayed (provider unavailable now)",
           "Prior lane_blocked:demo-compressed-1; impact serious; evidence synthetic.",
@@ -1498,7 +1400,7 @@
         "changed": true,
         "decision_id": "dec-bike_b-160",
         "detour_cost_s": null,
-        "estimated_delay_s": 31.91105073650169,
+        "estimated_delay_s": 35.68392397521404,
         "evidence_ids": [
           "ev-obs-nyc-syn-block-001"
         ],
@@ -1506,11 +1408,11 @@
         "hazard_ids": [
           "hazard-91c48492e7825d1c"
         ],
-        "reason": "Blockage 500 m ahead. Stay alert; allow about 32 sec.",
+        "reason": "Blockage 400 m ahead. Stay alert; allow about 36 sec.",
         "revision": 4,
         "rider_id": "bike_b",
         "schema_version": "1",
-        "selected_route_id": "ors-bd1881712f",
+        "selected_route_id": "ors-b767873be4",
         "session_time_s": 160.0
       }
     ],
@@ -1589,7 +1491,7 @@
       },
       {
         "kind": "decision",
-        "message": "bike_b: heads_up \u2014 Blockage 500 m ahead. Stay alert; allow about 32 sec.",
+        "message": "bike_b: heads_up \u2014 Blockage 400 m ahead. Stay alert; allow about 36 sec.",
         "ref_ids": [
           "dec-bike_b-160"
         ],
@@ -2052,7 +1954,11 @@
         "bearing_deg": null,
         "candidate_route_ids": [],
         "destination": null,
+        "distance_remaining_m": null,
+        "distance_to_next_step_m": null,
+        "duration_remaining_s": null,
         "label": "Bike A (recorded ride GX010001)",
+        "next_step_index": null,
         "origin": null,
         "position": {
           "lat": 40.7528,
@@ -2065,24 +1971,28 @@
         "status": "recorded"
       },
       {
-        "active_route_id": "ors-bd1881712f",
+        "active_route_id": "ors-b767873be4",
         "bearing_deg": null,
         "candidate_route_ids": [
-          "ors-bd1881712f",
-          "ors-c9f5153bfd"
+          "ors-b767873be4",
+          "ors-257ec72f94"
         ],
         "destination": {
-          "lat": 40.7537,
-          "lon": -73.9846
+          "lat": 40.752944,
+          "lon": -73.985484
         },
+        "distance_remaining_m": 1040.6,
+        "distance_to_next_step_m": 1040.6,
+        "duration_remaining_s": 208.1,
         "label": "Bike B (simulated)",
+        "next_step_index": 1,
         "origin": {
-          "lat": 40.7445,
-          "lon": -73.9919
+          "lat": 40.744753,
+          "lon": -73.991456
         },
         "position": {
-          "lat": 40.7445,
-          "lon": -73.9919
+          "lat": 40.744753,
+          "lon": -73.991456
         },
         "progress_m": 0.0,
         "rider_id": "bike_b",
@@ -2094,22 +2004,10 @@
     "routes": [
       {
         "avoids_hazard_ids": [],
-        "distance_m": 1318.3,
-        "duration_s": 314.2,
+        "distance_m": 1040.6,
+        "duration_s": 208.1,
         "geometry": {
           "coordinates": [
-            [
-              -73.99184,
-              40.744474
-            ],
-            [
-              -73.99196,
-              40.744311
-            ],
-            [
-              -73.991822,
-              40.744253
-            ],
             [
               -73.991456,
               40.744753
@@ -2301,74 +2199,6 @@
             [
               -73.985484,
               40.752944
-            ],
-            [
-              -73.985446,
-              40.752993
-            ],
-            [
-              -73.985082,
-              40.7535
-            ],
-            [
-              -73.98504,
-              40.753559
-            ],
-            [
-              -73.984909,
-              40.753503
-            ],
-            [
-              -73.98487,
-              40.753559
-            ],
-            [
-              -73.984864,
-              40.753567
-            ],
-            [
-              -73.984764,
-              40.753524
-            ],
-            [
-              -73.984745,
-              40.75355
-            ],
-            [
-              -73.984498,
-              40.753447
-            ],
-            [
-              -73.984493,
-              40.753454
-            ],
-            [
-              -73.98441,
-              40.753567
-            ],
-            [
-              -73.984431,
-              40.753576
-            ],
-            [
-              -73.984501,
-              40.753591
-            ],
-            [
-              -73.984492,
-              40.753602
-            ],
-            [
-              -73.98464,
-              40.753664
-            ],
-            [
-              -73.984614,
-              40.753698
-            ],
-            [
-              -73.984604,
-              40.753694
             ]
           ],
           "type": "LineString"
@@ -2378,7 +2208,27 @@
         "provenance": "cached_provider",
         "provider": "openrouteservice",
         "role": "primary",
-        "route_id": "ors-bd1881712f",
+        "route_id": "ors-b767873be4",
+        "steps": [
+          {
+            "distance_m": 1040.6,
+            "duration_s": 208.1,
+            "end_index": 47,
+            "instruction": "Head northeast on 6th Avenue",
+            "maneuver_type": "depart",
+            "start_index": 0,
+            "street_name": "6th Avenue"
+          },
+          {
+            "distance_m": 0.0,
+            "duration_s": 0.0,
+            "end_index": 47,
+            "instruction": "Arrive at 6th Avenue, straight ahead",
+            "maneuver_type": "arrive",
+            "start_index": 47,
+            "street_name": null
+          }
+        ],
         "warnings": [
           "Extra info requested but not available: roadaccessrestrictions",
           "recorded provider response replayed (provider unavailable now)"
@@ -2388,22 +2238,10 @@
         "avoids_hazard_ids": [
           "hazard-91c48492e7825d1c"
         ],
-        "distance_m": 1489.3,
-        "duration_s": 352.6,
+        "distance_m": 1211.7,
+        "duration_s": 246.6,
         "geometry": {
           "coordinates": [
-            [
-              -73.99184,
-              40.744474
-            ],
-            [
-              -73.99196,
-              40.744311
-            ],
-            [
-              -73.991822,
-              40.744253
-            ],
             [
               -73.991456,
               40.744753
@@ -2639,74 +2477,6 @@
             [
               -73.985484,
               40.752944
-            ],
-            [
-              -73.985446,
-              40.752993
-            ],
-            [
-              -73.985082,
-              40.7535
-            ],
-            [
-              -73.98504,
-              40.753559
-            ],
-            [
-              -73.984909,
-              40.753503
-            ],
-            [
-              -73.98487,
-              40.753559
-            ],
-            [
-              -73.984864,
-              40.753567
-            ],
-            [
-              -73.984764,
-              40.753524
-            ],
-            [
-              -73.984745,
-              40.75355
-            ],
-            [
-              -73.984498,
-              40.753447
-            ],
-            [
-              -73.984493,
-              40.753454
-            ],
-            [
-              -73.98441,
-              40.753567
-            ],
-            [
-              -73.984431,
-              40.753576
-            ],
-            [
-              -73.984501,
-              40.753591
-            ],
-            [
-              -73.984492,
-              40.753602
-            ],
-            [
-              -73.98464,
-              40.753664
-            ],
-            [
-              -73.984614,
-              40.753698
-            ],
-            [
-              -73.984604,
-              40.753694
             ]
           ],
           "type": "LineString"
@@ -2716,7 +2486,63 @@
         "provenance": "cached_provider",
         "provider": "openrouteservice",
         "role": "detour",
-        "route_id": "ors-c9f5153bfd",
+        "route_id": "ors-257ec72f94",
+        "steps": [
+          {
+            "distance_m": 320.6,
+            "duration_s": 64.1,
+            "end_index": 15,
+            "instruction": "Head northeast on 6th Avenue",
+            "maneuver_type": "depart",
+            "start_index": 0,
+            "street_name": "6th Avenue"
+          },
+          {
+            "distance_m": 110.2,
+            "duration_s": 22.0,
+            "end_index": 18,
+            "instruction": "Turn right onto West 30th Street",
+            "maneuver_type": "right",
+            "start_index": 15,
+            "street_name": "West 30th Street"
+          },
+          {
+            "distance_m": 170.3,
+            "duration_s": 38.3,
+            "end_index": 30,
+            "instruction": "Turn sharp left onto Broadway",
+            "maneuver_type": "sharp_left",
+            "start_index": 18,
+            "street_name": "Broadway"
+          },
+          {
+            "distance_m": 47.9,
+            "duration_s": 9.6,
+            "end_index": 34,
+            "instruction": "Turn left onto West 32nd Street",
+            "maneuver_type": "left",
+            "start_index": 30,
+            "street_name": "West 32nd Street"
+          },
+          {
+            "distance_m": 562.6,
+            "duration_s": 112.5,
+            "end_index": 58,
+            "instruction": "Turn right onto 6th Avenue",
+            "maneuver_type": "right",
+            "start_index": 34,
+            "street_name": "6th Avenue"
+          },
+          {
+            "distance_m": 0.0,
+            "duration_s": 0.0,
+            "end_index": 58,
+            "instruction": "Arrive at 6th Avenue, straight ahead",
+            "maneuver_type": "arrive",
+            "start_index": 58,
+            "street_name": null
+          }
+        ],
         "warnings": [
           "Extra info requested but not available: roadaccessrestrictions",
           "recorded provider response replayed (provider unavailable now)"
@@ -2772,7 +2598,7 @@
           "Alternatives start at the rider's current position; directed-road coverage is supplied.",
           "Planning area 2000 m; nearby radius 200 m.",
           "Route provenance: recorded_provider; provider: openrouteservice.",
-          "Route ors-bd1881712f: recorded_provider, openrouteservice, cycling-regular.",
+          "Route ors-b767873be4: recorded_provider, openrouteservice, cycling-regular.",
           "Extra info requested but not available: roadaccessrestrictions",
           "recorded provider response replayed (provider unavailable now)",
           "Decision detail: No active report matches the directed route ahead within the planning area.",
@@ -2790,19 +2616,22 @@
         "revision": 1,
         "rider_id": "bike_b",
         "schema_version": "1",
-        "selected_route_id": "ors-bd1881712f",
+        "selected_route_id": "ors-b767873be4",
         "session_time_s": 0.0
       },
       {
         "action": "heads_up",
-        "arrival_in_s": 119.00853320713608,
+        "arrival_in_s": 80.31617563277253,
         "assumptions": [
           "Provider bicycle durations approximate arrival; traffic and map restrictions may differ.",
           "Persistence and delay are versioned demonstration assumptions, not probabilities.",
           "Alternatives start at the rider's current position; directed-road coverage is supplied.",
           "Planning area 2000 m; nearby radius 200 m.",
           "Route provenance: recorded_provider; provider: openrouteservice.",
-          "Route ors-bd1881712f: recorded_provider, openrouteservice, cycling-regular.",
+          "Route ors-257ec72f94: recorded_provider, openrouteservice, cycling-regular.",
+          "Route ors-b767873be4: recorded_provider, openrouteservice, cycling-regular.",
+          "Extra info requested but not available: roadaccessrestrictions",
+          "recorded provider response replayed (provider unavailable now)",
           "Extra info requested but not available: roadaccessrestrictions",
           "recorded provider response replayed (provider unavailable now)",
           "Prior lane_blocked:demo-compressed-1; impact serious; evidence synthetic.",
@@ -2813,7 +2642,7 @@
         "changed": true,
         "decision_id": "dec-bike_b-160",
         "detour_cost_s": null,
-        "estimated_delay_s": 31.91105073650169,
+        "estimated_delay_s": 35.68392397521404,
         "evidence_ids": [
           "ev-obs-nyc-syn-block-001"
         ],
@@ -2821,39 +2650,39 @@
         "hazard_ids": [
           "hazard-91c48492e7825d1c"
         ],
-        "reason": "Blockage 500 m ahead. Stay alert; allow about 32 sec.",
+        "reason": "Blockage 400 m ahead. Stay alert; allow about 36 sec.",
         "revision": 4,
         "rider_id": "bike_b",
         "schema_version": "1",
-        "selected_route_id": "ors-bd1881712f",
+        "selected_route_id": "ors-b767873be4",
         "session_time_s": 160.0
       }
     ],
     "decisions": [
       {
         "action": "heads_up",
-        "arrival_in_s": 118.0073556181391,
+        "arrival_in_s": 80.31617563277253,
         "assumptions": [
           "Provider bicycle durations approximate arrival; traffic and map restrictions may differ.",
           "Persistence and delay are versioned demonstration assumptions, not probabilities.",
           "Alternatives start at the rider's current position; directed-road coverage is supplied.",
           "Planning area 2000 m; nearby radius 200 m.",
           "Route provenance: recorded_provider; provider: openrouteservice.",
-          "Route ors-bd1881712f: recorded_provider, openrouteservice, cycling-regular.",
-          "Route ors-c9f5153bfd: recorded_provider, openrouteservice, cycling-regular.",
+          "Route ors-257ec72f94: recorded_provider, openrouteservice, cycling-regular.",
+          "Route ors-b767873be4: recorded_provider, openrouteservice, cycling-regular.",
           "Extra info requested but not available: roadaccessrestrictions",
           "recorded provider response replayed (provider unavailable now)",
           "Extra info requested but not available: roadaccessrestrictions",
           "recorded provider response replayed (provider unavailable now)",
           "Prior lane_blocked:demo-compressed-1; impact serious; evidence synthetic.",
-          "Decision detail: Uncertain report ahead by estimated arrival; it is not cleared.",
+          "Decision detail: Relevant report is ahead within the planning area, outside the nearby radius.",
           "Road relevance uses geometry, bearing and anchor uncertainty; provider edge IDs are absent from the bootstrap contract, so parallel roads can remain ambiguous.",
           "Arrival uses uniform speed along the provider geometry; segment durations are unavailable. Alternatives must join within 5 m of the current position."
         ],
         "changed": false,
         "decision_id": "dec-bike_b-300",
         "detour_cost_s": null,
-        "estimated_delay_s": 21.359743953194506,
+        "estimated_delay_s": 23.81616193764465,
         "evidence_ids": [
           "ev-obs-nyc-syn-block-001"
         ],
@@ -2861,11 +2690,11 @@
         "hazard_ids": [
           "hazard-91c48492e7825d1c"
         ],
-        "reason": "Possible blockage 500 m ahead. Stay alert; delay uncertain.",
+        "reason": "Blockage 400 m ahead. Stay alert; allow about 24 sec.",
         "revision": 5,
         "rider_id": "bike_b",
         "schema_version": "1",
-        "selected_route_id": "ors-bd1881712f",
+        "selected_route_id": "ors-b767873be4",
         "session_time_s": 300.0
       }
     ],
@@ -2944,19 +2773,11 @@
       },
       {
         "kind": "decision",
-        "message": "bike_b: heads_up \u2014 Blockage 500 m ahead. Stay alert; allow about 32 sec.",
+        "message": "bike_b: heads_up \u2014 Blockage 400 m ahead. Stay alert; allow about 36 sec.",
         "ref_ids": [
           "dec-bike_b-160"
         ],
         "session_time_s": 160.0
-      },
-      {
-        "kind": "system",
-        "message": "Bike B (simulated) departs",
-        "ref_ids": [
-          "bike_b"
-        ],
-        "session_time_s": 300.0
       }
     ],
     "hazards": [
@@ -3415,7 +3236,11 @@
         "bearing_deg": null,
         "candidate_route_ids": [],
         "destination": null,
+        "distance_remaining_m": null,
+        "distance_to_next_step_m": null,
+        "duration_remaining_s": null,
         "label": "Bike A (recorded ride GX010001)",
+        "next_step_index": null,
         "origin": null,
         "position": {
           "lat": 40.7528,
@@ -3428,51 +3253,43 @@
         "status": "recorded"
       },
       {
-        "active_route_id": "ors-bd1881712f",
-        "bearing_deg": 209.15122584136003,
+        "active_route_id": "ors-b767873be4",
+        "bearing_deg": null,
         "candidate_route_ids": [
-          "ors-bd1881712f",
-          "ors-c9f5153bfd"
+          "ors-b767873be4",
+          "ors-257ec72f94"
         ],
         "destination": {
-          "lat": 40.7537,
-          "lon": -73.9846
+          "lat": 40.752944,
+          "lon": -73.985484
         },
+        "distance_remaining_m": 1040.6,
+        "distance_to_next_step_m": 1040.6,
+        "duration_remaining_s": 208.1,
         "label": "Bike B (simulated)",
+        "next_step_index": 1,
         "origin": {
-          "lat": 40.7445,
-          "lon": -73.9919
+          "lat": 40.744753,
+          "lon": -73.991456
         },
         "position": {
-          "lat": 40.74444101277568,
-          "lon": -73.99186428507312
+          "lat": 40.744753,
+          "lon": -73.991456
         },
-        "progress_m": 4.2,
+        "progress_m": 0.0,
         "rider_id": "bike_b",
         "simulated": true,
         "speed_mps": 4.2,
-        "status": "riding"
+        "status": "waiting"
       }
     ],
     "routes": [
       {
         "avoids_hazard_ids": [],
-        "distance_m": 1318.3,
-        "duration_s": 314.2,
+        "distance_m": 1040.6,
+        "duration_s": 208.1,
         "geometry": {
           "coordinates": [
-            [
-              -73.99184,
-              40.744474
-            ],
-            [
-              -73.99196,
-              40.744311
-            ],
-            [
-              -73.991822,
-              40.744253
-            ],
             [
               -73.991456,
               40.744753
@@ -3664,74 +3481,6 @@
             [
               -73.985484,
               40.752944
-            ],
-            [
-              -73.985446,
-              40.752993
-            ],
-            [
-              -73.985082,
-              40.7535
-            ],
-            [
-              -73.98504,
-              40.753559
-            ],
-            [
-              -73.984909,
-              40.753503
-            ],
-            [
-              -73.98487,
-              40.753559
-            ],
-            [
-              -73.984864,
-              40.753567
-            ],
-            [
-              -73.984764,
-              40.753524
-            ],
-            [
-              -73.984745,
-              40.75355
-            ],
-            [
-              -73.984498,
-              40.753447
-            ],
-            [
-              -73.984493,
-              40.753454
-            ],
-            [
-              -73.98441,
-              40.753567
-            ],
-            [
-              -73.984431,
-              40.753576
-            ],
-            [
-              -73.984501,
-              40.753591
-            ],
-            [
-              -73.984492,
-              40.753602
-            ],
-            [
-              -73.98464,
-              40.753664
-            ],
-            [
-              -73.984614,
-              40.753698
-            ],
-            [
-              -73.984604,
-              40.753694
             ]
           ],
           "type": "LineString"
@@ -3741,7 +3490,27 @@
         "provenance": "cached_provider",
         "provider": "openrouteservice",
         "role": "primary",
-        "route_id": "ors-bd1881712f",
+        "route_id": "ors-b767873be4",
+        "steps": [
+          {
+            "distance_m": 1040.6,
+            "duration_s": 208.1,
+            "end_index": 47,
+            "instruction": "Head northeast on 6th Avenue",
+            "maneuver_type": "depart",
+            "start_index": 0,
+            "street_name": "6th Avenue"
+          },
+          {
+            "distance_m": 0.0,
+            "duration_s": 0.0,
+            "end_index": 47,
+            "instruction": "Arrive at 6th Avenue, straight ahead",
+            "maneuver_type": "arrive",
+            "start_index": 47,
+            "street_name": null
+          }
+        ],
         "warnings": [
           "Extra info requested but not available: roadaccessrestrictions",
           "recorded provider response replayed (provider unavailable now)"
@@ -3751,22 +3520,10 @@
         "avoids_hazard_ids": [
           "hazard-91c48492e7825d1c"
         ],
-        "distance_m": 1489.3,
-        "duration_s": 352.6,
+        "distance_m": 1211.7,
+        "duration_s": 246.6,
         "geometry": {
           "coordinates": [
-            [
-              -73.99184,
-              40.744474
-            ],
-            [
-              -73.99196,
-              40.744311
-            ],
-            [
-              -73.991822,
-              40.744253
-            ],
             [
               -73.991456,
               40.744753
@@ -4002,74 +3759,6 @@
             [
               -73.985484,
               40.752944
-            ],
-            [
-              -73.985446,
-              40.752993
-            ],
-            [
-              -73.985082,
-              40.7535
-            ],
-            [
-              -73.98504,
-              40.753559
-            ],
-            [
-              -73.984909,
-              40.753503
-            ],
-            [
-              -73.98487,
-              40.753559
-            ],
-            [
-              -73.984864,
-              40.753567
-            ],
-            [
-              -73.984764,
-              40.753524
-            ],
-            [
-              -73.984745,
-              40.75355
-            ],
-            [
-              -73.984498,
-              40.753447
-            ],
-            [
-              -73.984493,
-              40.753454
-            ],
-            [
-              -73.98441,
-              40.753567
-            ],
-            [
-              -73.984431,
-              40.753576
-            ],
-            [
-              -73.984501,
-              40.753591
-            ],
-            [
-              -73.984492,
-              40.753602
-            ],
-            [
-              -73.98464,
-              40.753664
-            ],
-            [
-              -73.984614,
-              40.753698
-            ],
-            [
-              -73.984604,
-              40.753694
             ]
           ],
           "type": "LineString"
@@ -4079,7 +3768,63 @@
         "provenance": "cached_provider",
         "provider": "openrouteservice",
         "role": "detour",
-        "route_id": "ors-c9f5153bfd",
+        "route_id": "ors-257ec72f94",
+        "steps": [
+          {
+            "distance_m": 320.6,
+            "duration_s": 64.1,
+            "end_index": 15,
+            "instruction": "Head northeast on 6th Avenue",
+            "maneuver_type": "depart",
+            "start_index": 0,
+            "street_name": "6th Avenue"
+          },
+          {
+            "distance_m": 110.2,
+            "duration_s": 22.0,
+            "end_index": 18,
+            "instruction": "Turn right onto West 30th Street",
+            "maneuver_type": "right",
+            "start_index": 15,
+            "street_name": "West 30th Street"
+          },
+          {
+            "distance_m": 170.3,
+            "duration_s": 38.3,
+            "end_index": 30,
+            "instruction": "Turn sharp left onto Broadway",
+            "maneuver_type": "sharp_left",
+            "start_index": 18,
+            "street_name": "Broadway"
+          },
+          {
+            "distance_m": 47.9,
+            "duration_s": 9.6,
+            "end_index": 34,
+            "instruction": "Turn left onto West 32nd Street",
+            "maneuver_type": "left",
+            "start_index": 30,
+            "street_name": "West 32nd Street"
+          },
+          {
+            "distance_m": 562.6,
+            "duration_s": 112.5,
+            "end_index": 58,
+            "instruction": "Turn right onto 6th Avenue",
+            "maneuver_type": "right",
+            "start_index": 34,
+            "street_name": "6th Avenue"
+          },
+          {
+            "distance_m": 0.0,
+            "duration_s": 0.0,
+            "end_index": 58,
+            "instruction": "Arrive at 6th Avenue, straight ahead",
+            "maneuver_type": "arrive",
+            "start_index": 58,
+            "street_name": null
+          }
+        ],
         "warnings": [
           "Extra info requested but not available: roadaccessrestrictions",
           "recorded provider response replayed (provider unavailable now)"
@@ -4135,7 +3880,7 @@
           "Alternatives start at the rider's current position; directed-road coverage is supplied.",
           "Planning area 2000 m; nearby radius 200 m.",
           "Route provenance: recorded_provider; provider: openrouteservice.",
-          "Route ors-bd1881712f: recorded_provider, openrouteservice, cycling-regular.",
+          "Route ors-b767873be4: recorded_provider, openrouteservice, cycling-regular.",
           "Extra info requested but not available: roadaccessrestrictions",
           "recorded provider response replayed (provider unavailable now)",
           "Decision detail: No active report matches the directed route ahead within the planning area.",
@@ -4153,19 +3898,22 @@
         "revision": 1,
         "rider_id": "bike_b",
         "schema_version": "1",
-        "selected_route_id": "ors-bd1881712f",
+        "selected_route_id": "ors-b767873be4",
         "session_time_s": 0.0
       },
       {
         "action": "heads_up",
-        "arrival_in_s": 119.00853320713608,
+        "arrival_in_s": 80.31617563277253,
         "assumptions": [
           "Provider bicycle durations approximate arrival; traffic and map restrictions may differ.",
           "Persistence and delay are versioned demonstration assumptions, not probabilities.",
           "Alternatives start at the rider's current position; directed-road coverage is supplied.",
           "Planning area 2000 m; nearby radius 200 m.",
           "Route provenance: recorded_provider; provider: openrouteservice.",
-          "Route ors-bd1881712f: recorded_provider, openrouteservice, cycling-regular.",
+          "Route ors-257ec72f94: recorded_provider, openrouteservice, cycling-regular.",
+          "Route ors-b767873be4: recorded_provider, openrouteservice, cycling-regular.",
+          "Extra info requested but not available: roadaccessrestrictions",
+          "recorded provider response replayed (provider unavailable now)",
           "Extra info requested but not available: roadaccessrestrictions",
           "recorded provider response replayed (provider unavailable now)",
           "Prior lane_blocked:demo-compressed-1; impact serious; evidence synthetic.",
@@ -4176,7 +3924,7 @@
         "changed": true,
         "decision_id": "dec-bike_b-160",
         "detour_cost_s": null,
-        "estimated_delay_s": 31.91105073650169,
+        "estimated_delay_s": 35.68392397521404,
         "evidence_ids": [
           "ev-obs-nyc-syn-block-001"
         ],
@@ -4184,24 +3932,24 @@
         "hazard_ids": [
           "hazard-91c48492e7825d1c"
         ],
-        "reason": "Blockage 500 m ahead. Stay alert; allow about 32 sec.",
+        "reason": "Blockage 400 m ahead. Stay alert; allow about 36 sec.",
         "revision": 4,
         "rider_id": "bike_b",
         "schema_version": "1",
-        "selected_route_id": "ors-bd1881712f",
+        "selected_route_id": "ors-b767873be4",
         "session_time_s": 160.0
       },
       {
         "action": "slow",
-        "arrival_in_s": 46.923746799353,
+        "arrival_in_s": 39.16065122563506,
         "assumptions": [
           "Provider bicycle durations approximate arrival; traffic and map restrictions may differ.",
           "Persistence and delay are versioned demonstration assumptions, not probabilities.",
           "Alternatives start at the rider's current position; directed-road coverage is supplied.",
           "Planning area 2000 m; nearby radius 200 m.",
           "Route provenance: recorded_provider; provider: openrouteservice.",
-          "Route ors-bd1881712f: recorded_provider, openrouteservice, cycling-regular.",
-          "Route ors-c9f5153bfd: recorded_provider, openrouteservice, cycling-regular.",
+          "Route ors-257ec72f94: recorded_provider, openrouteservice, cycling-regular.",
+          "Route ors-b767873be4: recorded_provider, openrouteservice, cycling-regular.",
           "Extra info requested but not available: roadaccessrestrictions",
           "recorded provider response replayed (provider unavailable now)",
           "Extra info requested but not available: roadaccessrestrictions",
@@ -4212,9 +3960,9 @@
           "Arrival uses uniform speed along the provider geometry; segment durations are unavailable. Alternatives must join within 5 m of the current position."
         ],
         "changed": true,
-        "decision_id": "dec-bike_b-371",
+        "decision_id": "dec-bike_b-368",
         "detour_cost_s": null,
-        "estimated_delay_s": 21.364902350458976,
+        "estimated_delay_s": 22.039461199677525,
         "evidence_ids": [
           "ev-obs-nyc-syn-block-001"
         ],
@@ -4226,21 +3974,21 @@
         "revision": 6,
         "rider_id": "bike_b",
         "schema_version": "1",
-        "selected_route_id": "ors-bd1881712f",
-        "session_time_s": 371.0
+        "selected_route_id": "ors-b767873be4",
+        "session_time_s": 368.0
       }
     ],
     "decisions": [
       {
         "action": "slow",
-        "arrival_in_s": 17.8895967184404,
+        "arrival_in_s": 12.283574061790226,
         "assumptions": [
           "Provider bicycle durations approximate arrival; traffic and map restrictions may differ.",
           "Persistence and delay are versioned demonstration assumptions, not probabilities.",
           "Alternatives start at the rider's current position; directed-road coverage is supplied.",
           "Planning area 2000 m; nearby radius 200 m.",
           "Route provenance: recorded_provider; provider: openrouteservice.",
-          "Route ors-bd1881712f: recorded_provider, openrouteservice, cycling-regular.",
+          "Route ors-b767873be4: recorded_provider, openrouteservice, cycling-regular.",
           "Extra info requested but not available: roadaccessrestrictions",
           "recorded provider response replayed (provider unavailable now)",
           "Prior lane_blocked:demo-compressed-1; impact serious; evidence synthetic.",
@@ -4251,7 +3999,7 @@
         "changed": false,
         "decision_id": "dec-bike_b-400",
         "detour_cost_s": null,
-        "estimated_delay_s": 21.36700965976863,
+        "estimated_delay_s": 21.715775026300054,
         "evidence_ids": [
           "ev-obs-nyc-syn-block-001"
         ],
@@ -4259,11 +4007,11 @@
         "hazard_ids": [
           "hazard-91c48492e7825d1c"
         ],
-        "reason": "Possible blockage 80 m ahead. Slow down; delay uncertain.",
+        "reason": "Possible blockage 60 m ahead. Slow down; delay uncertain.",
         "revision": 6,
         "rider_id": "bike_b",
         "schema_version": "1",
-        "selected_route_id": "ors-bd1881712f",
+        "selected_route_id": "ors-b767873be4",
         "session_time_s": 400.0
       }
     ],
@@ -4342,7 +4090,7 @@
       },
       {
         "kind": "decision",
-        "message": "bike_b: heads_up \u2014 Blockage 500 m ahead. Stay alert; allow about 32 sec.",
+        "message": "bike_b: heads_up \u2014 Blockage 400 m ahead. Stay alert; allow about 36 sec.",
         "ref_ids": [
           "dec-bike_b-160"
         ],
@@ -4354,15 +4102,15 @@
         "ref_ids": [
           "bike_b"
         ],
-        "session_time_s": 300.0
+        "session_time_s": 320.0
       },
       {
         "kind": "decision",
         "message": "bike_b: slow \u2014 Possible blockage 200 m ahead. Slow down; delay uncertain.",
         "ref_ids": [
-          "dec-bike_b-371"
+          "dec-bike_b-368"
         ],
-        "session_time_s": 371.0
+        "session_time_s": 368.0
       },
       {
         "kind": "hazard",
@@ -4829,7 +4577,11 @@
         "bearing_deg": null,
         "candidate_route_ids": [],
         "destination": null,
+        "distance_remaining_m": null,
+        "distance_to_next_step_m": null,
+        "duration_remaining_s": null,
         "label": "Bike A (recorded ride GX010001)",
+        "next_step_index": null,
         "origin": null,
         "position": {
           "lat": 40.7528,
@@ -4842,26 +4594,30 @@
         "status": "recorded"
       },
       {
-        "active_route_id": "ors-bd1881712f",
-        "bearing_deg": 29.200026078464475,
+        "active_route_id": "ors-b767873be4",
+        "bearing_deg": 29.5359501578709,
         "candidate_route_ids": [
-          "ors-bd1881712f",
-          "ors-c9f5153bfd"
+          "ors-b767873be4",
+          "ors-257ec72f94"
         ],
         "destination": {
-          "lat": 40.7537,
-          "lon": -73.9846
+          "lat": 40.752944,
+          "lon": -73.985484
         },
+        "distance_remaining_m": 700.4,
+        "distance_to_next_step_m": 700.4,
+        "duration_remaining_s": 140.1,
         "label": "Bike B (simulated)",
+        "next_step_index": 1,
         "origin": {
-          "lat": 40.7445,
-          "lon": -73.9919
+          "lat": 40.744753,
+          "lon": -73.991456
         },
         "position": {
-          "lat": 40.747324000732235,
-          "lon": -73.98958232732868
+          "lat": 40.74743064298805,
+          "lon": -73.98950271238708
         },
-        "progress_m": 424.19999999999925,
+        "progress_m": 340.1999999999995,
         "rider_id": "bike_b",
         "simulated": true,
         "speed_mps": 4.2,
@@ -4871,22 +4627,10 @@
     "routes": [
       {
         "avoids_hazard_ids": [],
-        "distance_m": 1318.3,
-        "duration_s": 314.2,
+        "distance_m": 1040.6,
+        "duration_s": 208.1,
         "geometry": {
           "coordinates": [
-            [
-              -73.99184,
-              40.744474
-            ],
-            [
-              -73.99196,
-              40.744311
-            ],
-            [
-              -73.991822,
-              40.744253
-            ],
             [
               -73.991456,
               40.744753
@@ -5078,74 +4822,6 @@
             [
               -73.985484,
               40.752944
-            ],
-            [
-              -73.985446,
-              40.752993
-            ],
-            [
-              -73.985082,
-              40.7535
-            ],
-            [
-              -73.98504,
-              40.753559
-            ],
-            [
-              -73.984909,
-              40.753503
-            ],
-            [
-              -73.98487,
-              40.753559
-            ],
-            [
-              -73.984864,
-              40.753567
-            ],
-            [
-              -73.984764,
-              40.753524
-            ],
-            [
-              -73.984745,
-              40.75355
-            ],
-            [
-              -73.984498,
-              40.753447
-            ],
-            [
-              -73.984493,
-              40.753454
-            ],
-            [
-              -73.98441,
-              40.753567
-            ],
-            [
-              -73.984431,
-              40.753576
-            ],
-            [
-              -73.984501,
-              40.753591
-            ],
-            [
-              -73.984492,
-              40.753602
-            ],
-            [
-              -73.98464,
-              40.753664
-            ],
-            [
-              -73.984614,
-              40.753698
-            ],
-            [
-              -73.984604,
-              40.753694
             ]
           ],
           "type": "LineString"
@@ -5155,7 +4831,27 @@
         "provenance": "cached_provider",
         "provider": "openrouteservice",
         "role": "primary",
-        "route_id": "ors-bd1881712f",
+        "route_id": "ors-b767873be4",
+        "steps": [
+          {
+            "distance_m": 1040.6,
+            "duration_s": 208.1,
+            "end_index": 47,
+            "instruction": "Head northeast on 6th Avenue",
+            "maneuver_type": "depart",
+            "start_index": 0,
+            "street_name": "6th Avenue"
+          },
+          {
+            "distance_m": 0.0,
+            "duration_s": 0.0,
+            "end_index": 47,
+            "instruction": "Arrive at 6th Avenue, straight ahead",
+            "maneuver_type": "arrive",
+            "start_index": 47,
+            "street_name": null
+          }
+        ],
         "warnings": [
           "Extra info requested but not available: roadaccessrestrictions",
           "recorded provider response replayed (provider unavailable now)"
@@ -5165,22 +4861,10 @@
         "avoids_hazard_ids": [
           "hazard-91c48492e7825d1c"
         ],
-        "distance_m": 1489.3,
-        "duration_s": 352.6,
+        "distance_m": 1211.7,
+        "duration_s": 246.6,
         "geometry": {
           "coordinates": [
-            [
-              -73.99184,
-              40.744474
-            ],
-            [
-              -73.99196,
-              40.744311
-            ],
-            [
-              -73.991822,
-              40.744253
-            ],
             [
               -73.991456,
               40.744753
@@ -5416,74 +5100,6 @@
             [
               -73.985484,
               40.752944
-            ],
-            [
-              -73.985446,
-              40.752993
-            ],
-            [
-              -73.985082,
-              40.7535
-            ],
-            [
-              -73.98504,
-              40.753559
-            ],
-            [
-              -73.984909,
-              40.753503
-            ],
-            [
-              -73.98487,
-              40.753559
-            ],
-            [
-              -73.984864,
-              40.753567
-            ],
-            [
-              -73.984764,
-              40.753524
-            ],
-            [
-              -73.984745,
-              40.75355
-            ],
-            [
-              -73.984498,
-              40.753447
-            ],
-            [
-              -73.984493,
-              40.753454
-            ],
-            [
-              -73.98441,
-              40.753567
-            ],
-            [
-              -73.984431,
-              40.753576
-            ],
-            [
-              -73.984501,
-              40.753591
-            ],
-            [
-              -73.984492,
-              40.753602
-            ],
-            [
-              -73.98464,
-              40.753664
-            ],
-            [
-              -73.984614,
-              40.753698
-            ],
-            [
-              -73.984604,
-              40.753694
             ]
           ],
           "type": "LineString"
@@ -5493,7 +5109,63 @@
         "provenance": "cached_provider",
         "provider": "openrouteservice",
         "role": "detour",
-        "route_id": "ors-c9f5153bfd",
+        "route_id": "ors-257ec72f94",
+        "steps": [
+          {
+            "distance_m": 320.6,
+            "duration_s": 64.1,
+            "end_index": 15,
+            "instruction": "Head northeast on 6th Avenue",
+            "maneuver_type": "depart",
+            "start_index": 0,
+            "street_name": "6th Avenue"
+          },
+          {
+            "distance_m": 110.2,
+            "duration_s": 22.0,
+            "end_index": 18,
+            "instruction": "Turn right onto West 30th Street",
+            "maneuver_type": "right",
+            "start_index": 15,
+            "street_name": "West 30th Street"
+          },
+          {
+            "distance_m": 170.3,
+            "duration_s": 38.3,
+            "end_index": 30,
+            "instruction": "Turn sharp left onto Broadway",
+            "maneuver_type": "sharp_left",
+            "start_index": 18,
+            "street_name": "Broadway"
+          },
+          {
+            "distance_m": 47.9,
+            "duration_s": 9.6,
+            "end_index": 34,
+            "instruction": "Turn left onto West 32nd Street",
+            "maneuver_type": "left",
+            "start_index": 30,
+            "street_name": "West 32nd Street"
+          },
+          {
+            "distance_m": 562.6,
+            "duration_s": 112.5,
+            "end_index": 58,
+            "instruction": "Turn right onto 6th Avenue",
+            "maneuver_type": "right",
+            "start_index": 34,
+            "street_name": "6th Avenue"
+          },
+          {
+            "distance_m": 0.0,
+            "duration_s": 0.0,
+            "end_index": 58,
+            "instruction": "Arrive at 6th Avenue, straight ahead",
+            "maneuver_type": "arrive",
+            "start_index": 58,
+            "street_name": null
+          }
+        ],
         "warnings": [
           "Extra info requested but not available: roadaccessrestrictions",
           "recorded provider response replayed (provider unavailable now)"
@@ -5549,7 +5221,7 @@
           "Alternatives start at the rider's current position; directed-road coverage is supplied.",
           "Planning area 2000 m; nearby radius 200 m.",
           "Route provenance: recorded_provider; provider: openrouteservice.",
-          "Route ors-bd1881712f: recorded_provider, openrouteservice, cycling-regular.",
+          "Route ors-b767873be4: recorded_provider, openrouteservice, cycling-regular.",
           "Extra info requested but not available: roadaccessrestrictions",
           "recorded provider response replayed (provider unavailable now)",
           "Decision detail: No active report matches the directed route ahead within the planning area.",
@@ -5567,19 +5239,22 @@
         "revision": 1,
         "rider_id": "bike_b",
         "schema_version": "1",
-        "selected_route_id": "ors-bd1881712f",
+        "selected_route_id": "ors-b767873be4",
         "session_time_s": 0.0
       },
       {
         "action": "heads_up",
-        "arrival_in_s": 119.00853320713608,
+        "arrival_in_s": 80.31617563277253,
         "assumptions": [
           "Provider bicycle durations approximate arrival; traffic and map restrictions may differ.",
           "Persistence and delay are versioned demonstration assumptions, not probabilities.",
           "Alternatives start at the rider's current position; directed-road coverage is supplied.",
           "Planning area 2000 m; nearby radius 200 m.",
           "Route provenance: recorded_provider; provider: openrouteservice.",
-          "Route ors-bd1881712f: recorded_provider, openrouteservice, cycling-regular.",
+          "Route ors-257ec72f94: recorded_provider, openrouteservice, cycling-regular.",
+          "Route ors-b767873be4: recorded_provider, openrouteservice, cycling-regular.",
+          "Extra info requested but not available: roadaccessrestrictions",
+          "recorded provider response replayed (provider unavailable now)",
           "Extra info requested but not available: roadaccessrestrictions",
           "recorded provider response replayed (provider unavailable now)",
           "Prior lane_blocked:demo-compressed-1; impact serious; evidence synthetic.",
@@ -5590,7 +5265,7 @@
         "changed": true,
         "decision_id": "dec-bike_b-160",
         "detour_cost_s": null,
-        "estimated_delay_s": 31.91105073650169,
+        "estimated_delay_s": 35.68392397521404,
         "evidence_ids": [
           "ev-obs-nyc-syn-block-001"
         ],
@@ -5598,24 +5273,24 @@
         "hazard_ids": [
           "hazard-91c48492e7825d1c"
         ],
-        "reason": "Blockage 500 m ahead. Stay alert; allow about 32 sec.",
+        "reason": "Blockage 400 m ahead. Stay alert; allow about 36 sec.",
         "revision": 4,
         "rider_id": "bike_b",
         "schema_version": "1",
-        "selected_route_id": "ors-bd1881712f",
+        "selected_route_id": "ors-b767873be4",
         "session_time_s": 160.0
       },
       {
         "action": "slow",
-        "arrival_in_s": 46.923746799353,
+        "arrival_in_s": 39.16065122563506,
         "assumptions": [
           "Provider bicycle durations approximate arrival; traffic and map restrictions may differ.",
           "Persistence and delay are versioned demonstration assumptions, not probabilities.",
           "Alternatives start at the rider's current position; directed-road coverage is supplied.",
           "Planning area 2000 m; nearby radius 200 m.",
           "Route provenance: recorded_provider; provider: openrouteservice.",
-          "Route ors-bd1881712f: recorded_provider, openrouteservice, cycling-regular.",
-          "Route ors-c9f5153bfd: recorded_provider, openrouteservice, cycling-regular.",
+          "Route ors-257ec72f94: recorded_provider, openrouteservice, cycling-regular.",
+          "Route ors-b767873be4: recorded_provider, openrouteservice, cycling-regular.",
           "Extra info requested but not available: roadaccessrestrictions",
           "recorded provider response replayed (provider unavailable now)",
           "Extra info requested but not available: roadaccessrestrictions",
@@ -5626,9 +5301,9 @@
           "Arrival uses uniform speed along the provider geometry; segment durations are unavailable. Alternatives must join within 5 m of the current position."
         ],
         "changed": true,
-        "decision_id": "dec-bike_b-371",
+        "decision_id": "dec-bike_b-368",
         "detour_cost_s": null,
-        "estimated_delay_s": 21.364902350458976,
+        "estimated_delay_s": 22.039461199677525,
         "evidence_ids": [
           "ev-obs-nyc-syn-block-001"
         ],
@@ -5640,8 +5315,8 @@
         "revision": 6,
         "rider_id": "bike_b",
         "schema_version": "1",
-        "selected_route_id": "ors-bd1881712f",
-        "session_time_s": 371.0
+        "selected_route_id": "ors-b767873be4",
+        "session_time_s": 368.0
       },
       {
         "action": "continue",
@@ -5652,7 +5327,7 @@
           "Alternatives start at the rider's current position; directed-road coverage is supplied.",
           "Planning area 2000 m; nearby radius 200 m.",
           "Route provenance: recorded_provider; provider: openrouteservice.",
-          "Route ors-bd1881712f: recorded_provider, openrouteservice, cycling-regular.",
+          "Route ors-b767873be4: recorded_provider, openrouteservice, cycling-regular.",
           "Extra info requested but not available: roadaccessrestrictions",
           "recorded provider response replayed (provider unavailable now)",
           "Prior lane_blocked:demo-compressed-1; impact serious; evidence synthetic.",
@@ -5661,7 +5336,7 @@
           "Arrival uses uniform speed along the provider geometry; segment durations are unavailable. Alternatives must join within 5 m of the current position."
         ],
         "changed": true,
-        "decision_id": "dec-bike_b-418",
+        "decision_id": "dec-bike_b-415",
         "detour_cost_s": null,
         "estimated_delay_s": 0.0,
         "evidence_ids": [],
@@ -5671,8 +5346,8 @@
         "revision": 7,
         "rider_id": "bike_b",
         "schema_version": "1",
-        "selected_route_id": "ors-bd1881712f",
-        "session_time_s": 418.0
+        "selected_route_id": "ors-b767873be4",
+        "session_time_s": 415.0
       }
     ],
     "decisions": [
@@ -5685,8 +5360,8 @@
           "Alternatives start at the rider's current position; directed-road coverage is supplied.",
           "Planning area 2000 m; nearby radius 200 m.",
           "Route provenance: recorded_provider; provider: openrouteservice.",
-          "Route ors-bd1881712f: recorded_provider, openrouteservice, cycling-regular.",
-          "Route ors-c9f5153bfd: recorded_provider, openrouteservice, cycling-regular.",
+          "Route ors-257ec72f94: recorded_provider, openrouteservice, cycling-regular.",
+          "Route ors-b767873be4: recorded_provider, openrouteservice, cycling-regular.",
           "Extra info requested but not available: roadaccessrestrictions",
           "recorded provider response replayed (provider unavailable now)",
           "Extra info requested but not available: roadaccessrestrictions",
@@ -5707,7 +5382,7 @@
         "revision": 7,
         "rider_id": "bike_b",
         "schema_version": "1",
-        "selected_route_id": "ors-bd1881712f",
+        "selected_route_id": "ors-b767873be4",
         "session_time_s": 450.0
       }
     ],
@@ -5786,7 +5461,7 @@
       },
       {
         "kind": "decision",
-        "message": "bike_b: heads_up \u2014 Blockage 500 m ahead. Stay alert; allow about 32 sec.",
+        "message": "bike_b: heads_up \u2014 Blockage 400 m ahead. Stay alert; allow about 36 sec.",
         "ref_ids": [
           "dec-bike_b-160"
         ],
@@ -5798,15 +5473,15 @@
         "ref_ids": [
           "bike_b"
         ],
-        "session_time_s": 300.0
+        "session_time_s": 320.0
       },
       {
         "kind": "decision",
         "message": "bike_b: slow \u2014 Possible blockage 200 m ahead. Slow down; delay uncertain.",
         "ref_ids": [
-          "dec-bike_b-371"
+          "dec-bike_b-368"
         ],
-        "session_time_s": 371.0
+        "session_time_s": 368.0
       },
       {
         "kind": "hazard",
@@ -5820,9 +5495,9 @@
         "kind": "decision",
         "message": "bike_b: continue \u2014 Keep riding. No active warnings ahead.",
         "ref_ids": [
-          "dec-bike_b-418"
+          "dec-bike_b-415"
         ],
-        "session_time_s": 418.0
+        "session_time_s": 415.0
       }
     ],
     "hazards": [
@@ -6281,7 +5956,11 @@
         "bearing_deg": null,
         "candidate_route_ids": [],
         "destination": null,
+        "distance_remaining_m": null,
+        "distance_to_next_step_m": null,
+        "duration_remaining_s": null,
         "label": "Bike A (recorded ride GX010001)",
+        "next_step_index": null,
         "origin": null,
         "position": {
           "lat": 40.7528,
@@ -6294,26 +5973,30 @@
         "status": "recorded"
       },
       {
-        "active_route_id": "ors-bd1881712f",
-        "bearing_deg": 29.588106327743674,
+        "active_route_id": "ors-b767873be4",
+        "bearing_deg": 29.465192958733212,
         "candidate_route_ids": [
-          "ors-bd1881712f",
-          "ors-c9f5153bfd"
+          "ors-b767873be4",
+          "ors-257ec72f94"
         ],
         "destination": {
-          "lat": 40.7537,
-          "lon": -73.9846
+          "lat": 40.752944,
+          "lon": -73.985484
         },
+        "distance_remaining_m": 490.4,
+        "distance_to_next_step_m": 490.4,
+        "duration_remaining_s": 98.1,
         "label": "Bike B (simulated)",
+        "next_step_index": 1,
         "origin": {
-          "lat": 40.7445,
-          "lon": -73.9919
+          "lat": 40.744753,
+          "lon": -73.991456
         },
         "position": {
-          "lat": 40.74896627599212,
-          "lon": -73.98835149493236
+          "lat": 40.74907282901,
+          "lon": -73.98827166989085
         },
-        "progress_m": 634.2000000000004,
+        "progress_m": 550.1999999999995,
         "rider_id": "bike_b",
         "simulated": true,
         "speed_mps": 4.2,
@@ -6323,22 +6006,10 @@
     "routes": [
       {
         "avoids_hazard_ids": [],
-        "distance_m": 1318.3,
-        "duration_s": 314.2,
+        "distance_m": 1040.6,
+        "duration_s": 208.1,
         "geometry": {
           "coordinates": [
-            [
-              -73.99184,
-              40.744474
-            ],
-            [
-              -73.99196,
-              40.744311
-            ],
-            [
-              -73.991822,
-              40.744253
-            ],
             [
               -73.991456,
               40.744753
@@ -6530,74 +6201,6 @@
             [
               -73.985484,
               40.752944
-            ],
-            [
-              -73.985446,
-              40.752993
-            ],
-            [
-              -73.985082,
-              40.7535
-            ],
-            [
-              -73.98504,
-              40.753559
-            ],
-            [
-              -73.984909,
-              40.753503
-            ],
-            [
-              -73.98487,
-              40.753559
-            ],
-            [
-              -73.984864,
-              40.753567
-            ],
-            [
-              -73.984764,
-              40.753524
-            ],
-            [
-              -73.984745,
-              40.75355
-            ],
-            [
-              -73.984498,
-              40.753447
-            ],
-            [
-              -73.984493,
-              40.753454
-            ],
-            [
-              -73.98441,
-              40.753567
-            ],
-            [
-              -73.984431,
-              40.753576
-            ],
-            [
-              -73.984501,
-              40.753591
-            ],
-            [
-              -73.984492,
-              40.753602
-            ],
-            [
-              -73.98464,
-              40.753664
-            ],
-            [
-              -73.984614,
-              40.753698
-            ],
-            [
-              -73.984604,
-              40.753694
             ]
           ],
           "type": "LineString"
@@ -6607,7 +6210,27 @@
         "provenance": "cached_provider",
         "provider": "openrouteservice",
         "role": "primary",
-        "route_id": "ors-bd1881712f",
+        "route_id": "ors-b767873be4",
+        "steps": [
+          {
+            "distance_m": 1040.6,
+            "duration_s": 208.1,
+            "end_index": 47,
+            "instruction": "Head northeast on 6th Avenue",
+            "maneuver_type": "depart",
+            "start_index": 0,
+            "street_name": "6th Avenue"
+          },
+          {
+            "distance_m": 0.0,
+            "duration_s": 0.0,
+            "end_index": 47,
+            "instruction": "Arrive at 6th Avenue, straight ahead",
+            "maneuver_type": "arrive",
+            "start_index": 47,
+            "street_name": null
+          }
+        ],
         "warnings": [
           "Extra info requested but not available: roadaccessrestrictions",
           "recorded provider response replayed (provider unavailable now)"
@@ -6617,22 +6240,10 @@
         "avoids_hazard_ids": [
           "hazard-91c48492e7825d1c"
         ],
-        "distance_m": 1489.3,
-        "duration_s": 352.6,
+        "distance_m": 1211.7,
+        "duration_s": 246.6,
         "geometry": {
           "coordinates": [
-            [
-              -73.99184,
-              40.744474
-            ],
-            [
-              -73.99196,
-              40.744311
-            ],
-            [
-              -73.991822,
-              40.744253
-            ],
             [
               -73.991456,
               40.744753
@@ -6868,74 +6479,6 @@
             [
               -73.985484,
               40.752944
-            ],
-            [
-              -73.985446,
-              40.752993
-            ],
-            [
-              -73.985082,
-              40.7535
-            ],
-            [
-              -73.98504,
-              40.753559
-            ],
-            [
-              -73.984909,
-              40.753503
-            ],
-            [
-              -73.98487,
-              40.753559
-            ],
-            [
-              -73.984864,
-              40.753567
-            ],
-            [
-              -73.984764,
-              40.753524
-            ],
-            [
-              -73.984745,
-              40.75355
-            ],
-            [
-              -73.984498,
-              40.753447
-            ],
-            [
-              -73.984493,
-              40.753454
-            ],
-            [
-              -73.98441,
-              40.753567
-            ],
-            [
-              -73.984431,
-              40.753576
-            ],
-            [
-              -73.984501,
-              40.753591
-            ],
-            [
-              -73.984492,
-              40.753602
-            ],
-            [
-              -73.98464,
-              40.753664
-            ],
-            [
-              -73.984614,
-              40.753698
-            ],
-            [
-              -73.984604,
-              40.753694
             ]
           ],
           "type": "LineString"
@@ -6945,7 +6488,63 @@
         "provenance": "cached_provider",
         "provider": "openrouteservice",
         "role": "detour",
-        "route_id": "ors-c9f5153bfd",
+        "route_id": "ors-257ec72f94",
+        "steps": [
+          {
+            "distance_m": 320.6,
+            "duration_s": 64.1,
+            "end_index": 15,
+            "instruction": "Head northeast on 6th Avenue",
+            "maneuver_type": "depart",
+            "start_index": 0,
+            "street_name": "6th Avenue"
+          },
+          {
+            "distance_m": 110.2,
+            "duration_s": 22.0,
+            "end_index": 18,
+            "instruction": "Turn right onto West 30th Street",
+            "maneuver_type": "right",
+            "start_index": 15,
+            "street_name": "West 30th Street"
+          },
+          {
+            "distance_m": 170.3,
+            "duration_s": 38.3,
+            "end_index": 30,
+            "instruction": "Turn sharp left onto Broadway",
+            "maneuver_type": "sharp_left",
+            "start_index": 18,
+            "street_name": "Broadway"
+          },
+          {
+            "distance_m": 47.9,
+            "duration_s": 9.6,
+            "end_index": 34,
+            "instruction": "Turn left onto West 32nd Street",
+            "maneuver_type": "left",
+            "start_index": 30,
+            "street_name": "West 32nd Street"
+          },
+          {
+            "distance_m": 562.6,
+            "duration_s": 112.5,
+            "end_index": 58,
+            "instruction": "Turn right onto 6th Avenue",
+            "maneuver_type": "right",
+            "start_index": 34,
+            "street_name": "6th Avenue"
+          },
+          {
+            "distance_m": 0.0,
+            "duration_s": 0.0,
+            "end_index": 58,
+            "instruction": "Arrive at 6th Avenue, straight ahead",
+            "maneuver_type": "arrive",
+            "start_index": 58,
+            "street_name": null
+          }
+        ],
         "warnings": [
           "Extra info requested but not available: roadaccessrestrictions",
           "recorded provider response replayed (provider unavailable now)"
@@ -7001,7 +6600,7 @@
           "Alternatives start at the rider's current position; directed-road coverage is supplied.",
           "Planning area 2000 m; nearby radius 200 m.",
           "Route provenance: recorded_provider; provider: openrouteservice.",
-          "Route ors-bd1881712f: recorded_provider, openrouteservice, cycling-regular.",
+          "Route ors-b767873be4: recorded_provider, openrouteservice, cycling-regular.",
           "Extra info requested but not available: roadaccessrestrictions",
           "recorded provider response replayed (provider unavailable now)",
           "Decision detail: No active report matches the directed route ahead within the planning area.",
@@ -7019,19 +6618,22 @@
         "revision": 1,
         "rider_id": "bike_b",
         "schema_version": "1",
-        "selected_route_id": "ors-bd1881712f",
+        "selected_route_id": "ors-b767873be4",
         "session_time_s": 0.0
       },
       {
         "action": "heads_up",
-        "arrival_in_s": 119.00853320713608,
+        "arrival_in_s": 80.31617563277253,
         "assumptions": [
           "Provider bicycle durations approximate arrival; traffic and map restrictions may differ.",
           "Persistence and delay are versioned demonstration assumptions, not probabilities.",
           "Alternatives start at the rider's current position; directed-road coverage is supplied.",
           "Planning area 2000 m; nearby radius 200 m.",
           "Route provenance: recorded_provider; provider: openrouteservice.",
-          "Route ors-bd1881712f: recorded_provider, openrouteservice, cycling-regular.",
+          "Route ors-257ec72f94: recorded_provider, openrouteservice, cycling-regular.",
+          "Route ors-b767873be4: recorded_provider, openrouteservice, cycling-regular.",
+          "Extra info requested but not available: roadaccessrestrictions",
+          "recorded provider response replayed (provider unavailable now)",
           "Extra info requested but not available: roadaccessrestrictions",
           "recorded provider response replayed (provider unavailable now)",
           "Prior lane_blocked:demo-compressed-1; impact serious; evidence synthetic.",
@@ -7042,7 +6644,7 @@
         "changed": true,
         "decision_id": "dec-bike_b-160",
         "detour_cost_s": null,
-        "estimated_delay_s": 31.91105073650169,
+        "estimated_delay_s": 35.68392397521404,
         "evidence_ids": [
           "ev-obs-nyc-syn-block-001"
         ],
@@ -7050,24 +6652,24 @@
         "hazard_ids": [
           "hazard-91c48492e7825d1c"
         ],
-        "reason": "Blockage 500 m ahead. Stay alert; allow about 32 sec.",
+        "reason": "Blockage 400 m ahead. Stay alert; allow about 36 sec.",
         "revision": 4,
         "rider_id": "bike_b",
         "schema_version": "1",
-        "selected_route_id": "ors-bd1881712f",
+        "selected_route_id": "ors-b767873be4",
         "session_time_s": 160.0
       },
       {
         "action": "slow",
-        "arrival_in_s": 46.923746799353,
+        "arrival_in_s": 39.16065122563506,
         "assumptions": [
           "Provider bicycle durations approximate arrival; traffic and map restrictions may differ.",
           "Persistence and delay are versioned demonstration assumptions, not probabilities.",
           "Alternatives start at the rider's current position; directed-road coverage is supplied.",
           "Planning area 2000 m; nearby radius 200 m.",
           "Route provenance: recorded_provider; provider: openrouteservice.",
-          "Route ors-bd1881712f: recorded_provider, openrouteservice, cycling-regular.",
-          "Route ors-c9f5153bfd: recorded_provider, openrouteservice, cycling-regular.",
+          "Route ors-257ec72f94: recorded_provider, openrouteservice, cycling-regular.",
+          "Route ors-b767873be4: recorded_provider, openrouteservice, cycling-regular.",
           "Extra info requested but not available: roadaccessrestrictions",
           "recorded provider response replayed (provider unavailable now)",
           "Extra info requested but not available: roadaccessrestrictions",
@@ -7078,9 +6680,9 @@
           "Arrival uses uniform speed along the provider geometry; segment durations are unavailable. Alternatives must join within 5 m of the current position."
         ],
         "changed": true,
-        "decision_id": "dec-bike_b-371",
+        "decision_id": "dec-bike_b-368",
         "detour_cost_s": null,
-        "estimated_delay_s": 21.364902350458976,
+        "estimated_delay_s": 22.039461199677525,
         "evidence_ids": [
           "ev-obs-nyc-syn-block-001"
         ],
@@ -7092,8 +6694,8 @@
         "revision": 6,
         "rider_id": "bike_b",
         "schema_version": "1",
-        "selected_route_id": "ors-bd1881712f",
-        "session_time_s": 371.0
+        "selected_route_id": "ors-b767873be4",
+        "session_time_s": 368.0
       },
       {
         "action": "continue",
@@ -7104,7 +6706,7 @@
           "Alternatives start at the rider's current position; directed-road coverage is supplied.",
           "Planning area 2000 m; nearby radius 200 m.",
           "Route provenance: recorded_provider; provider: openrouteservice.",
-          "Route ors-bd1881712f: recorded_provider, openrouteservice, cycling-regular.",
+          "Route ors-b767873be4: recorded_provider, openrouteservice, cycling-regular.",
           "Extra info requested but not available: roadaccessrestrictions",
           "recorded provider response replayed (provider unavailable now)",
           "Prior lane_blocked:demo-compressed-1; impact serious; evidence synthetic.",
@@ -7113,7 +6715,7 @@
           "Arrival uses uniform speed along the provider geometry; segment durations are unavailable. Alternatives must join within 5 m of the current position."
         ],
         "changed": true,
-        "decision_id": "dec-bike_b-418",
+        "decision_id": "dec-bike_b-415",
         "detour_cost_s": null,
         "estimated_delay_s": 0.0,
         "evidence_ids": [],
@@ -7123,8 +6725,8 @@
         "revision": 7,
         "rider_id": "bike_b",
         "schema_version": "1",
-        "selected_route_id": "ors-bd1881712f",
-        "session_time_s": 418.0
+        "selected_route_id": "ors-b767873be4",
+        "session_time_s": 415.0
       }
     ],
     "decisions": [
@@ -7137,7 +6739,7 @@
           "Alternatives start at the rider's current position; directed-road coverage is supplied.",
           "Planning area 2000 m; nearby radius 200 m.",
           "Route provenance: recorded_provider; provider: openrouteservice.",
-          "Route ors-bd1881712f: recorded_provider, openrouteservice, cycling-regular.",
+          "Route ors-b767873be4: recorded_provider, openrouteservice, cycling-regular.",
           "Extra info requested but not available: roadaccessrestrictions",
           "recorded provider response replayed (provider unavailable now)",
           "Decision detail: No active report matches the directed route ahead within the planning area.",
@@ -7155,7 +6757,7 @@
         "revision": 8,
         "rider_id": "bike_b",
         "schema_version": "1",
-        "selected_route_id": "ors-bd1881712f",
+        "selected_route_id": "ors-b767873be4",
         "session_time_s": 480.0
       }
     ],
@@ -7234,7 +6836,7 @@
       },
       {
         "kind": "decision",
-        "message": "bike_b: heads_up \u2014 Blockage 500 m ahead. Stay alert; allow about 32 sec.",
+        "message": "bike_b: heads_up \u2014 Blockage 400 m ahead. Stay alert; allow about 36 sec.",
         "ref_ids": [
           "dec-bike_b-160"
         ],
@@ -7246,15 +6848,15 @@
         "ref_ids": [
           "bike_b"
         ],
-        "session_time_s": 300.0
+        "session_time_s": 320.0
       },
       {
         "kind": "decision",
         "message": "bike_b: slow \u2014 Possible blockage 200 m ahead. Slow down; delay uncertain.",
         "ref_ids": [
-          "dec-bike_b-371"
+          "dec-bike_b-368"
         ],
-        "session_time_s": 371.0
+        "session_time_s": 368.0
       },
       {
         "kind": "hazard",
@@ -7268,9 +6870,9 @@
         "kind": "decision",
         "message": "bike_b: continue \u2014 Keep riding. No active warnings ahead.",
         "ref_ids": [
-          "dec-bike_b-418"
+          "dec-bike_b-415"
         ],
-        "session_time_s": 418.0
+        "session_time_s": 415.0
       },
       {
         "kind": "observation",
@@ -7790,7 +7392,11 @@
         "bearing_deg": null,
         "candidate_route_ids": [],
         "destination": null,
+        "distance_remaining_m": null,
+        "distance_to_next_step_m": null,
+        "duration_remaining_s": null,
         "label": "Bike A (recorded ride GX010001)",
+        "next_step_index": null,
         "origin": null,
         "position": {
           "lat": 40.7528,
@@ -7803,25 +7409,29 @@
         "status": "recorded"
       },
       {
-        "active_route_id": "ors-bd1881712f",
+        "active_route_id": "ors-b767873be4",
         "bearing_deg": 28.29874376698382,
         "candidate_route_ids": [
-          "ors-bd1881712f"
+          "ors-b767873be4"
         ],
         "destination": {
-          "lat": 40.7537,
-          "lon": -73.9846
+          "lat": 40.752944,
+          "lon": -73.985484
         },
+        "distance_remaining_m": 364.4,
+        "distance_to_next_step_m": 364.4,
+        "duration_remaining_s": 72.9,
         "label": "Bike B (simulated)",
+        "next_step_index": 1,
         "origin": {
-          "lat": 40.7445,
-          "lon": -73.9919
+          "lat": 40.744753,
+          "lon": -73.991456
         },
         "position": {
-          "lat": 40.7499630868209,
-          "lon": -73.98764136971583
+          "lat": 40.750070962184836,
+          "lon": -73.98756470019282
         },
-        "progress_m": 760.2000000000018,
+        "progress_m": 676.2000000000008,
         "rider_id": "bike_b",
         "simulated": true,
         "speed_mps": 4.2,
@@ -7831,22 +7441,10 @@
     "routes": [
       {
         "avoids_hazard_ids": [],
-        "distance_m": 1318.3,
-        "duration_s": 314.2,
+        "distance_m": 1040.6,
+        "duration_s": 208.1,
         "geometry": {
           "coordinates": [
-            [
-              -73.99184,
-              40.744474
-            ],
-            [
-              -73.99196,
-              40.744311
-            ],
-            [
-              -73.991822,
-              40.744253
-            ],
             [
               -73.991456,
               40.744753
@@ -8038,74 +7636,6 @@
             [
               -73.985484,
               40.752944
-            ],
-            [
-              -73.985446,
-              40.752993
-            ],
-            [
-              -73.985082,
-              40.7535
-            ],
-            [
-              -73.98504,
-              40.753559
-            ],
-            [
-              -73.984909,
-              40.753503
-            ],
-            [
-              -73.98487,
-              40.753559
-            ],
-            [
-              -73.984864,
-              40.753567
-            ],
-            [
-              -73.984764,
-              40.753524
-            ],
-            [
-              -73.984745,
-              40.75355
-            ],
-            [
-              -73.984498,
-              40.753447
-            ],
-            [
-              -73.984493,
-              40.753454
-            ],
-            [
-              -73.98441,
-              40.753567
-            ],
-            [
-              -73.984431,
-              40.753576
-            ],
-            [
-              -73.984501,
-              40.753591
-            ],
-            [
-              -73.984492,
-              40.753602
-            ],
-            [
-              -73.98464,
-              40.753664
-            ],
-            [
-              -73.984614,
-              40.753698
-            ],
-            [
-              -73.984604,
-              40.753694
             ]
           ],
           "type": "LineString"
@@ -8115,7 +7645,27 @@
         "provenance": "cached_provider",
         "provider": "openrouteservice",
         "role": "primary",
-        "route_id": "ors-bd1881712f",
+        "route_id": "ors-b767873be4",
+        "steps": [
+          {
+            "distance_m": 1040.6,
+            "duration_s": 208.1,
+            "end_index": 47,
+            "instruction": "Head northeast on 6th Avenue",
+            "maneuver_type": "depart",
+            "start_index": 0,
+            "street_name": "6th Avenue"
+          },
+          {
+            "distance_m": 0.0,
+            "duration_s": 0.0,
+            "end_index": 47,
+            "instruction": "Arrive at 6th Avenue, straight ahead",
+            "maneuver_type": "arrive",
+            "start_index": 47,
+            "street_name": null
+          }
+        ],
         "warnings": [
           "Extra info requested but not available: roadaccessrestrictions",
           "recorded provider response replayed (provider unavailable now)"
@@ -8171,7 +7721,7 @@
           "Alternatives start at the rider's current position; directed-road coverage is supplied.",
           "Planning area 2000 m; nearby radius 200 m.",
           "Route provenance: recorded_provider; provider: openrouteservice.",
-          "Route ors-bd1881712f: recorded_provider, openrouteservice, cycling-regular.",
+          "Route ors-b767873be4: recorded_provider, openrouteservice, cycling-regular.",
           "Extra info requested but not available: roadaccessrestrictions",
           "recorded provider response replayed (provider unavailable now)",
           "Decision detail: No active report matches the directed route ahead within the planning area.",
@@ -8189,7 +7739,7 @@
         "revision": 1,
         "rider_id": "bike_b",
         "schema_version": "1",
-        "selected_route_id": "ors-bd1881712f",
+        "selected_route_id": "ors-b767873be4",
         "session_time_s": 0.0
       }
     ],
@@ -8203,7 +7753,7 @@
           "Alternatives start at the rider's current position; directed-road coverage is supplied.",
           "Planning area 2000 m; nearby radius 200 m.",
           "Route provenance: recorded_provider; provider: openrouteservice.",
-          "Route ors-bd1881712f: recorded_provider, openrouteservice, cycling-regular.",
+          "Route ors-b767873be4: recorded_provider, openrouteservice, cycling-regular.",
           "Extra info requested but not available: roadaccessrestrictions",
           "recorded provider response replayed (provider unavailable now)",
           "Decision detail: No active report matches the directed route ahead within the planning area.",
@@ -8221,7 +7771,7 @@
         "revision": 2,
         "rider_id": "bike_b",
         "schema_version": "1",
-        "selected_route_id": "ors-bd1881712f",
+        "selected_route_id": "ors-b767873be4",
         "session_time_s": 60.0
       }
     ],
@@ -8294,7 +7844,11 @@
         "bearing_deg": null,
         "candidate_route_ids": [],
         "destination": null,
+        "distance_remaining_m": null,
+        "distance_to_next_step_m": null,
+        "duration_remaining_s": null,
         "label": "Bike A (recorded ride GX010001)",
+        "next_step_index": null,
         "origin": null,
         "position": {
           "lat": 40.74997142857143,
@@ -8307,23 +7861,27 @@
         "status": "recorded"
       },
       {
-        "active_route_id": "ors-bd1881712f",
+        "active_route_id": "ors-b767873be4",
         "bearing_deg": null,
         "candidate_route_ids": [
-          "ors-bd1881712f"
+          "ors-b767873be4"
         ],
         "destination": {
-          "lat": 40.7537,
-          "lon": -73.9846
+          "lat": 40.752944,
+          "lon": -73.985484
         },
+        "distance_remaining_m": 1040.6,
+        "distance_to_next_step_m": 1040.6,
+        "duration_remaining_s": 208.1,
         "label": "Bike B (simulated)",
+        "next_step_index": 1,
         "origin": {
-          "lat": 40.7445,
-          "lon": -73.9919
+          "lat": 40.744753,
+          "lon": -73.991456
         },
         "position": {
-          "lat": 40.7445,
-          "lon": -73.9919
+          "lat": 40.744753,
+          "lon": -73.991456
         },
         "progress_m": 0.0,
         "rider_id": "bike_b",
@@ -8335,22 +7893,10 @@
     "routes": [
       {
         "avoids_hazard_ids": [],
-        "distance_m": 1318.3,
-        "duration_s": 314.2,
+        "distance_m": 1040.6,
+        "duration_s": 208.1,
         "geometry": {
           "coordinates": [
-            [
-              -73.99184,
-              40.744474
-            ],
-            [
-              -73.99196,
-              40.744311
-            ],
-            [
-              -73.991822,
-              40.744253
-            ],
             [
               -73.991456,
               40.744753
@@ -8542,74 +8088,6 @@
             [
               -73.985484,
               40.752944
-            ],
-            [
-              -73.985446,
-              40.752993
-            ],
-            [
-              -73.985082,
-              40.7535
-            ],
-            [
-              -73.98504,
-              40.753559
-            ],
-            [
-              -73.984909,
-              40.753503
-            ],
-            [
-              -73.98487,
-              40.753559
-            ],
-            [
-              -73.984864,
-              40.753567
-            ],
-            [
-              -73.984764,
-              40.753524
-            ],
-            [
-              -73.984745,
-              40.75355
-            ],
-            [
-              -73.984498,
-              40.753447
-            ],
-            [
-              -73.984493,
-              40.753454
-            ],
-            [
-              -73.98441,
-              40.753567
-            ],
-            [
-              -73.984431,
-              40.753576
-            ],
-            [
-              -73.984501,
-              40.753591
-            ],
-            [
-              -73.984492,
-              40.753602
-            ],
-            [
-              -73.98464,
-              40.753664
-            ],
-            [
-              -73.984614,
-              40.753698
-            ],
-            [
-              -73.984604,
-              40.753694
             ]
           ],
           "type": "LineString"
@@ -8619,7 +8097,27 @@
         "provenance": "cached_provider",
         "provider": "openrouteservice",
         "role": "primary",
-        "route_id": "ors-bd1881712f",
+        "route_id": "ors-b767873be4",
+        "steps": [
+          {
+            "distance_m": 1040.6,
+            "duration_s": 208.1,
+            "end_index": 47,
+            "instruction": "Head northeast on 6th Avenue",
+            "maneuver_type": "depart",
+            "start_index": 0,
+            "street_name": "6th Avenue"
+          },
+          {
+            "distance_m": 0.0,
+            "duration_s": 0.0,
+            "end_index": 47,
+            "instruction": "Arrive at 6th Avenue, straight ahead",
+            "maneuver_type": "arrive",
+            "start_index": 47,
+            "street_name": null
+          }
+        ],
         "warnings": [
           "Extra info requested but not available: roadaccessrestrictions",
           "recorded provider response replayed (provider unavailable now)"
@@ -8675,7 +8173,7 @@
           "Alternatives start at the rider's current position; directed-road coverage is supplied.",
           "Planning area 2000 m; nearby radius 200 m.",
           "Route provenance: recorded_provider; provider: openrouteservice.",
-          "Route ors-bd1881712f: recorded_provider, openrouteservice, cycling-regular.",
+          "Route ors-b767873be4: recorded_provider, openrouteservice, cycling-regular.",
           "Extra info requested but not available: roadaccessrestrictions",
           "recorded provider response replayed (provider unavailable now)",
           "Decision detail: No active report matches the directed route ahead within the planning area.",
@@ -8693,19 +8191,22 @@
         "revision": 1,
         "rider_id": "bike_b",
         "schema_version": "1",
-        "selected_route_id": "ors-bd1881712f",
+        "selected_route_id": "ors-b767873be4",
         "session_time_s": 0.0
       },
       {
         "action": "heads_up",
-        "arrival_in_s": 119.00853320713608,
+        "arrival_in_s": 80.31617563277253,
         "assumptions": [
           "Provider bicycle durations approximate arrival; traffic and map restrictions may differ.",
           "Persistence and delay are versioned demonstration assumptions, not probabilities.",
           "Alternatives start at the rider's current position; directed-road coverage is supplied.",
           "Planning area 2000 m; nearby radius 200 m.",
           "Route provenance: recorded_provider; provider: openrouteservice.",
-          "Route ors-bd1881712f: recorded_provider, openrouteservice, cycling-regular.",
+          "Route ors-257ec72f94: recorded_provider, openrouteservice, cycling-regular.",
+          "Route ors-b767873be4: recorded_provider, openrouteservice, cycling-regular.",
+          "Extra info requested but not available: roadaccessrestrictions",
+          "recorded provider response replayed (provider unavailable now)",
           "Extra info requested but not available: roadaccessrestrictions",
           "recorded provider response replayed (provider unavailable now)",
           "Prior lane_blocked:demo-compressed-1; impact serious; evidence synthetic.",
@@ -8716,7 +8217,7 @@
         "changed": true,
         "decision_id": "dec-bike_b-160",
         "detour_cost_s": null,
-        "estimated_delay_s": 31.91105073650169,
+        "estimated_delay_s": 35.68392397521404,
         "evidence_ids": [
           "ev-obs-nyc-syn-block-001"
         ],
@@ -8724,24 +8225,24 @@
         "hazard_ids": [
           "hazard-91c48492e7825d1c"
         ],
-        "reason": "Blockage 500 m ahead. Stay alert; allow about 32 sec.",
+        "reason": "Blockage 400 m ahead. Stay alert; allow about 36 sec.",
         "revision": 4,
         "rider_id": "bike_b",
         "schema_version": "1",
-        "selected_route_id": "ors-bd1881712f",
+        "selected_route_id": "ors-b767873be4",
         "session_time_s": 160.0
       },
       {
         "action": "slow",
-        "arrival_in_s": 46.923746799353,
+        "arrival_in_s": 39.16065122563506,
         "assumptions": [
           "Provider bicycle durations approximate arrival; traffic and map restrictions may differ.",
           "Persistence and delay are versioned demonstration assumptions, not probabilities.",
           "Alternatives start at the rider's current position; directed-road coverage is supplied.",
           "Planning area 2000 m; nearby radius 200 m.",
           "Route provenance: recorded_provider; provider: openrouteservice.",
-          "Route ors-bd1881712f: recorded_provider, openrouteservice, cycling-regular.",
-          "Route ors-c9f5153bfd: recorded_provider, openrouteservice, cycling-regular.",
+          "Route ors-257ec72f94: recorded_provider, openrouteservice, cycling-regular.",
+          "Route ors-b767873be4: recorded_provider, openrouteservice, cycling-regular.",
           "Extra info requested but not available: roadaccessrestrictions",
           "recorded provider response replayed (provider unavailable now)",
           "Extra info requested but not available: roadaccessrestrictions",
@@ -8752,9 +8253,9 @@
           "Arrival uses uniform speed along the provider geometry; segment durations are unavailable. Alternatives must join within 5 m of the current position."
         ],
         "changed": true,
-        "decision_id": "dec-bike_b-371",
+        "decision_id": "dec-bike_b-368",
         "detour_cost_s": null,
-        "estimated_delay_s": 21.364902350458976,
+        "estimated_delay_s": 22.039461199677525,
         "evidence_ids": [
           "ev-obs-nyc-syn-block-001"
         ],
@@ -8766,8 +8267,8 @@
         "revision": 6,
         "rider_id": "bike_b",
         "schema_version": "1",
-        "selected_route_id": "ors-bd1881712f",
-        "session_time_s": 371.0
+        "selected_route_id": "ors-b767873be4",
+        "session_time_s": 368.0
       },
       {
         "action": "continue",
@@ -8778,7 +8279,7 @@
           "Alternatives start at the rider's current position; directed-road coverage is supplied.",
           "Planning area 2000 m; nearby radius 200 m.",
           "Route provenance: recorded_provider; provider: openrouteservice.",
-          "Route ors-bd1881712f: recorded_provider, openrouteservice, cycling-regular.",
+          "Route ors-b767873be4: recorded_provider, openrouteservice, cycling-regular.",
           "Extra info requested but not available: roadaccessrestrictions",
           "recorded provider response replayed (provider unavailable now)",
           "Prior lane_blocked:demo-compressed-1; impact serious; evidence synthetic.",
@@ -8787,7 +8288,7 @@
           "Arrival uses uniform speed along the provider geometry; segment durations are unavailable. Alternatives must join within 5 m of the current position."
         ],
         "changed": true,
-        "decision_id": "dec-bike_b-418",
+        "decision_id": "dec-bike_b-415",
         "detour_cost_s": null,
         "estimated_delay_s": 0.0,
         "evidence_ids": [],
@@ -8797,8 +8298,8 @@
         "revision": 7,
         "rider_id": "bike_b",
         "schema_version": "1",
-        "selected_route_id": "ors-bd1881712f",
-        "session_time_s": 418.0
+        "selected_route_id": "ors-b767873be4",
+        "session_time_s": 415.0
       }
     ],
     "decisions": [
@@ -8811,7 +8312,7 @@
           "Alternatives start at the rider's current position; directed-road coverage is supplied.",
           "Planning area 2000 m; nearby radius 200 m.",
           "Route provenance: recorded_provider; provider: openrouteservice.",
-          "Route ors-bd1881712f: recorded_provider, openrouteservice, cycling-regular.",
+          "Route ors-b767873be4: recorded_provider, openrouteservice, cycling-regular.",
           "Extra info requested but not available: roadaccessrestrictions",
           "recorded provider response replayed (provider unavailable now)",
           "Decision detail: No active report matches the directed route ahead within the planning area.",
@@ -8819,7 +8320,7 @@
           "Arrival uses uniform speed along the provider geometry; segment durations are unavailable. Alternatives must join within 5 m of the current position."
         ],
         "changed": false,
-        "decision_id": "dec-bike_b-612",
+        "decision_id": "dec-bike_b-566",
         "detour_cost_s": null,
         "estimated_delay_s": 0.0,
         "evidence_ids": [],
@@ -8829,8 +8330,8 @@
         "revision": 9,
         "rider_id": "bike_b",
         "schema_version": "1",
-        "selected_route_id": "ors-bd1881712f",
-        "session_time_s": 612.0
+        "selected_route_id": "ors-b767873be4",
+        "session_time_s": 566.0
       }
     ],
     "duration_s": 660.0,
@@ -8908,7 +8409,7 @@
       },
       {
         "kind": "decision",
-        "message": "bike_b: heads_up \u2014 Blockage 500 m ahead. Stay alert; allow about 32 sec.",
+        "message": "bike_b: heads_up \u2014 Blockage 400 m ahead. Stay alert; allow about 36 sec.",
         "ref_ids": [
           "dec-bike_b-160"
         ],
@@ -8920,15 +8421,15 @@
         "ref_ids": [
           "bike_b"
         ],
-        "session_time_s": 300.0
+        "session_time_s": 320.0
       },
       {
         "kind": "decision",
         "message": "bike_b: slow \u2014 Possible blockage 200 m ahead. Slow down; delay uncertain.",
         "ref_ids": [
-          "dec-bike_b-371"
+          "dec-bike_b-368"
         ],
-        "session_time_s": 371.0
+        "session_time_s": 368.0
       },
       {
         "kind": "hazard",
@@ -8942,9 +8443,9 @@
         "kind": "decision",
         "message": "bike_b: continue \u2014 Keep riding. No active warnings ahead.",
         "ref_ids": [
-          "dec-bike_b-418"
+          "dec-bike_b-415"
         ],
-        "session_time_s": 418.0
+        "session_time_s": 415.0
       },
       {
         "kind": "observation",
@@ -8969,7 +8470,7 @@
         "ref_ids": [
           "bike_b"
         ],
-        "session_time_s": 613.0
+        "session_time_s": 567.0
       }
     ],
     "hazards": [
@@ -9472,7 +8973,11 @@
         "bearing_deg": null,
         "candidate_route_ids": [],
         "destination": null,
+        "distance_remaining_m": null,
+        "distance_to_next_step_m": null,
+        "duration_remaining_s": null,
         "label": "Bike A (recorded ride GX010001)",
+        "next_step_index": null,
         "origin": null,
         "position": {
           "lat": 40.7528,
@@ -9485,25 +8990,29 @@
         "status": "recorded"
       },
       {
-        "active_route_id": "ors-bd1881712f",
-        "bearing_deg": 117.83570218101767,
+        "active_route_id": "ors-b767873be4",
+        "bearing_deg": 27.478767589165102,
         "candidate_route_ids": [
-          "ors-bd1881712f"
+          "ors-b767873be4"
         ],
         "destination": {
-          "lat": 40.7537,
-          "lon": -73.9846
+          "lat": 40.752944,
+          "lon": -73.985484
         },
+        "distance_remaining_m": 0.0,
+        "distance_to_next_step_m": null,
+        "duration_remaining_s": 0.0,
         "label": "Bike B (simulated)",
+        "next_step_index": null,
         "origin": {
-          "lat": 40.7445,
-          "lon": -73.9919
+          "lat": 40.744753,
+          "lon": -73.991456
         },
         "position": {
-          "lat": 40.753694,
-          "lon": -73.984604
+          "lat": 40.752944,
+          "lon": -73.985484
         },
-        "progress_m": 1318.0878342692997,
+        "progress_m": 1040.6131525947126,
         "rider_id": "bike_b",
         "simulated": true,
         "speed_mps": 4.2,
@@ -9513,22 +9022,10 @@
     "routes": [
       {
         "avoids_hazard_ids": [],
-        "distance_m": 1318.3,
-        "duration_s": 314.2,
+        "distance_m": 1040.6,
+        "duration_s": 208.1,
         "geometry": {
           "coordinates": [
-            [
-              -73.99184,
-              40.744474
-            ],
-            [
-              -73.99196,
-              40.744311
-            ],
-            [
-              -73.991822,
-              40.744253
-            ],
             [
               -73.991456,
               40.744753
@@ -9720,74 +9217,6 @@
             [
               -73.985484,
               40.752944
-            ],
-            [
-              -73.985446,
-              40.752993
-            ],
-            [
-              -73.985082,
-              40.7535
-            ],
-            [
-              -73.98504,
-              40.753559
-            ],
-            [
-              -73.984909,
-              40.753503
-            ],
-            [
-              -73.98487,
-              40.753559
-            ],
-            [
-              -73.984864,
-              40.753567
-            ],
-            [
-              -73.984764,
-              40.753524
-            ],
-            [
-              -73.984745,
-              40.75355
-            ],
-            [
-              -73.984498,
-              40.753447
-            ],
-            [
-              -73.984493,
-              40.753454
-            ],
-            [
-              -73.98441,
-              40.753567
-            ],
-            [
-              -73.984431,
-              40.753576
-            ],
-            [
-              -73.984501,
-              40.753591
-            ],
-            [
-              -73.984492,
-              40.753602
-            ],
-            [
-              -73.98464,
-              40.753664
-            ],
-            [
-              -73.984614,
-              40.753698
-            ],
-            [
-              -73.984604,
-              40.753694
             ]
           ],
           "type": "LineString"
@@ -9797,7 +9226,27 @@
         "provenance": "cached_provider",
         "provider": "openrouteservice",
         "role": "primary",
-        "route_id": "ors-bd1881712f",
+        "route_id": "ors-b767873be4",
+        "steps": [
+          {
+            "distance_m": 1040.6,
+            "duration_s": 208.1,
+            "end_index": 47,
+            "instruction": "Head northeast on 6th Avenue",
+            "maneuver_type": "depart",
+            "start_index": 0,
+            "street_name": "6th Avenue"
+          },
+          {
+            "distance_m": 0.0,
+            "duration_s": 0.0,
+            "end_index": 47,
+            "instruction": "Arrive at 6th Avenue, straight ahead",
+            "maneuver_type": "arrive",
+            "start_index": 47,
+            "street_name": null
+          }
+        ],
         "warnings": [
           "Extra info requested but not available: roadaccessrestrictions",
           "recorded provider response replayed (provider unavailable now)"

@@ -46,6 +46,14 @@ def line_length_m(coords: list[list[float]]) -> float:
     )
 
 
+def cumulative_m(coords: list[list[float]]) -> list[float]:
+    """Distance from the start of the line to each vertex (same length as `coords`)."""
+    out = [0.0]
+    for i in range(len(coords) - 1):
+        out.append(out[-1] + haversine_m(to_latlon(coords[i]), to_latlon(coords[i + 1])))
+    return out
+
+
 @dataclass(frozen=True)
 class Projection:
     along_m: float  # distance from the start of the line to the closest point

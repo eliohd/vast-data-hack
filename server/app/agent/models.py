@@ -196,6 +196,45 @@ class Rider(BaseModel):
     active_route_id: str | None = None
     candidate_route_ids: list[str] = Field(default_factory=list)
     status: Literal["waiting", "riding", "arrived", "recorded"] = "waiting"
+    # Set by the runtime for simulated riders on their active route (null when unknown).
+    # Remaining duration scales the provider's route duration by remaining distance.
+    distance_remaining_m: float | None = None
+    duration_remaining_s: float | None = None
+    next_step_index: int | None = Field(
+        default=None, description="index into the active route's steps of the next maneuver"
+    )
+    distance_to_next_step_m: float | None = None
+
+
+Maneuver = Literal[
+    "depart",
+    "arrive",
+    "straight",
+    "left",
+    "right",
+    "slight_left",
+    "slight_right",
+    "sharp_left",
+    "sharp_right",
+    "keep_left",
+    "keep_right",
+    "u_turn",
+    "roundabout_enter",
+    "roundabout_exit",
+    "unknown",
+]
+
+
+class RouteStep(BaseModel):
+    """One provider turn instruction. Indices point into `RouteCandidate.geometry.coordinates`."""
+
+    instruction: str
+    street_name: str | None = None
+    maneuver_type: Maneuver = "unknown"
+    distance_m: float
+    duration_s: float
+    start_index: int
+    end_index: int
 
 
 class RouteCandidate(BaseModel):
@@ -210,6 +249,9 @@ class RouteCandidate(BaseModel):
     avoids_hazard_ids: list[str] = Field(default_factory=list)
     warnings: list[str] = Field(default_factory=list)
     label: str = "bicycle route from provider, subject to map restrictions"
+    steps: list[RouteStep] = Field(
+        default_factory=list, description="provider turn-by-turn steps; empty for fixtures"
+    )
 
 
 class RouteExclusion(BaseModel):

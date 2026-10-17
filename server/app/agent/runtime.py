@@ -26,7 +26,7 @@ from pathlib import Path
 import weave
 from pydantic import BaseModel, Field
 
-from app.agent.geo import line_length_m, point_along, project
+from app.agent.geo import cumulative_m, line_length_m, point_along, project
 from app.agent.interfaces import HazardEngine, PerceptionProvider, RoutingUnavailable
 from app.agent.models import (
     Decision,
@@ -145,6 +145,7 @@ class Session:
         self.base_routes: list[RouteCandidate] | None = None
         self.decision: Decision | None = None
         self.history: list[Decision] = []
+        self._cumulative: dict[str, list[float]] = {}
         self.events: list[SessionEvent] = []
         spec = self.scenario.simulated_rider
         self.rider_b = Rider(
@@ -226,6 +227,31 @@ class Session:
             b.status = "arrived"
             self._event("system", f"{b.label} arrived", [b.rider_id])
 
+    def _update_navigation(self) -> None:
+        """Remaining distance/time and next maneuver for Bike B on its active route."""
+        b = self.rider_b
+        route = next((r for r in self.routes if r.route_id == b.active_route_id), None)
+        if route is None:
+            b.distance_remaining_m = b.duration_remaining_s = None
+            b.next_step_index = b.distance_to_next_step_m = None
+            return
+        cum = self._cumulative.get(route.route_id)
+        if cum is None:
+            cum = self._cumulative[route.route_id] = cumulative_m(route.geometry.coordinates)
+        length = cum[-1] if cum else 0.0
+        remaining = max(0.0, length - b.progress_m)
+        b.distance_remaining_m = round(remaining, 1)
+        b.duration_remaining_s = round(route.duration_s * remaining / length, 1) if length else 0.0
+        b.next_step_index = b.distance_to_next_step_m = None
+        for i, step in enumerate(route.steps):
+            if step.maneuver_type == "depart" or not 0 <= step.start_index < len(cum):
+                continue
+            ahead = cum[step.start_index] - b.progress_m
+            if ahead > 1.0 or (step.maneuver_type == "arrive" and b.status != "arrived"):
+                b.next_step_index = i
+                b.distance_to_next_step_m = round(max(0.0, ahead), 1)
+                break
+
     def _switch_route(self, route_id: str) -> None:
         b = self.rider_b
         new = next((r for r in self.routes if r.route_id == route_id), None)
@@ -291,6 +317,7 @@ class Session:
         if b.active_route_id is None and self.routes:
             b.active_route_id = self.routes[0].route_id
         self._move_rider_b(t, dt)
+        self._update_navigation()
         if b.status == "arrived":
             return
         decision = self.engine.score_routes(self.routes, b, self.hazards, self.config, t)
@@ -307,6 +334,7 @@ class Session:
             record_decision(decision)
         if decision.action == "reroute" and decision.selected_route_id:
             self._switch_route(decision.selected_route_id)
+            self._update_navigation()
         self.decision = decision
 
     async def _replay_from_zero(self) -> None:

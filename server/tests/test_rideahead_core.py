@@ -123,3 +123,47 @@ async def test_store_replays_recorded_response_labelled_cached(tmp_path) -> None
     assert routes[0].provenance == "cached_provider"
     assert later.serving_cached and later.last_error
     assert any("replayed" in w for w in routes[0].warnings)
+
+
+def test_ors_steps_normalised_with_geometry_indices() -> None:
+    from app.agent.routing import ors_steps
+
+    feature = {
+        "properties": {
+            "segments": [
+                {
+                    "steps": [
+                        {
+                            "type": 11,
+                            "name": "6th Avenue",
+                            "instruction": "Head northeast on 6th Avenue",
+                            "distance": 321.0,
+                            "duration": 64.0,
+                            "way_points": [0, 9],
+                        },
+                        {
+                            "type": 1,
+                            "name": "West 30th Street",
+                            "instruction": "Turn right onto West 30th Street",
+                            "distance": 110.0,
+                            "duration": 22.0,
+                            "way_points": [9, 12],
+                        },
+                        {
+                            "type": 10,
+                            "name": "-",
+                            "instruction": "Arrive at your destination",
+                            "distance": 0.0,
+                            "duration": 0.0,
+                            "way_points": [12, 12],
+                        },
+                    ]
+                }
+            ]
+        }
+    }
+    steps = ors_steps(feature)
+    assert [s.maneuver_type for s in steps] == ["depart", "right", "arrive"]
+    assert steps[1].street_name == "West 30th Street"
+    assert steps[2].street_name is None  # ORS "-" means unnamed
+    assert (steps[1].start_index, steps[1].end_index) == (9, 12)

@@ -148,10 +148,13 @@ Merged C `70e8212` (ArchivePerceptionProvider, traced W&B + Cosmos cache) and D 
   there show the lane clear, (b) ±80 m fails D's relevance rule (offset + uncertainty ≤ 40 m),
   (c) the real ORS detour there is poor (+151 s around-the-block, 32 m clear; +215 s via 8th Ave
   with a 50 m area) vs +39 s via Broadway at W 31st (61 m clear).
-- Real ORS: 6th Ave & W 26th (40.7445,-73.9919) → 6th Ave & W 40th (40.7537,-73.9846); primary
-  1318 m / 314 s up 6th Ave; detour 1489 m / 353 s (W 30th → Broadway → W 32nd). Recorded.
-- Bike B departs t=300. Decisions (D's engine): t=160 heads_up "Blockage 500 m ahead…" → t=400
-  stale → slow "Possible blockage 80 m ahead. Slow down; delay uncertain." → t=480 continue.
+- Real ORS: endpoints snapped onto the 6th Ave line (40.744753,-73.991456 near W 26th →
+  40.752944,-73.985484 near W 39th) so turn-by-turn is clean: primary 1041 m / 208 s
+  (depart on 6th Avenue → arrive); detour 1212 m / 247 s (right W 30th → sharp left Broadway →
+  left W 32nd → right 6th Ave), 74 m clear of the hazard, ≈ +39 s. Recorded with steps.
+- Bike B departs t=320. Decisions (D's engine): t=160 heads_up "Blockage 400 m ahead…" → t=390
+  slow "Possible blockage 100 m ahead…" → t=400 stale, still slow (stale ≠ clear) → t=420 past it →
+  t=480 cleared/continue.
   No reroute: brief obstruction vs +39 s detour; not forced.
 - Runtime hardening: an observation the engine rejects (ValueError) is logged as an event and
   skipped instead of failing `advance` with a 500.
@@ -162,6 +165,17 @@ Merged C `70e8212` (ArchivePerceptionProvider, traced W&B + Cosmos cache) and D 
 - `snapshots.json` / B's `canonical-snapshots.json`: archive perception + recorded ORS, frames
   t0, 60, 140, 160, 300, 400, 450, 480, 660.
 - Deploy is run by lane C per `docs/rideahead/deploy-runbook.md`; A picks the SHA.
+
+## Navigation contract additions (for B's map, optional fields, backward compatible)
+
+- `RouteCandidate.steps: RouteStep[]` — `instruction`, `street_name?`, `maneuver_type`
+  (depart/arrive/straight/left/right/slight_*/sharp_*/keep_*/u_turn/roundabout_*/unknown),
+  `distance_m`, `duration_s`, `start_index`/`end_index` into `geometry.coordinates`. From ORS
+  `instructions=true`; recorded in `routes_ors_cache.json`; `[]` for fixture routes.
+- `Rider.distance_remaining_m`, `duration_remaining_s` (provider duration scaled by remaining
+  distance), `next_step_index`, `distance_to_next_step_m` — set by the runtime for Bike B on its
+  active route each tick; null when unknown. The browser must not estimate these.
+- No CSP is set anywhere (server, Astro, tunnel), so the OpenFreeMap basemap can load.
 
 ## Deploy status
 

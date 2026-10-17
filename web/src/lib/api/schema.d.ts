@@ -774,8 +774,19 @@ export interface components {
             /** Candidate Route Ids */
             candidate_route_ids?: string[];
             destination?: components["schemas"]["LatLon"] | null;
+            /** Distance Remaining M */
+            distance_remaining_m?: number | null;
+            /** Distance To Next Step M */
+            distance_to_next_step_m?: number | null;
+            /** Duration Remaining S */
+            duration_remaining_s?: number | null;
             /** Label */
             label: string;
+            /**
+             * Next Step Index
+             * @description index into the active route's steps of the next maneuver
+             */
+            next_step_index?: number | null;
             origin?: components["schemas"]["LatLon"] | null;
             position?: components["schemas"]["LatLon"] | null;
             /**
@@ -837,8 +848,37 @@ export interface components {
             role: "primary" | "alternative" | "detour";
             /** Route Id */
             route_id: string;
+            /**
+             * Steps
+             * @description provider turn-by-turn steps; empty for fixtures
+             */
+            steps?: components["schemas"]["RouteStep"][];
             /** Warnings */
             warnings?: string[];
+        };
+        /**
+         * RouteStep
+         * @description One provider turn instruction. Indices point into `RouteCandidate.geometry.coordinates`.
+         */
+        RouteStep: {
+            /** Distance M */
+            distance_m: number;
+            /** Duration S */
+            duration_s: number;
+            /** End Index */
+            end_index: number;
+            /** Instruction */
+            instruction: string;
+            /**
+             * Maneuver Type
+             * @default unknown
+             * @enum {string}
+             */
+            maneuver_type: "depart" | "arrive" | "straight" | "left" | "right" | "slight_left" | "slight_right" | "sharp_left" | "sharp_right" | "keep_left" | "keep_right" | "u_turn" | "roundabout_enter" | "roundabout_exit" | "unknown";
+            /** Start Index */
+            start_index: number;
+            /** Street Name */
+            street_name?: string | null;
         };
         /** SearchRequest */
         SearchRequest: {

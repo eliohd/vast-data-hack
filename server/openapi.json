@@ -1168,9 +1168,54 @@
               }
             ]
           },
+          "distance_remaining_m": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Distance Remaining M"
+          },
+          "distance_to_next_step_m": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Distance To Next Step M"
+          },
+          "duration_remaining_s": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Duration Remaining S"
+          },
           "label": {
             "title": "Label",
             "type": "string"
+          },
+          "next_step_index": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "index into the active route's steps of the next maneuver",
+            "title": "Next Step Index"
           },
           "origin": {
             "anyOf": [
@@ -1289,6 +1334,14 @@
             "title": "Route Id",
             "type": "string"
           },
+          "steps": {
+            "description": "provider turn-by-turn steps; empty for fixtures",
+            "items": {
+              "$ref": "#/components/schemas/RouteStep"
+            },
+            "title": "Steps",
+            "type": "array"
+          },
           "warnings": {
             "items": {
               "type": "string"
@@ -1307,6 +1360,73 @@
           "provenance"
         ],
         "title": "RouteCandidate",
+        "type": "object"
+      },
+      "RouteStep": {
+        "description": "One provider turn instruction. Indices point into `RouteCandidate.geometry.coordinates`.",
+        "properties": {
+          "distance_m": {
+            "title": "Distance M",
+            "type": "number"
+          },
+          "duration_s": {
+            "title": "Duration S",
+            "type": "number"
+          },
+          "end_index": {
+            "title": "End Index",
+            "type": "integer"
+          },
+          "instruction": {
+            "title": "Instruction",
+            "type": "string"
+          },
+          "maneuver_type": {
+            "default": "unknown",
+            "enum": [
+              "depart",
+              "arrive",
+              "straight",
+              "left",
+              "right",
+              "slight_left",
+              "slight_right",
+              "sharp_left",
+              "sharp_right",
+              "keep_left",
+              "keep_right",
+              "u_turn",
+              "roundabout_enter",
+              "roundabout_exit",
+              "unknown"
+            ],
+            "title": "Maneuver Type",
+            "type": "string"
+          },
+          "start_index": {
+            "title": "Start Index",
+            "type": "integer"
+          },
+          "street_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Street Name"
+          }
+        },
+        "required": [
+          "instruction",
+          "distance_m",
+          "duration_s",
+          "start_index",
+          "end_index"
+        ],
+        "title": "RouteStep",
         "type": "object"
       },
       "SearchRequest": {
