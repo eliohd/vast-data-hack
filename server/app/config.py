@@ -165,7 +165,9 @@ class Settings(BaseSettings):
     rideahead_routing: Literal["auto", "fixture", "ors"] = "auto"  # auto: ors if key set
     rideahead_perception: Literal["fixture", "archive"] = "fixture"
     rideahead_fixtures: Path = SERVER_DIR / "fixtures" / "rideahead"
-    rideahead_scenario: str = "scenario.json"  # file name inside rideahead_fixtures
+    rideahead_scenario: str = (
+        "scenario_nyc.json"  # file in rideahead_fixtures; scenario.json = London fixture
+    )
     rideahead_snapshots: bool = False  # write <data_dir>/rideahead/<session>.json on change
 
     # app

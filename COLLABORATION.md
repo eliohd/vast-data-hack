@@ -118,8 +118,9 @@ git push -u origin HEAD                # open a small PR, or merge straight to m
 
 - **VSS pipeline:** all four of us share one. Re-ingest only through the VSS API, in small,
   deliberate batches, and say so in team chat first. Never redeploy the organisers' pipeline.
-- **Demo deploy** (`https://hack.elio.ltd`): only the integrator (A) runs `make deploy` to the demo
-  VM. Everyone else tests locally (`make dev`, `make phone-tunnel`) or on their own VM.
+- **Demo deploy**: A decides *what* ships (a verified `main` SHA); lane C runs the deploy on the
+  lab VM following [docs/rideahead/deploy-runbook.md](docs/rideahead/deploy-runbook.md). Nobody else
+  deploys. Everyone else tests locally (`make dev`, `make phone-tunnel`).
 - **Footage:** no internet video. Our own phone clips are fine, filmed with consent.
 
 ## 8. Integration and timeline

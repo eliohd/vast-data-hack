@@ -14,7 +14,12 @@ def test_integrated_runtime_observed_stale_cleared_and_replay(
     tmp_path: Path,
     monkeypatch,
 ) -> None:
-    settings = make_settings(tmp_path, ors_api_key=SecretStr(""), rideahead_routing="fixture")
+    settings = make_settings(
+        tmp_path,
+        ors_api_key=SecretStr(""),
+        rideahead_routing="fixture",
+        rideahead_scenario="scenario.json",  # A: pinned when the default moved to NYC
+    )
     app = create_app(settings)
     with TestClient(app) as client:
         runtime = app.state.services.rideahead

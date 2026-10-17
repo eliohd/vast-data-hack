@@ -12,7 +12,12 @@ from tests.test_api import make_settings
 
 @pytest.fixture
 def client(tmp_path) -> Iterator[TestClient]:  # type: ignore[no-untyped-def]
-    settings = make_settings(tmp_path, ors_api_key=SecretStr(""), rideahead_routing="fixture")
+    settings = make_settings(
+        tmp_path,
+        ors_api_key=SecretStr(""),
+        rideahead_routing="fixture",
+        rideahead_scenario="scenario.json",
+    )
     with TestClient(create_app(settings)) as test_client:
         yield test_client
 
@@ -69,7 +74,12 @@ def test_fixture_routes_story_observed_stale_cleared(client: TestClient) -> None
 
 def test_recorded_ors_story_reroutes_then_clears(tmp_path) -> None:  # type: ignore[no-untyped-def]
     """Recorded genuine ORS responses (no key, no network): cheap provider detour → reroute."""
-    settings = make_settings(tmp_path, ors_api_key=SecretStr(""), rideahead_routing="ors")
+    settings = make_settings(
+        tmp_path,
+        ors_api_key=SecretStr(""),
+        rideahead_routing="ors",
+        rideahead_scenario="scenario.json",
+    )
     with TestClient(create_app(settings)) as c:
         sid = c.post("/api/rideahead/sessions", json={}).json()["session_id"]
         snap = _advance(c, sid, 200)
@@ -110,3 +120,29 @@ def test_config_update_and_missing_session(client: TestClient) -> None:
     assert res.status_code == 200
     assert res.json()["config"]["share_radius_m"] == 300
     assert client.get("/api/rideahead/sessions/nope").status_code == 404
+
+
+def test_nyc_scenario_on_recorded_ors_routes(tmp_path) -> None:  # type: ignore[no-untyped-def]
+    """Default NYC scenario (6th Ave), recorded genuine ORS routes, placeholder observation."""
+    settings = make_settings(tmp_path, ors_api_key=SecretStr(""), rideahead_routing="ors")
+    with TestClient(create_app(settings)) as c:
+        snap = c.post("/api/rideahead/sessions", json={}).json()
+        sid = snap["session_id"]
+        assert snap["scenario_id"] == "nyc-6th-ave-v1"
+        assert any("New York" in label for label in snap["labels"])
+        assert snap["riders"][0]["position"] is None  # Bike A unmapped before its first anchor
+
+        snap = _advance(c, sid, 60)
+        assert [h["state"] for h in snap["hazards"]] == ["observed"]
+        assert snap["observations"][0]["label"].startswith("PLACEHOLDER")
+        assert {r["provenance"] for r in snap["routes"]} == {"cached_provider"}
+        assert any(r["role"] == "detour" for r in snap["routes"])
+        assert snap["decisions"][0]["action"] == "heads_up"
+
+        snap = _advance(c, sid, 200)  # brief obstruction cheaper than the +39 s detour
+        assert snap["decisions"][0]["action"] == "wait"
+
+        snap = _advance(c, sid, 330)
+        assert snap["hazards"][0]["state"] == "stale"
+        snap = _advance(c, sid, 450)
+        assert snap["hazards"][0]["state"] == "cleared"

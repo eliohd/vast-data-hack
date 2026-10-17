@@ -82,6 +82,10 @@ class Scenario(BaseModel):
         default_factory=list, description="Bike A positions; manually reconstructed if no GPS"
     )
     simulated_rider: SimulatedRiderSpec = Field(default_factory=SimulatedRiderSpec)
+    fixture_observations: list[Observation] = Field(
+        default_factory=list,
+        description="placeholder observations used ONLY with the fixture perception provider",
+    )
     synthetic_observations: list[Observation] = Field(
         default_factory=list, description="labelled scenario events (e.g. synthetic clearance)"
     )
@@ -423,6 +427,8 @@ class RideAheadRuntime:
     async def create_session(self, ride_id: str | None = None) -> SessionSnapshot:
         ride = ride_id or self.scenario.ride_id
         observations = await self.perception.inspect_ride(ride)
+        if self.perception.name == "fixture":
+            observations += [o.model_copy(deep=True) for o in self.scenario.fixture_observations]
         observations += [o.model_copy(deep=True) for o in self.scenario.synthetic_observations]
         session = Session(
             uuid.uuid4().hex[:12],
