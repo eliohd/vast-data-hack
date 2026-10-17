@@ -13,6 +13,7 @@ export type RouteView = {
   distanceM: number | null;
   provenance: string;
   warnings: string[];
+  steps?: Schemas['RouteStep'][];
 };
 export type VerificationView = {
   evidenceId: string;
@@ -63,7 +64,18 @@ export type SnapshotView = {
     evidenceIds: string[];
     assertion: Schemas['Observation']['assertion'];
   } | null;
-  riders: { id: string; name: string; simulated: boolean; point: Point | null }[];
+  riders: {
+    id: string;
+    name: string;
+    simulated: boolean;
+    point: Point | null;
+    activeRouteId?: string | null;
+    remainingDistanceM?: number | null;
+    remainingDurationS?: number | null;
+    nextStepIndex?: number | null;
+    distanceToNextStepM?: number | null;
+    status?: Schemas['Rider']['status'];
+  }[];
   hazards: {
     id: string;
     title: string;

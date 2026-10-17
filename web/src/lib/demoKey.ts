@@ -1,4 +1,4 @@
-// Optional demo key (server DEMO_KEY). Share the app as https://hack.elio.ltd/?key=… and the key
+// Optional demo key (server DEMO_KEY). Share the app as https://cysense.elio.ltd/?key=… and the key
 // is remembered for this browser, then sent on every API call and WebSocket.
 
 const STORAGE_KEY = 'demo-key';

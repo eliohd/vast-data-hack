@@ -9,7 +9,7 @@ import tailwindcss from '@tailwindcss/vite';
 const API_TARGET = process.env.API_TARGET ?? 'http://127.0.0.1:8000';
 
 export default defineConfig({
-  site: 'https://hack.elio.ltd',
+  site: 'https://cysense.elio.ltd',
   output: 'static',
   integrations: [react()],
   build: { format: 'directory' },

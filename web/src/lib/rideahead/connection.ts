@@ -132,6 +132,12 @@ export function toSnapshotView(source: Schemas['SessionSnapshot']): SnapshotView
       name: rider.label,
       simulated: rider.simulated,
       point: rider.position ?? null,
+      activeRouteId: rider.active_route_id ?? null,
+      remainingDistanceM: rider.distance_remaining_m ?? null,
+      remainingDurationS: rider.duration_remaining_s ?? null,
+      nextStepIndex: rider.next_step_index ?? null,
+      distanceToNextStepM: rider.distance_to_next_step_m ?? null,
+      status: rider.status,
     })),
     hazards: source.hazards.map((hazard) => ({
       id: hazard.hazard_id,
@@ -201,6 +207,7 @@ export function toSnapshotView(source: Schemas['SessionSnapshot']): SnapshotView
       distanceM: route.distance_m,
       provenance: `${route.provenance} · ${route.provider} · ${route.profile}`,
       warnings: [route.label ?? '', ...(route.warnings ?? [])].filter(Boolean),
+      steps: route.steps ?? [],
     })),
     decision: decision
       ? {
@@ -250,7 +257,7 @@ function failure(response: Response): Error {
       ? 'A valid demo key is required. Open the shared demo link with its key.'
       : response.status === 429
         ? 'Too many requests. Pause replay and retry shortly.'
-        : `RideAhead server returned ${response.status}. Retry the connection.`,
+        : `Cysense server returned ${response.status}. Retry the connection.`,
   );
 }
 

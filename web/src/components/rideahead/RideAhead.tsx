@@ -1,20 +1,5 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
-import {
-  Bike,
-  Play,
-  Pause,
-  RotateCcw,
-  Route,
-  X,
-  SlidersHorizontal,
-  ChevronRight,
-  Sparkles,
-  Navigation,
-  RefreshCw,
-  FlaskConical,
-  Signal,
-  BatteryFull,
-} from 'lucide-react';
+import { useCallback, useEffect, useRef, useState, type ReactNode } from 'react';
+import { Play, Pause, RotateCcw, X, SlidersHorizontal, Navigation, Sparkles } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
   decisionKey,
@@ -35,10 +20,13 @@ import {
   type SnapshotView,
 } from '@/lib/rideahead/view';
 import NavigationMap from './NavigationMap';
+import GuideBubble from './GuideBubble';
+import JourneySheet from './JourneySheet';
 import MapLegend from './MapLegend';
 import VideoWidget, { type CameraInference } from './VideoWidget';
 import EvidencePanel from './EvidencePanel';
 import '@/styles/rideahead.css';
+import '@/styles/street-navigation.css';
 
 const noRoadView: RoadView = {
   kind: 'unavailable',
@@ -48,7 +36,13 @@ const noRoadView: RoadView = {
 };
 const HIGHLIGHT_MS = 1600;
 
-export default function RideAhead({ connection }: { connection?: RideAheadConnection }) {
+export default function RideAhead({
+  connection,
+  sessionControls,
+}: {
+  connection?: RideAheadConnection;
+  sessionControls?: ReactNode;
+}) {
   const [snapshot, setSnapshot] = useState<SnapshotView | null>(connection ? null : previewAt(0));
   const [playing, setPlaying] = useState(false);
   const [cameraInference, setCameraInference] = useState<CameraInference | null>(null);
@@ -165,17 +159,8 @@ export default function RideAhead({ connection }: { connection?: RideAheadConnec
   }, [highlightKey]);
 
   const roadView = snapshot ? roadViewFor(snapshot) : noRoadView;
-  const recordedKey = roadView.kind === 'recorded' ? roadView.key : null;
-  // The key demo moment: reveal the overlay whenever replay reaches a new recorded clip.
-  useEffect(() => {
-    if (recordedKey) setOverlayCollapsed(false);
-  }, [recordedKey]);
-  const onNeedsMoreRoom = useCallback((value: boolean) => {
-    if (value) setOverlayCollapsed(true);
-  }, []);
-
   const panelRef = useRef<HTMLDialogElement>(null);
-  const [panel, setPanel] = useState<'replay' | 'evidence' | 'settings' | 'routes'>('replay');
+  const [panel, setPanel] = useState<'evidence' | 'settings' | 'routes'>('evidence');
   const openPanel = (name: typeof panel) => {
     setPanel(name);
     panelRef.current?.showModal();
@@ -187,7 +172,8 @@ export default function RideAhead({ connection }: { connection?: RideAheadConnec
     (item): item is string => item !== null,
   );
   const config = configDraft ?? snapshot?.config;
-  const route = snapshot?.routes.find((item) => item.id === selected?.selectedRouteId);
+  const [navigationActive, setNavigationActive] = useState(true);
+  const [cameraTools, setCameraTools] = useState<HTMLDivElement | null>(null);
   const unmapped = snapshot?.hazards.filter((hazard) => !isValidPoint(hazard.point)).length ?? 0;
   const cosmos = snapshot?.cosmos;
   const cosmosLabel = {
@@ -198,31 +184,126 @@ export default function RideAhead({ connection }: { connection?: RideAheadConnec
   };
 
   return (
-    <main className="ra-phone-stage">
+    <main className="ra-command-layout">
+      <aside className="ra-command-centre" aria-label="Desktop analysis command centre">
+        <div className="ra-desktop-brand">
+          Cysense<span>.</span>
+        </div>
+        <p className="ra-eyebrow">ANALYSIS COMMAND CENTRE</p>
+        <h1>
+          One bike sees it.
+          <br />
+          <span>The next bike knows.</span>
+        </h1>
+        <p className="ra-command-intro">A shared view of the road, grounded in evidence.</p>
+        <section className="ra-control-card">{sessionControls}</section>
+        {snapshot && (
+          <section className="ra-control-card">
+            <div className="ra-control-title">
+              <h2>Session replay</h2>
+              <span className="ra-tag">{connection ? 'Server session' : 'Offline fixture'}</span>
+            </div>
+            <button
+              className="ra-primary-action"
+              disabled={busy || snapshot.timeS >= snapshot.endS}
+              onClick={() => setPlaying(!playing)}
+            >
+              {playing ? <Pause size={16} /> : <Play size={16} />}
+              {playing ? 'Pause replay' : 'Play replay'}
+            </button>
+            <section className="ra-replay" aria-label="Replay controls">
+              <div className="ra-replay-top">
+                <p>
+                  {timeLabel(snapshot.timeS)} / {timeLabel(snapshot.endS)}
+                </p>
+                <Button
+                  variant="outline"
+                  onClick={() => {
+                    setPlaying(false);
+                    setDraftTime(null);
+                    advance(0);
+                  }}
+                >
+                  <RotateCcw size={15} />
+                  Reset
+                </Button>
+              </div>
+              <label htmlFor="ra-time">Replay time in seconds</label>
+              <input
+                id="ra-time"
+                type="range"
+                min="0"
+                max={snapshot.endS}
+                step="1"
+                value={draftTime ?? snapshot.timeS}
+                onChange={(event) => {
+                  setPlaying(false);
+                  setDraftTime(Number(event.target.value));
+                }}
+              />
+              {draftTime !== null && (
+                <Button
+                  onClick={() => {
+                    advance(draftTime);
+                    setDraftTime(null);
+                  }}
+                >
+                  Go to {timeLabel(draftTime)}
+                </Button>
+              )}
+              <p className="ra-subtle">
+                {connection
+                  ? 'Replay advances the session clock. Reads never advance it.'
+                  : 'Offline playback steps through the generated canonical snapshots.'}
+              </p>
+              {!connection && (
+                <div className="ra-chapters">
+                  {previewChapters().map((chapter) => (
+                    <button
+                      key={chapter.timeS}
+                      data-chapter={chapter.timeS}
+                      onClick={() => {
+                        setPlaying(false);
+                        setDraftTime(null);
+                        advance(chapter.timeS);
+                        panelRef.current?.close();
+                      }}
+                    >
+                      {chapter.label}
+                    </button>
+                  ))}
+                </div>
+              )}
+              <h3>Decision changes</h3>
+              {decisionLog.length ? (
+                <ol className="ra-decision-log" aria-label="Decision change events">
+                  {decisionLog.map((item) => (
+                    <li key={item.key}>{item.line}</li>
+                  ))}
+                </ol>
+              ) : (
+                <p className="ra-subtle">No server-flagged route or recommendation change yet.</p>
+              )}
+            </section>
+          </section>
+        )}
+        <section className="ra-control-card">
+          <h2>Live camera tools</h2>
+          <div ref={setCameraTools} />
+          <a className="ra-text-link" href="/live">
+            Open live diagnostics ↗
+          </a>
+        </section>
+        <p className="ra-command-footnote">
+          Route selection and hazard lifecycle are determined by the server. Map movement is yours.
+        </p>
+      </aside>
       <div className="ra-phone-device">
         <div className="ra-phone-screen">
-          <div className="ra-phone-status" aria-hidden="true">
-            <span>RideAhead</span>
-            <i className="ra-phone-island" />
-            <span>
-              <Signal size={13} />
-              <BatteryFull size={18} />
-            </span>
-          </div>
-          <header className="ra-phone-header">
-            <div className="ra-phone-wordmark">
-              <Bike size={21} />
-              RideAhead<span>.</span>
-            </div>
-            <button aria-label="Open ride settings" onClick={() => openPanel('settings')}>
-              <SlidersHorizontal size={18} />
-            </button>
-          </header>
           <section className="ra-navigation" aria-label="Cycling navigation">
             {snapshot ? (
               <NavigationMap
                 snapshot={snapshot}
-                onNeedsMoreRoom={onNeedsMoreRoom}
                 onSelect={(id) => {
                   setSelectedHazard(id);
                   openPanel('evidence');
@@ -242,162 +323,94 @@ export default function RideAhead({ connection }: { connection?: RideAheadConnec
                 )}
               </div>
             )}
-            {/* Map chrome: every overlay is marked so the map fits geometry around it. */}
-            <div className="ra-map-top">
-              <div
-                className={[
-                  'ra-navigation-instruction',
-                  highlightKey && highlightKey === currentKey && 'is-changed',
-                ]
-                  .filter(Boolean)
-                  .join(' ')}
-                data-map-chrome
-              >
-                <span className="ra-direction-icon">
-                  {change ? <RefreshCw size={21} /> : <Navigation size={23} />}
-                </span>
-                <div>
-                  {(change || selected?.syntheticBasis) && (
-                    <span className="ra-card-badges">
-                      {change && (
-                        <span className="ra-change-badge">
-                          <RefreshCw size={10} aria-hidden="true" />
-                          {change.title}
-                        </span>
-                      )}
-                      {selected?.syntheticBasis && (
-                        <span className="ra-synthetic-chip">
-                          <FlaskConical size={10} aria-hidden="true" />
-                          SYNTHETIC EVENT
-                        </span>
-                      )}
-                    </span>
-                  )}
-                  <strong>
-                    {selected ? actionLabels[selected.action] : 'Your shared road ahead'}
-                  </strong>
-                  <span className="ra-decision-reason">
-                    {selected?.reason ?? 'Waiting for a route recommendation'}
-                  </span>
-                  {decisionMeta.length > 0 && (
-                    <span className="ra-decision-meta">{decisionMeta.join(' · ')}</span>
-                  )}
-                  <span className="ra-decision-event" aria-live="polite">
-                    {change?.summary ?? ''}
-                  </span>
-                </div>
+            <header className="ra-phone-header" data-map-chrome>
+              <div className="ra-phone-wordmark">
+                Cysense<span>.</span>
               </div>
+              <button
+                className="ra-glass"
+                aria-label="Open ride settings"
+                onClick={() => openPanel('settings')}
+              >
+                <SlidersHorizontal size={18} />
+              </button>
+            </header>
+            <div className="ra-map-top">
+              <GuideBubble
+                snapshot={snapshot}
+                active={navigationActive}
+                updating={busy && playing}
+                change={change}
+                highlight={!!highlightKey && highlightKey === currentKey}
+                inference={cameraInference}
+                onEvidence={() => openPanel('evidence')}
+              />
               <VideoWidget
                 roadView={roadView}
                 collapsed={overlayCollapsed}
                 onToggleCollapsed={() => setOverlayCollapsed((value) => !value)}
                 onInference={setCameraInference}
+                toolsTarget={cameraTools}
               />
             </div>
-            <div className="ra-map-footer-left" data-map-chrome>
-              {error && snapshot && (
-                <span className="ra-phone-update-error" role="alert">
-                  Connection lost · last snapshot shown
-                </span>
-              )}
-              <span className="ra-phone-provenance">
-                {connection ? 'Session replay' : 'Synthetic fixture'} ·{' '}
-                {snapshot ? timeLabel(snapshot.timeS) : 'connecting'}
-              </span>
-              <MapLegend unmapped={unmapped} />
-              <span className="ra-map-disclaimer">Route overview · no street basemap</span>
-            </div>
-            <div className="ra-map-footer-right" data-map-chrome>
-              <span className="ra-compass" role="img" aria-label="North is up">
-                ↑<small>N</small>
-              </span>
-              <button
-                className="ra-map-layer"
-                aria-label="Show route alternatives"
-                onClick={() => openPanel('routes')}
-              >
-                <Route size={18} />
-              </button>
-            </div>
+            {error && snapshot && (
+              <div className="ra-connection-toast" role="alert">
+                Connection lost · last snapshot shown
+              </div>
+            )}
+            <JourneySheet
+              snapshot={snapshot}
+              active={navigationActive}
+              onEnd={() => {
+                setNavigationActive(false);
+                setPlaying(false);
+              }}
+              onStart={() => setNavigationActive(true)}
+              onRoutes={() => openPanel('routes')}
+              onEvidence={() => openPanel('evidence')}
+              offline={!connection}
+            />
           </section>
-          <button
-            className="ra-journey-strip"
-            aria-label="Estimated journey time and route options"
-            onClick={() => openPanel('routes')}
-          >
-            <span className="ra-journey-time">
-              <strong>{route?.durationS != null ? Math.ceil(route.durationS / 60) : '—'}</strong>
-              <span>
-                min<small>Estimated journey</small>
-              </span>
-            </span>
-            <span className="ra-journey-distance">
-              {route?.distanceM != null
-                ? `${(route.distanceM / 1000).toFixed(1)} km`
-                : 'Distance unknown'}
-              <small>{route?.name ?? 'Route pending'}</small>
-            </span>
-            <ChevronRight size={17} />
-          </button>
-          <button
-            className="ra-cosmos-strip"
-            onClick={() => openPanel('evidence')}
-            aria-label="Cosmos inference and evidence"
-          >
-            <span className="ra-cosmos-heading">
-              <span>
-                <Sparkles size={14} />
-                {cameraInference && cameraInference.model !== 'cosmos' ? 'CAMERA MODEL' : 'COSMOS'}
-              </span>
-              <span
-                className={
-                  (cameraInference ? cameraInference.live : cosmos?.source === 'live_model')
-                    ? 'ra-cosmos-live'
-                    : ''
-                }
-              >
-                {cameraInference?.label ?? cosmosLabel[cosmos?.source ?? 'unavailable']}
-              </span>
-            </span>
-            <span className="ra-cosmos-text">
-              {cameraInference?.text ??
-                cosmos?.text ??
-                'Waiting for a Cosmos observation of the road ahead.'}
-            </span>
-            <span className="ra-cosmos-footer">
-              {cameraInference
-                ? 'Camera stream · '
-                : cosmos?.timeS != null
-                  ? `Observed at ${timeLabel(cosmos.timeS)} · `
-                  : ''}
-              View evidence <ChevronRight size={11} />
-            </span>
-          </button>
-          <nav className="ra-phone-toolbar" aria-label="Ride controls">
-            <button
-              disabled={!snapshot || busy || snapshot.timeS >= snapshot.endS}
-              onClick={() => setPlaying(!playing)}
-            >
-              {playing ? <Pause size={15} /> : <Play size={15} />}
-              {playing ? 'Pause' : 'Play replay'}
-            </button>
-            <button onClick={() => openPanel('replay')}>
-              <RotateCcw size={15} />
-              Timeline
-            </button>
-            <a href="/live">
-              Live tools <ChevronRight size={12} />
-            </a>
-          </nav>
-          <div className="ra-home-indicator" aria-hidden="true" />
         </div>
       </div>
+      <aside className="ra-analysis-inspector" aria-label="Desktop evidence inspector">
+        <div className="ra-inspector-heading">
+          <span className="ra-eyebrow">THE ROAD, EXPLAINED</span>
+          <h2>Evidence & insight</h2>
+          <span className="ra-tag">
+            {snapshot ? timeLabel(snapshot.timeS) : 'Connecting'} · replay time
+          </span>
+        </div>
+        <section className="ra-control-card ra-inference-card">
+          <h3>
+            <Sparkles size={16} />
+            {cameraInference && cameraInference.model !== 'cosmos' ? 'Camera model' : 'Cosmos'}
+          </h3>
+          <span className="ra-tag">
+            {cameraInference?.label ?? cosmosLabel[cosmos?.source ?? 'unavailable']}
+          </span>
+          <p>
+            {cameraInference?.text ?? cosmos?.text ?? 'Waiting for a model-checked observation.'}
+          </p>
+        </section>
+        {snapshot && (
+          <>
+            <section className="ra-control-card">
+              <h3>{selected ? actionLabels[selected.action] : 'Decision pending'}</h3>
+              <p>{selected?.reason}</p>
+              <p className="ra-subtle">{decisionMeta.join(' · ')}</p>
+              <MapLegend unmapped={unmapped} />
+              <p className="ra-subtle">{snapshot.locationLabel}</p>
+            </section>
+            <EvidencePanel snapshot={snapshot} selectedHazard={selectedHazard} />
+          </>
+        )}
+      </aside>
       <dialog ref={panelRef} className="ra-phone-sheet">
         <div className="ra-sheet-header">
           <h2>
             {
               {
-                replay: 'Replay timeline',
                 evidence: 'Evidence & Cosmos',
                 settings: 'Ride settings',
                 routes: 'Journey & routes',
@@ -422,87 +435,15 @@ export default function RideAhead({ connection }: { connection?: RideAheadConnec
         )}
         {!snapshot ? (
           <p className="ra-empty">
-            Connect a session, or choose the offline fixture in Demo controls.
+            A server session is not available. Use the shared demo link, or{' '}
+            <a className="ra-text-link" href="?preview=1">
+              open the offline replay
+            </a>
+            .
           </p>
         ) : (
           <>
             <p className="ra-subtle">{snapshot.provenance}</p>
-            {panel === 'replay' && (
-              <section className="ra-replay" aria-label="Replay controls">
-                <div className="ra-replay-top">
-                  <p>
-                    {timeLabel(snapshot.timeS)} / {timeLabel(snapshot.endS)}
-                  </p>
-                  <Button
-                    variant="outline"
-                    onClick={() => {
-                      setPlaying(false);
-                      setDraftTime(null);
-                      advance(0);
-                    }}
-                  >
-                    <RotateCcw size={15} />
-                    Reset
-                  </Button>
-                </div>
-                <label htmlFor="ra-time">Replay time in seconds</label>
-                <input
-                  id="ra-time"
-                  type="range"
-                  min="0"
-                  max={snapshot.endS}
-                  step="1"
-                  value={draftTime ?? snapshot.timeS}
-                  onChange={(event) => {
-                    setPlaying(false);
-                    setDraftTime(Number(event.target.value));
-                  }}
-                />
-                {draftTime !== null && (
-                  <Button
-                    onClick={() => {
-                      advance(draftTime);
-                      setDraftTime(null);
-                    }}
-                  >
-                    Go to {timeLabel(draftTime)}
-                  </Button>
-                )}
-                <p className="ra-subtle">
-                  {connection
-                    ? 'Replay advances the session clock. Reads never advance it.'
-                    : 'Offline playback steps through the generated canonical snapshots.'}
-                </p>
-                {!connection && (
-                  <div className="ra-chapters">
-                    {previewChapters().map((chapter) => (
-                      <button
-                        key={chapter.timeS}
-                        data-chapter={chapter.timeS}
-                        onClick={() => {
-                          setPlaying(false);
-                          setDraftTime(null);
-                          advance(chapter.timeS);
-                          panelRef.current?.close();
-                        }}
-                      >
-                        {chapter.label}
-                      </button>
-                    ))}
-                  </div>
-                )}
-                <h3>Decision changes</h3>
-                {decisionLog.length ? (
-                  <ol className="ra-decision-log" aria-label="Decision change events">
-                    {decisionLog.map((item) => (
-                      <li key={item.key}>{item.line}</li>
-                    ))}
-                  </ol>
-                ) : (
-                  <p className="ra-subtle">No server-flagged route or recommendation change yet.</p>
-                )}
-              </section>
-            )}
             {panel === 'evidence' && (
               <EvidencePanel snapshot={snapshot} selectedHazard={selectedHazard} />
             )}

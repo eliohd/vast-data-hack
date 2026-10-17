@@ -1,5 +1,5 @@
 {
-  "name": "hack-web",
+  "name": "cysense-web",
   "type": "module",
   "version": "0.1.0",
   "private": true,
@@ -26,8 +26,10 @@
     "@fontsource-variable/geist": "^5.3.0",
     "@tailwindcss/vite": "^4.3.3",
     "astro": "^6.4.8",
+    "bot-avatars": "^0.2.2",
     "class-variance-authority": "^0.7.1",
     "cn": "0.4.0",
+    "leaflet": "1.9.4",
     "lucide-react": "1.58.0",
     "next-themes": "^0.4.6",
     "openapi-fetch": "^0.17.0",
@@ -42,6 +44,7 @@
   "devDependencies": {
     "@astrojs/check": "^0.9.10",
     "@eslint/js": "^10.0.1",
+    "@types/leaflet": "1.9.21",
     "@types/node": "^22.20.5",
     "@types/react": "^19.3.0",
     "@types/react-dom": "^19.3.0",

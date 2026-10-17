@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useId, useState } from 'react';
 import { CircleCheck, CircleHelp, CircleX, Film, FlaskConical } from 'lucide-react';
 import { withDemoKey } from '@/lib/demoKey';
 import { lifecycleStyles } from '@/lib/rideahead/lifecycle';
@@ -110,6 +110,7 @@ export default function EvidencePanel({
   snapshot: SnapshotView;
   selectedHazard: string | null;
 }) {
+  const headingId = useId();
   const hazard = snapshot.hazards.find((item) => item.id === selectedHazard) ?? snapshot.hazards[0];
   const evidence = snapshot.evidence.filter((item) => hazard?.evidenceIds.includes(item.id));
   // Every other revealed claim, newest first: the verification layer, including rejected claims.
@@ -117,11 +118,11 @@ export default function EvidencePanel({
     .filter((item) => !hazard?.evidenceIds.includes(item.id))
     .reverse();
   return (
-    <section className="ra-panel ra-evidence" aria-labelledby="ra-evidence-heading">
+    <section className="ra-panel ra-evidence" aria-labelledby={headingId}>
       <div className="ra-panel-title">
         <div>
           <span className="ra-eyebrow">WHY THIS REPORT EXISTS</span>
-          <h2 id="ra-evidence-heading">Evidence & freshness</h2>
+          <h2 id={headingId}>Evidence & freshness</h2>
         </div>
         {hazard && (
           <span className={`ra-state ${lifecycleStyles[hazard.state].className}`}>
