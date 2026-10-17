@@ -40,7 +40,7 @@ Target the **first complete end-to-end flow in 60–90 minutes**. At that checkp
 
 Timebox an upstream or routing integration problem to about 15 minutes of focused diagnosis before recording it in the lane handoff and continuing with an explicit adapter fallback. Never silently turn an unavailable integration into a successful one. A and C coordinate the unresolved real-integration work while B and D continue independently.
 
-Freeze feature development at **180 minutes** and reserve the last hour for integration fixes, relevant tests, final deployment, documentation and the recording.
+There is no hard feature freeze; keep time at the end for integration fixes, relevant tests, final deployment, documentation and the recording.
 
 ### Preparation before starting the build
 
