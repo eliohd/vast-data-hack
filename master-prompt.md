@@ -563,7 +563,7 @@ Only Agent C coordinates small re-ingestion batches, after Agent A identifies a 
 
 TfL disruptions, weather, historical collision data, additional cities and live phone input are optional adapters. They must preserve geography, timestamps and provenance and must not delay the core flow.
 
-## 14. Architecture reuse and attribution
+## 14. USE THIS TO SPEED UP PROJECT: Architecture reuse and attribution
 
 Reference:
 
@@ -574,7 +574,6 @@ Adapt StreetCast’s retrieval, timeline reconstruction and structured extractio
 
 Adapt SafeRoute’s separation of model calls, map presentation, tracing and route explanations.
 
-SafeRoute declares an MIT licence: retain applicable notices for copied portions. Establish permission before copying code from a source without a clear reuse licence. Architectural inspiration can be independently implemented.
 
 Document inherited components and RideAhead’s new work. Do not reuse previous teams’ credentials, authenticated URLs, claims of evaluation success or branding.
 
