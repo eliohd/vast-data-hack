@@ -23,6 +23,19 @@ const statuses = {
   not_configured: 'Not configured',
 };
 
+/** Provenance only: true when every supplied observation is a synthetic scenario/fixture event. */
+function isSyntheticOnly(observations: Schemas['Observation'][]): boolean {
+  return (
+    observations.length > 0 &&
+    observations.every(
+      (observation) =>
+        observation.source === 'synthetic_scenario' ||
+        (observation.evidence.length > 0 &&
+          observation.evidence.every((item) => item.provenance === 'synthetic')),
+    )
+  );
+}
+
 export function toSnapshotView(source: Schemas['SessionSnapshot']): SnapshotView {
   const observations = source.observations.filter(
     (item) => item.session_time_s <= source.replay_time_s,
@@ -36,9 +49,52 @@ export function toSnapshotView(source: Schemas['SessionSnapshot']): SnapshotView
     source.decisions.find((item) =>
       source.riders.some((rider) => rider.rider_id === item.rider_id && rider.simulated),
     ) ?? source.decisions[0];
+  // The server's own history supplies the previous decision; the browser never re-derives it.
+  const previousDecision = decision
+    ? (source.decision_history ?? [])
+        .filter(
+          (item) =>
+            item.rider_id === decision.rider_id &&
+            item.decision_id !== decision.decision_id &&
+            (item.session_time_s < decision.session_time_s ||
+              (item.session_time_s === decision.session_time_s &&
+                item.revision < decision.revision)),
+        )
+        .reduce<Schemas['Decision'] | null>(
+          (latest, item) =>
+            !latest ||
+            item.session_time_s > latest.session_time_s ||
+            (item.session_time_s === latest.session_time_s && item.revision > latest.revision)
+              ? item
+              : latest,
+          null,
+        )
+    : null;
   const latestVerified = [...observations]
     .reverse()
     .find((observation) => observation.verification);
+  const currentObservation = observations.reduce<Schemas['Observation'] | null>(
+    (latest, item) => (!latest || item.session_time_s >= latest.session_time_s ? item : latest),
+    null,
+  );
+  function verificationFor(
+    observation: Schemas['Observation'],
+    item: Schemas['Evidence'],
+  ): SnapshotView['evidence'][number]['verification'] {
+    const verification = observation.verification;
+    if (!verification) return null;
+    const matchesOther =
+      verification.evidence_id !== item.evidence_id &&
+      observation.evidence.some((other) => other.evidence_id === verification.evidence_id);
+    if (matchesOther) return null;
+    return {
+      evidenceId: verification.evidence_id,
+      verdict: verification.verdict,
+      rationale: verification.rationale ?? '',
+      source: verification.source ?? 'fixture',
+      model: verification.model ?? null,
+    };
+  }
   function point(location: Schemas['LocationEstimate']): Point | null {
     return location.lat != null && location.lon != null
       ? { lat: location.lat, lon: location.lon }
@@ -56,6 +112,16 @@ export function toSnapshotView(source: Schemas['SessionSnapshot']): SnapshotView
       source: latestVerified?.verification?.source ?? 'unavailable',
       timeS: latestVerified?.session_time_s ?? null,
     },
+    currentObservation: currentObservation
+      ? {
+          id: currentObservation.observation_id,
+          timeS: currentObservation.session_time_s,
+          label: currentObservation.label ?? null,
+          source: currentObservation.source,
+          evidenceIds: currentObservation.evidence.map((item) => item.evidence_id),
+          assertion: currentObservation.assertion,
+        }
+      : null,
     provenance: (source.labels ?? []).join(' · ') || 'Provenance not supplied',
     locationLabel:
       (source.labels ?? [])
@@ -85,12 +151,24 @@ export function toSnapshotView(source: Schemas['SessionSnapshot']): SnapshotView
         ),
       ],
       strength: hazard.evidence_strength ?? 'unknown',
+      synthetic: isSyntheticOnly(
+        observations.filter((observation) =>
+          hazard.observation_ids.includes(observation.observation_id),
+        ),
+      ),
       impact: hazard.impact ?? 'unknown',
     })),
     evidence: [...evidence.values()].map(({ observation, item }) => ({
       id: item.evidence_id,
       source: `${item.ride_id} / ${item.segment_id}`,
       provenance: `${provenance[item.provenance]} · ${observation.label ?? observation.source}`,
+      provenanceKind: item.provenance,
+      observationId: observation.observation_id,
+      observationSource: observation.source,
+      observationLabel: observation.label ?? null,
+      support: observation.support,
+      assertion: observation.assertion,
+      verification: verificationFor(observation, item),
       mediaPath: item.provenance === 'synthetic' ? null : (item.media_ref ?? null),
       clipStartS: item.clip_start_s,
       clipEndS: item.clip_end_s,
@@ -126,14 +204,31 @@ export function toSnapshotView(source: Schemas['SessionSnapshot']): SnapshotView
     })),
     decision: decision
       ? {
+          id: decision.decision_id,
+          revision: decision.revision,
+          timeS: decision.session_time_s,
           riderId: decision.rider_id,
           action: decision.action,
           reason: decision.reason,
           selectedRouteId: decision.selected_route_id ?? null,
           delayS: decision.estimated_delay_s ?? null,
           detourS: decision.detour_cost_s ?? null,
+          arrivalS: decision.arrival_in_s ?? null,
           changed: decision.changed ?? false,
+          previous: previousDecision
+            ? {
+                action: previousDecision.action,
+                selectedRouteId: previousDecision.selected_route_id ?? null,
+              }
+            : null,
           evidenceIds: decision.evidence_ids ?? [],
+          syntheticBasis: isSyntheticOnly(
+            observations.filter((observation) =>
+              observation.evidence.some((item) =>
+                (decision.evidence_ids ?? []).includes(item.evidence_id),
+              ),
+            ),
+          ),
           assumptions: decision.assumptions ?? [],
         }
       : null,
