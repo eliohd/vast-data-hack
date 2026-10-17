@@ -16,10 +16,10 @@
           "hazard_id": "hazard-6c576638935340d3",
           "hazard_type": "lane_blocked",
           "location": {
-            "lat": 51.5055,
-            "lon": -0.0975,
+            "lat": 51.504695,
+            "lon": -0.091513,
             "road_segment_id": "southwark-st:eb",
-            "bearing_deg": 92.0,
+            "bearing_deg": 85.0,
             "method": "manual_anchor",
             "uncertainty_m": 30.0,
             "notes": "FIXTURE anchor: synthetic position for development, not derived from footage"
@@ -56,8 +56,8 @@
         "selected_route_id": "fx-alt-union-st",
         "estimated_delay_s": 0.0,
         "detour_cost_s": 86.5,
-        "arrival_in_s": 115.58921430597147,
-        "reason": "Supplied bicycle alternative avoids relevant reports at lower estimated total cost.",
+        "arrival_in_s": 209.91725601502833,
+        "reason": "Blockage 940 m ahead. Take the detour; about 1 min 30 sec extra.",
         "evidence_ids": [
           "ev-fx-001"
         ],
@@ -72,6 +72,7 @@
           "hand-drawn fixture via Union Street",
           "hand-drawn fixture via Southwark Street",
           "Prior lane_blocked:D-synthetic-cost-demo-v1; impact serious; evidence synthetic.",
+          "Decision detail: Supplied bicycle alternative avoids relevant reports at lower estimated total cost.",
           "Road relevance uses geometry, bearing and anchor uncertainty; provider edge IDs are absent from the bootstrap contract, so parallel roads can remain ambiguous.",
           "Arrival uses uniform speed along the provider geometry; segment durations are unavailable. Alternatives must join within 5 m of the current position."
         ],
@@ -89,10 +90,10 @@
           "hazard_id": "hazard-6c576638935340d3",
           "hazard_type": "lane_blocked",
           "location": {
-            "lat": 51.5055,
-            "lon": -0.0975,
+            "lat": 51.504695,
+            "lon": -0.091513,
             "road_segment_id": "southwark-st:eb",
-            "bearing_deg": 92.0,
+            "bearing_deg": 85.0,
             "method": "manual_anchor",
             "uncertainty_m": 30.0,
             "notes": "FIXTURE anchor: synthetic position for development, not derived from footage"
@@ -128,10 +129,10 @@
         ],
         "action": "heads_up",
         "selected_route_id": "fx-primary",
-        "estimated_delay_s": 59.10594615415278,
+        "estimated_delay_s": 45.010755115024885,
         "detour_cost_s": null,
-        "arrival_in_s": 115.58921430597147,
-        "reason": "Uncertain report ahead by estimated arrival; it is not cleared.",
+        "arrival_in_s": 209.91725601502833,
+        "reason": "Possible blockage 940 m ahead. Stay alert; delay uncertain.",
         "evidence_ids": [
           "ev-fx-001",
           "ev-fx-002"
@@ -147,6 +148,7 @@
           "hand-drawn fixture via Union Street",
           "hand-drawn fixture via Southwark Street",
           "Prior lane_blocked:D-synthetic-cost-demo-v1; impact serious; evidence synthetic.",
+          "Decision detail: Uncertain report ahead by estimated arrival; it is not cleared.",
           "Road relevance uses geometry, bearing and anchor uncertainty; provider edge IDs are absent from the bootstrap contract, so parallel roads can remain ambiguous.",
           "Arrival uses uniform speed along the provider geometry; segment durations are unavailable. Alternatives must join within 5 m of the current position."
         ],
@@ -164,10 +166,10 @@
           "hazard_id": "hazard-6c576638935340d3",
           "hazard_type": "lane_blocked",
           "location": {
-            "lat": 51.5055,
-            "lon": -0.0975,
+            "lat": 51.504695,
+            "lon": -0.091513,
             "road_segment_id": "southwark-st:eb",
-            "bearing_deg": 92.0,
+            "bearing_deg": 85.0,
             "method": "manual_anchor",
             "uncertainty_m": 30.0,
             "notes": "FIXTURE anchor: synthetic position for development, not derived from footage"
@@ -205,7 +207,7 @@
         "estimated_delay_s": 0.0,
         "detour_cost_s": null,
         "arrival_in_s": null,
-        "reason": "No active report matches the directed route ahead within the planning area.",
+        "reason": "Keep riding. No active warnings ahead.",
         "evidence_ids": [],
         "assumptions": [
           "Provider bicycle durations approximate arrival; traffic and map restrictions may differ.",
@@ -217,6 +219,7 @@
           "Route fx-primary: fixture, fixture, cycling-regular.",
           "hand-drawn fixture via Union Street",
           "hand-drawn fixture via Southwark Street",
+          "Decision detail: No active report matches the directed route ahead within the planning area.",
           "Road relevance uses geometry, bearing and anchor uncertainty; provider edge IDs are absent from the bootstrap contract, so parallel roads can remain ambiguous.",
           "Arrival uses uniform speed along the provider geometry; segment durations are unavailable. Alternatives must join within 5 m of the current position."
         ],

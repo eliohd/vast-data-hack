@@ -1,7 +1,15 @@
 {
   "schema_version": "1",
   "publication": {
-    "status": "local_only_not_configured"
+    "status": "published_verified",
+    "local_results_preserved": true,
+    "project": "eliohd-ucl/cysense",
+    "call_id": "01a149cf-d231-742c-bb0b-9cdfea9f93a7",
+    "evaluation_url": "https://wandb.ai/eliohd-ucl/cysense/r/call/01a149cf-d231-742c-bb0b-9cdfea9f93a7",
+    "read_back_verified": true,
+    "remote_passed": 21,
+    "remote_total": 21,
+    "aggregate_call_id": "01a149cf-d2ec-72df-afa3-e3916ec4de40"
   },
   "video_interpretation": {
     "sample_size": 0,
@@ -63,10 +71,10 @@
       }
     }
   },
-  "pending_clip_labels": 12,
+  "pending_clip_labels": 10,
   "lifecycle": {
-    "sample_size": 15,
-    "passed": 15,
+    "sample_size": 21,
+    "passed": 21,
     "ground_truth": "explicit synthetic scenario labels; not persistence-model output",
     "results": [
       {
@@ -80,6 +88,10 @@
         ],
         "expected_action": "reroute",
         "actual_action": "reroute",
+        "expected_strengths": null,
+        "actual_strengths": [
+          "single_sighting"
+        ],
         "reset_replay_equal": true,
         "provenance": "synthetic"
       },
@@ -94,6 +106,10 @@
         ],
         "expected_action": "slow",
         "actual_action": "slow",
+        "expected_strengths": null,
+        "actual_strengths": [
+          "single_sighting"
+        ],
         "reset_replay_equal": true,
         "provenance": "synthetic"
       },
@@ -108,6 +124,10 @@
         ],
         "expected_action": "continue",
         "actual_action": "continue",
+        "expected_strengths": null,
+        "actual_strengths": [
+          "single_sighting"
+        ],
         "reset_replay_equal": true,
         "provenance": "synthetic"
       },
@@ -122,6 +142,10 @@
         ],
         "expected_action": "slow",
         "actual_action": "slow",
+        "expected_strengths": null,
+        "actual_strengths": [
+          "single_sighting"
+        ],
         "reset_replay_equal": true,
         "provenance": "synthetic"
       },
@@ -136,6 +160,10 @@
         ],
         "expected_action": "reroute",
         "actual_action": "reroute",
+        "expected_strengths": null,
+        "actual_strengths": [
+          "single_sighting"
+        ],
         "reset_replay_equal": true,
         "provenance": "synthetic"
       },
@@ -150,6 +178,10 @@
         ],
         "expected_action": "reroute",
         "actual_action": "reroute",
+        "expected_strengths": null,
+        "actual_strengths": [
+          "independent_corroboration"
+        ],
         "reset_replay_equal": true,
         "provenance": "synthetic"
       },
@@ -164,6 +196,10 @@
         ],
         "expected_action": "reroute",
         "actual_action": "reroute",
+        "expected_strengths": null,
+        "actual_strengths": [
+          "continued_observation"
+        ],
         "reset_replay_equal": true,
         "provenance": "synthetic"
       },
@@ -178,6 +214,10 @@
         ],
         "expected_action": "continue",
         "actual_action": "continue",
+        "expected_strengths": null,
+        "actual_strengths": [
+          "single_sighting"
+        ],
         "reset_replay_equal": true,
         "provenance": "synthetic"
       },
@@ -192,6 +232,10 @@
         ],
         "expected_action": "continue",
         "actual_action": "continue",
+        "expected_strengths": null,
+        "actual_strengths": [
+          "single_sighting"
+        ],
         "reset_replay_equal": true,
         "provenance": "synthetic"
       },
@@ -206,6 +250,10 @@
         ],
         "expected_action": "slow",
         "actual_action": "slow",
+        "expected_strengths": null,
+        "actual_strengths": [
+          "single_sighting"
+        ],
         "reset_replay_equal": true,
         "provenance": "synthetic"
       },
@@ -220,6 +268,10 @@
         ],
         "expected_action": "slow",
         "actual_action": "slow",
+        "expected_strengths": null,
+        "actual_strengths": [
+          "single_sighting"
+        ],
         "reset_replay_equal": true,
         "provenance": "synthetic"
       },
@@ -234,6 +286,10 @@
         ],
         "expected_action": "slow",
         "actual_action": "slow",
+        "expected_strengths": null,
+        "actual_strengths": [
+          "single_sighting"
+        ],
         "reset_replay_equal": true,
         "provenance": "synthetic"
       },
@@ -248,6 +304,10 @@
         ],
         "expected_action": "unavailable",
         "actual_action": "unavailable",
+        "expected_strengths": null,
+        "actual_strengths": [
+          "single_sighting"
+        ],
         "reset_replay_equal": true,
         "provenance": "synthetic"
       },
@@ -262,6 +322,10 @@
         ],
         "expected_action": "continue",
         "actual_action": "continue",
+        "expected_strengths": null,
+        "actual_strengths": [
+          "single_sighting"
+        ],
         "reset_replay_equal": true,
         "provenance": "synthetic"
       },
@@ -276,6 +340,130 @@
         ],
         "expected_action": "slow",
         "actual_action": "slow",
+        "expected_strengths": null,
+        "actual_strengths": [
+          "single_sighting"
+        ],
+        "reset_replay_equal": true,
+        "provenance": "synthetic"
+      },
+      {
+        "scenario_id": "opposite-direction-clearance-not-clear",
+        "passed": true,
+        "expected_states": [
+          "stale"
+        ],
+        "actual_states": [
+          "stale"
+        ],
+        "expected_action": "slow",
+        "actual_action": "slow",
+        "expected_strengths": null,
+        "actual_strengths": [
+          "single_sighting"
+        ],
+        "reset_replay_equal": true,
+        "provenance": "synthetic"
+      },
+      {
+        "scenario_id": "same-edge-conflicting-bearing-not-clear",
+        "passed": true,
+        "expected_states": [
+          "stale"
+        ],
+        "actual_states": [
+          "stale"
+        ],
+        "expected_action": "slow",
+        "actual_action": "slow",
+        "expected_strengths": null,
+        "actual_strengths": [
+          "single_sighting"
+        ],
+        "reset_replay_equal": true,
+        "provenance": "synthetic"
+      },
+      {
+        "scenario_id": "parallel-road-at-same-anchor-not-corroboration",
+        "passed": true,
+        "expected_states": [
+          "observed",
+          "observed"
+        ],
+        "actual_states": [
+          "observed",
+          "observed"
+        ],
+        "expected_action": "reroute",
+        "actual_action": "reroute",
+        "expected_strengths": [
+          "single_sighting",
+          "single_sighting"
+        ],
+        "actual_strengths": [
+          "single_sighting",
+          "single_sighting"
+        ],
+        "reset_replay_equal": true,
+        "provenance": "synthetic"
+      },
+      {
+        "scenario_id": "independent-corroboration-then-stale",
+        "passed": true,
+        "expected_states": [
+          "stale"
+        ],
+        "actual_states": [
+          "stale"
+        ],
+        "expected_action": "slow",
+        "actual_action": "slow",
+        "expected_strengths": [
+          "independent_corroboration"
+        ],
+        "actual_strengths": [
+          "independent_corroboration"
+        ],
+        "reset_replay_equal": true,
+        "provenance": "synthetic"
+      },
+      {
+        "scenario_id": "different-observer-shared-source-group-not-independent",
+        "passed": true,
+        "expected_states": [
+          "observed"
+        ],
+        "actual_states": [
+          "observed"
+        ],
+        "expected_action": "reroute",
+        "actual_action": "reroute",
+        "expected_strengths": [
+          "single_sighting"
+        ],
+        "actual_strengths": [
+          "single_sighting"
+        ],
+        "reset_replay_equal": true,
+        "provenance": "synthetic"
+      },
+      {
+        "scenario_id": "renamed-observer-shared-evidence-not-independent",
+        "passed": true,
+        "expected_states": [
+          "observed"
+        ],
+        "actual_states": [
+          "observed"
+        ],
+        "expected_action": "reroute",
+        "actual_action": "reroute",
+        "expected_strengths": [
+          "single_sighting"
+        ],
+        "actual_strengths": [
+          "single_sighting"
+        ],
         "reset_replay_equal": true,
         "provenance": "synthetic"
       }

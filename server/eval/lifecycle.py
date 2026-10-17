@@ -44,6 +44,8 @@ def scenario_observation(row: dict) -> Observation:
         support=row.get("support", "supported"),
         location=Location(
             directed_road_id=row.get("road", "synthetic-road-east"),
+            lat=row.get("lat"),
+            lon=row.get("lon"),
             bearing_deg=row.get("bearing", 90),
             uncertainty_m=5,
             method="manual_anchor",
@@ -81,6 +83,10 @@ def evaluate_lifecycle(path: Path) -> dict:
         decision = score_routes(routes, rider, hazards, DecisionConfig(), now_s)
         expected_states = sorted(scenario["expected_states"])
         passed = states == expected_states and decision.action == scenario["expected_action"]
+        strengths = sorted(h.evidence_strength for h in hazards)
+        expected_strengths = scenario.get("expected_strengths")
+        if expected_strengths is not None:
+            passed = passed and strengths == sorted(expected_strengths)
         # Exercise reset/replay without deriving labels from the implementation.
         original = hazards
         engine.reset()
@@ -95,6 +101,8 @@ def evaluate_lifecycle(path: Path) -> dict:
                 "actual_states": states,
                 "expected_action": scenario["expected_action"],
                 "actual_action": decision.action,
+                "expected_strengths": expected_strengths,
+                "actual_strengths": strengths,
                 "reset_replay_equal": replay_equal,
                 "provenance": "synthetic",
             }

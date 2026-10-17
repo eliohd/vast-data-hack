@@ -77,7 +77,8 @@ def test_current_bearing_does_not_hide_hazard_after_a_turn() -> None:
 def test_stale_serious_report_never_becomes_safe_from_decay() -> None:
     decision = score_routes((CURRENT,), RIDER, hazards(100000), CONFIG, 100000)
     assert decision.action == "slow"
-    assert "not cleared" in decision.reason
+    assert "Possible blockage" in decision.reason
+    assert any("not cleared" in detail for detail in decision.assumptions)
 
 
 def test_cleared_hazard_has_no_active_warning() -> None:
@@ -150,13 +151,15 @@ def test_fresh_now_but_stale_at_arrival_keeps_uncertainty_visible() -> None:
     route = replace(CURRENT, duration_s=1000, passages=(RoutePassage("road-east", 100, 900, 90),))
     decision = score_routes((route,), RIDER, hazards(), CONFIG, 0)
     assert decision.action == "slow"
-    assert "not cleared" in decision.reason
+    assert "Possible blockage" in decision.reason
+    assert any("not cleared" in detail for detail in decision.assumptions)
 
 
 def test_stale_reroute_reason_explains_uncertainty() -> None:
     decision = score_routes((CURRENT, DETOUR), RIDER, hazards(120), CONFIG, 120)
     assert decision.action == "reroute"
-    assert "uncertain" in decision.reason
+    assert "Possible blockage" in decision.reason
+    assert any("uncertain" in detail for detail in decision.assumptions)
 
 
 def test_hazard_input_order_does_not_change_decision() -> None:

@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
+from app.agent.decision_text import rider_reason
 from app.agent.hazard_engine import bearing_difference, persistence_weight
 from app.agent.hazard_types import (
     Decision,
@@ -103,9 +104,9 @@ def score_routes(
             tuple(sorted({eid for h in active for eid in h.evidence_ids})),
             None,
             None,
-            "Current bicycle route or rider progress unavailable; route comparison unavailable.",
+            rider_reason("unavailable", None, None, None, True),
             now_s,
-            assumptions,
+            (*assumptions, "Current bicycle route or rider progress is unavailable."),
         )
     scores: list[RouteScore] = []
     relevance: dict[str, tuple[_Relevant, ...]] = {}
@@ -223,8 +224,14 @@ def score_routes(
         tuple(sorted({eid for h in affected.values() for eid in h.evidence_ids})),
         selected.estimated_delay_s,
         detour_cost,
-        reason,
+        rider_reason(
+            action,
+            min((m.ahead_m for m in current_relevance), default=None),
+            current_score.estimated_delay_s,
+            detour_cost,
+            current_score.uncertain,
+        ),
         now_s,
-        (*assumptions, *labels),
+        (*assumptions, *labels, f"Decision detail: {reason}"),
         tuple(scores),
     )

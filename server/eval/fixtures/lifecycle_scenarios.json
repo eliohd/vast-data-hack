@@ -1,17 +1,415 @@
 [
-  {"id":"observed", "observations":[{"id":"first","time_s":0}], "as_of_s":0, "expected_states":["observed"], "expected_action":"reroute"},
-  {"id":"stale-is-unresolved", "observations":[{"id":"first","time_s":0}], "as_of_s":120, "detour":false, "expected_states":["stale"], "expected_action":"slow"},
-  {"id":"explicit-synthetic-clearance", "observations":[{"id":"first","time_s":0},{"id":"clear","time_s":150,"assertion":"clear","affected_area_visible":true}], "as_of_s":150, "expected_states":["cleared"], "expected_action":"continue"},
-  {"id":"duplicate-does-not-refresh", "observations":[{"id":"first","time_s":0},{"id":"cached","time_s":119,"source_time_s":0,"evidence_id":"e-first","segment_id":"synthetic-segment-first"}], "as_of_s":120, "detour":false, "expected_states":["stale"], "expected_action":"slow"},
-  {"id":"adjacent-not-independent", "observations":[{"id":"first","time_s":0},{"id":"adjacent","time_s":2}], "as_of_s":2, "expected_states":["observed"], "expected_action":"reroute"},
-  {"id":"independent-observer", "observations":[{"id":"first","time_s":0},{"id":"second","time_s":10,"observer":"C","source_group":"synthetic-ride-c"}], "as_of_s":10, "expected_states":["confirmed"], "expected_action":"reroute"},
-  {"id":"continued-observation", "observations":[{"id":"first","time_s":0},{"id":"later","time_s":40}], "as_of_s":40, "expected_states":["confirmed"], "expected_action":"reroute"},
-  {"id":"opposite-direction", "observations":[{"id":"west","time_s":0,"road":"synthetic-road-west","bearing":270}], "as_of_s":0, "expected_states":["observed"], "expected_action":"continue"},
-  {"id":"parallel-road", "observations":[{"id":"parallel","time_s":0,"road":"synthetic-other-east"}], "as_of_s":0, "expected_states":["observed"], "expected_action":"continue"},
-  {"id":"future-clearance-hidden", "observations":[{"id":"first","time_s":0},{"id":"future","time_s":150,"assertion":"clear","affected_area_visible":true}], "as_of_s":120, "detour":false, "expected_states":["stale"], "expected_action":"slow"},
-  {"id":"occlusion-never-clears", "observations":[{"id":"first","time_s":0},{"id":"occluded","time_s":140,"assertion":"unclear","support":"uncertain"}], "as_of_s":140, "detour":false, "expected_states":["stale"], "expected_action":"slow"},
-  {"id":"inadequate-clearance-disputed", "observations":[{"id":"first","time_s":0},{"id":"not-visible","time_s":140,"assertion":"clear"}], "as_of_s":140, "detour":false, "expected_states":["disputed"], "expected_action":"slow"},
-  {"id":"provider-unavailable", "observations":[{"id":"first","time_s":0}], "as_of_s":0, "provider_unavailable":true, "expected_states":["observed"], "expected_action":"unavailable"},
-  {"id":"passed-the-report", "observations":[{"id":"first","time_s":0}], "as_of_s":0, "rider_progress_m":200, "rider_elapsed_s":60, "detour":false, "expected_states":["observed"], "expected_action":"continue"},
-  {"id":"route-change", "observations":[{"id":"first","time_s":0}], "as_of_s":0, "detour":false, "expected_states":["observed"], "expected_action":"slow"}
+  {
+    "id": "observed",
+    "observations": [
+      {
+        "id": "first",
+        "time_s": 0
+      }
+    ],
+    "as_of_s": 0,
+    "expected_states": [
+      "observed"
+    ],
+    "expected_action": "reroute"
+  },
+  {
+    "id": "stale-is-unresolved",
+    "observations": [
+      {
+        "id": "first",
+        "time_s": 0
+      }
+    ],
+    "as_of_s": 120,
+    "detour": false,
+    "expected_states": [
+      "stale"
+    ],
+    "expected_action": "slow"
+  },
+  {
+    "id": "explicit-synthetic-clearance",
+    "observations": [
+      {
+        "id": "first",
+        "time_s": 0
+      },
+      {
+        "id": "clear",
+        "time_s": 150,
+        "assertion": "clear",
+        "affected_area_visible": true
+      }
+    ],
+    "as_of_s": 150,
+    "expected_states": [
+      "cleared"
+    ],
+    "expected_action": "continue"
+  },
+  {
+    "id": "duplicate-does-not-refresh",
+    "observations": [
+      {
+        "id": "first",
+        "time_s": 0
+      },
+      {
+        "id": "cached",
+        "time_s": 119,
+        "source_time_s": 0,
+        "evidence_id": "e-first",
+        "segment_id": "synthetic-segment-first"
+      }
+    ],
+    "as_of_s": 120,
+    "detour": false,
+    "expected_states": [
+      "stale"
+    ],
+    "expected_action": "slow"
+  },
+  {
+    "id": "adjacent-not-independent",
+    "observations": [
+      {
+        "id": "first",
+        "time_s": 0
+      },
+      {
+        "id": "adjacent",
+        "time_s": 2
+      }
+    ],
+    "as_of_s": 2,
+    "expected_states": [
+      "observed"
+    ],
+    "expected_action": "reroute"
+  },
+  {
+    "id": "independent-observer",
+    "observations": [
+      {
+        "id": "first",
+        "time_s": 0
+      },
+      {
+        "id": "second",
+        "time_s": 10,
+        "observer": "C",
+        "source_group": "synthetic-ride-c"
+      }
+    ],
+    "as_of_s": 10,
+    "expected_states": [
+      "confirmed"
+    ],
+    "expected_action": "reroute"
+  },
+  {
+    "id": "continued-observation",
+    "observations": [
+      {
+        "id": "first",
+        "time_s": 0
+      },
+      {
+        "id": "later",
+        "time_s": 40
+      }
+    ],
+    "as_of_s": 40,
+    "expected_states": [
+      "confirmed"
+    ],
+    "expected_action": "reroute"
+  },
+  {
+    "id": "opposite-direction",
+    "observations": [
+      {
+        "id": "west",
+        "time_s": 0,
+        "road": "synthetic-road-west",
+        "bearing": 270
+      }
+    ],
+    "as_of_s": 0,
+    "expected_states": [
+      "observed"
+    ],
+    "expected_action": "continue"
+  },
+  {
+    "id": "parallel-road",
+    "observations": [
+      {
+        "id": "parallel",
+        "time_s": 0,
+        "road": "synthetic-other-east"
+      }
+    ],
+    "as_of_s": 0,
+    "expected_states": [
+      "observed"
+    ],
+    "expected_action": "continue"
+  },
+  {
+    "id": "future-clearance-hidden",
+    "observations": [
+      {
+        "id": "first",
+        "time_s": 0
+      },
+      {
+        "id": "future",
+        "time_s": 150,
+        "assertion": "clear",
+        "affected_area_visible": true
+      }
+    ],
+    "as_of_s": 120,
+    "detour": false,
+    "expected_states": [
+      "stale"
+    ],
+    "expected_action": "slow"
+  },
+  {
+    "id": "occlusion-never-clears",
+    "observations": [
+      {
+        "id": "first",
+        "time_s": 0
+      },
+      {
+        "id": "occluded",
+        "time_s": 140,
+        "assertion": "unclear",
+        "support": "uncertain"
+      }
+    ],
+    "as_of_s": 140,
+    "detour": false,
+    "expected_states": [
+      "stale"
+    ],
+    "expected_action": "slow"
+  },
+  {
+    "id": "inadequate-clearance-disputed",
+    "observations": [
+      {
+        "id": "first",
+        "time_s": 0
+      },
+      {
+        "id": "not-visible",
+        "time_s": 140,
+        "assertion": "clear"
+      }
+    ],
+    "as_of_s": 140,
+    "detour": false,
+    "expected_states": [
+      "disputed"
+    ],
+    "expected_action": "slow"
+  },
+  {
+    "id": "provider-unavailable",
+    "observations": [
+      {
+        "id": "first",
+        "time_s": 0
+      }
+    ],
+    "as_of_s": 0,
+    "provider_unavailable": true,
+    "expected_states": [
+      "observed"
+    ],
+    "expected_action": "unavailable"
+  },
+  {
+    "id": "passed-the-report",
+    "observations": [
+      {
+        "id": "first",
+        "time_s": 0
+      }
+    ],
+    "as_of_s": 0,
+    "rider_progress_m": 200,
+    "rider_elapsed_s": 60,
+    "detour": false,
+    "expected_states": [
+      "observed"
+    ],
+    "expected_action": "continue"
+  },
+  {
+    "id": "route-change",
+    "observations": [
+      {
+        "id": "first",
+        "time_s": 0
+      }
+    ],
+    "as_of_s": 0,
+    "detour": false,
+    "expected_states": [
+      "observed"
+    ],
+    "expected_action": "slow"
+  },
+  {
+    "id": "opposite-direction-clearance-not-clear",
+    "observations": [
+      {
+        "id": "east",
+        "time_s": 0
+      },
+      {
+        "id": "west-clear",
+        "time_s": 150,
+        "road": "synthetic-road-west",
+        "bearing": 270,
+        "assertion": "clear",
+        "affected_area_visible": true
+      }
+    ],
+    "as_of_s": 150,
+    "detour": false,
+    "expected_states": [
+      "stale"
+    ],
+    "expected_action": "slow"
+  },
+  {
+    "id": "same-edge-conflicting-bearing-not-clear",
+    "observations": [
+      {
+        "id": "east",
+        "time_s": 0
+      },
+      {
+        "id": "wrong-direction",
+        "time_s": 150,
+        "bearing": 270,
+        "assertion": "clear",
+        "affected_area_visible": true
+      }
+    ],
+    "as_of_s": 150,
+    "detour": false,
+    "expected_states": [
+      "stale"
+    ],
+    "expected_action": "slow"
+  },
+  {
+    "id": "parallel-road-at-same-anchor-not-corroboration",
+    "observations": [
+      {
+        "id": "east",
+        "time_s": 0,
+        "lat": 51.5,
+        "lon": -0.1
+      },
+      {
+        "id": "parallel",
+        "time_s": 10,
+        "road": "synthetic-other-east",
+        "observer": "C",
+        "source_group": "synthetic-ride-c",
+        "lat": 51.5,
+        "lon": -0.1
+      }
+    ],
+    "as_of_s": 10,
+    "expected_states": [
+      "observed",
+      "observed"
+    ],
+    "expected_strengths": [
+      "single_sighting",
+      "single_sighting"
+    ],
+    "expected_action": "reroute"
+  },
+  {
+    "id": "independent-corroboration-then-stale",
+    "observations": [
+      {
+        "id": "east",
+        "time_s": 0
+      },
+      {
+        "id": "independent",
+        "time_s": 10,
+        "observer": "C",
+        "source_group": "synthetic-ride-c"
+      }
+    ],
+    "as_of_s": 130,
+    "detour": false,
+    "expected_states": [
+      "stale"
+    ],
+    "expected_strengths": [
+      "independent_corroboration"
+    ],
+    "expected_action": "slow"
+  },
+  {
+    "id": "different-observer-shared-source-group-not-independent",
+    "observations": [
+      {
+        "id": "east",
+        "time_s": 0
+      },
+      {
+        "id": "shared-group",
+        "time_s": 10,
+        "observer": "C"
+      }
+    ],
+    "as_of_s": 10,
+    "expected_states": [
+      "observed"
+    ],
+    "expected_strengths": [
+      "single_sighting"
+    ],
+    "expected_action": "reroute"
+  },
+  {
+    "id": "renamed-observer-shared-evidence-not-independent",
+    "observations": [
+      {
+        "id": "east",
+        "time_s": 0,
+        "evidence_id": "shared-evidence"
+      },
+      {
+        "id": "renamed",
+        "time_s": 10,
+        "observer": "C",
+        "source_group": "synthetic-ride-c",
+        "evidence_id": "shared-evidence"
+      }
+    ],
+    "as_of_s": 10,
+    "expected_states": [
+      "observed"
+    ],
+    "expected_strengths": [
+      "single_sighting"
+    ],
+    "expected_action": "reroute"
+  }
 ]

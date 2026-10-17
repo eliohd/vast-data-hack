@@ -1,126 +1,115 @@
 # Handoff D — hazard engine, scoring and evaluation
 
-## Current branch and commit
+## Branch and integration base
 
-- Lane: **D**. Local branch `agent-d/hazard-engine-eval`.
-- Based on A's frozen bootstrap `5b43e3ff7fadea685d3362da516ddd790fac2351`,
-  including handoff commit `d0a2330e8f76ca66d0794a2a4ea6342d0d6b03a6`.
-- D delivery is committed on this branch. The inherited scenario assertion and frontend
-  dependency policy need reconciliation before claiming a fully green repository.
-- The pre-existing untracked `MASTERPROMPT.md` is untouched.
+- Lane **D**, branch `agent-d/hazard-engine-eval`.
+- Previous D delivery: `714e4e8`, merged by A. This follow-up pulls **main `b550ebb`**.
+- Read A's “Lane D integration” notes. A resolved the fixture/test mismatch without
+  changing D's policy, added the recorded-ORS runtime test, and added sanitized
+  `record_hazard_transition` tracing. Those requests are closed.
+- Entry points and canonical models remain frozen. No D edits to runtime, scenario,
+  models, generated API types, shared snapshots, dependencies, or frontend files.
+- The user's pre-existing untracked `MASTERPROMPT.md` is untouched.
 
-## Working entry points
+## 1. Cyclist-facing decision wording — complete
 
-- `server/app/agent/hazards.py`: `build_engine(config)` returns `RuleHazardEngine`;
-  `ingest(Observation) -> Hazard | None`, `snapshot(as_of_s) -> list[Hazard]`,
-  `reset()` and `engine.score_routes(...)` satisfy A's runtime protocol.
-- `server/app/agent/scoring.py`: frozen standalone `score_routes(...) -> Decision`;
-  `hazard_on_route(...)` retained. Runtime owns revision, changed and session time.
-- `hazard_adapter.py` explicitly converts canonical models; `hazard_engine.py`,
-  `route_scoring.py` and `hazard_types.py` are private, network-free policy modules.
-  Initial placeholders have now been integrated with A's models; no public DTO changes.
-- A's services/runtime already select these entry points. No shared-file wiring edits,
-  schema regeneration, dependency change, new protocol or deployment was needed.
+- `server/app/agent/decision_text.py` formats short reasons. Example:
+  **“Blockage 1.3 km ahead. Take the detour; about 8 sec extra.”**
+- Reasons give distance/action/time where known, express uncertain delay without
+  presenting a decay heuristic as a known wait, and never invent missing distances.
+- Technical explanations remain in `Decision.assumptions` (including future-support
+  rejection and keeping an alternative). No action, route selection, cost, lifecycle,
+  confidence, or timing-policy branch changed.
+- A before/after comparison of canonical demo snapshots found every non-text decision
+  field unchanged. Existing policy tests plus new display-format checks pass.
+- Public entry points: `hazards.build_engine(config)`, `engine.score_routes(...)`, and
+  `scoring.score_routes(...)`; A's runtime still sets changed/revision/session time.
 
-Implementation details:
+## 2. C shortlist, reviewed labels and extraction comparison — partial, inputs needed
 
-- Immutable copied inputs; deterministic event-prefix snapshots and reset/replay.
-  Earlier snapshots never reuse future state. ID reuse with changed payload fails.
-- Deduplication checks observation IDs, evidence IDs, exact source spans and overlapping
-  ride/camera spans. Adjacent same-group chunks do not refresh the clock. A qualifying
-  sustained sighting after 30 s can refresh it and confirm persistence, explicitly
-  distinguished from independent observer + independent source group corroboration.
-- Directed-road identity is required for lifecycle matching. Opposite bearings, distant
-  anchors, ambiguous multi-hazard matches and missing geography cannot clear reports.
-  Supported real clearance requires a matched verification with clear obstruction and
-  visible affected road space. Explicitly labelled synthetic scenario clearance remains
-  synthetic. Original aware recording timestamps are respected when both are available.
-- Unknown/failed observations do not clear or refresh; conflicting supported evidence
-  is disputed. Staleness never clears. Old footage retrieved later cannot reopen a
-  cleared hazard. Impact remains separate from evidence strength.
-- Configurable type priors, expected delay, matching radius and versioned persistence.
-  Half-life output is a heuristic weight; it is never a clearance signal or probability.
-- Routes compare remaining provider duration plus arrival-adjusted delay assumptions.
-  Nearby/planning radii, ahead/behind and local route direction matter. Missing routes
-  explicitly yield unavailable; stale/uncertain serious reports remain warnings even
-  when decay is small. Ties retain the current route. Disconnected alternatives cannot
-  teleport the rider onto another route.
+**C source located:** branch `rishik/rideahead-notes`, commit
+`c0922c221424b639b0153f3d50a80b08fda61dc2`, `docs/rideahead/handoff-C.md`.
 
-## Checks run and results
+- Obtained C's ten GX010001 segment references, full cached captions, source filenames,
+  nominal offsets and stored YOLO counts. `eval/fixtures/clip_labels.pending.csv` now
+  has those **10 real source rows**, replacing the old empty template slots.
+- The CSV preserves `expected`, reviewer and review-date blanks with `status=pending`.
+  **Zero footage labels are represented as reviewed.** Negated-caption flags are text
+  metadata; they do not establish that a lane is physically clear.
+- Copied the sanitized C caches to D-owned `eval/fixtures/c_inputs/`, alongside a
+  provenance record pinning source paths and commit. No footage, tokens or authenticated
+  media URLs were copied; no C-owned files were edited or merged.
+- C has eight real cached Cosmos checks, three on the ten shortlist clips. C's AI
+  frame reviews explicitly say `ground_truth=false`; they are not independent human
+  labels. Several caption claims and Cosmos votes conflict. No clean positive control
+  is established, and an uncertain parked-car candidate is outside the anchored ride.
+- C's handoff explicitly says **W&B `chat_json` extraction has not run**. The Cosmos cache
+  is a verifier result, not a substitute for W&B structured extraction predictions.
+- Therefore the real extraction comparison remains **unavailable**, not successful:
+  no actual clip pixels/playable media or reviewed ground truth are available here,
+  and the structured predictions are missing. No labels or accuracy are fabricated.
+- C/A request: provide the ten playable clips through the authorized media route (or
+  independently reviewed labels), plus saved structured and verified pipeline outputs
+  with source IDs/model/prompt versions/call counts/latency. See `server/eval/README.md`
+  for the accepted JSONL schema. Keep future clear-lane footage at another location
+  separate from clearance of an earlier obstruction.
 
-- All lane D tests and the new cost-consistent full-runtime replay story pass.
-- Full backend suite: **123 passed, 1 inherited test failed** at
-  `tests/test_rideahead_api.py::test_full_story_observed_reroute_stale_cleared`:
-  it expects `reroute`; the correct cost/radius decision is `heads_up` at t=60.
-  See requested change below.
-- `ruff format --check .`, `ruff check .`, `pyright app eval tests`: clean.
-- Offline lifecycle evaluation: **15/15 simulated scenarios pass**.
-- Canonical shared-fixture demo regenerated at
-  `server/eval/fixtures/engine-demo.synthetic.json`; observed/stale/cleared and
-  rider decisions work with canonical models and an explicit 180 s delay assumption.
-- Original A runtime API tests for capability honesty, unchanged polling, rewind,
-  config update and missing sessions pass.
-- Windows tests require loopback socket access outside the restricted sandbox.
-  A writable workspace `--basetemp` avoids restricted system temp directories.
-- Full `make verify` cannot be claimed: make is absent here; locked frontend dependency
-  installation is rejected by pnpm's minimum-release-age policy for six existing entries
-  (`@shadcn/registry`, `cn`, `electron-to-chromium`, `eslint`, `lucide-react`, `shadcn`).
-  No lockfile, package versions or package policy were changed to bypass it.
-- Installed Weave SDK emits existing Pydantic deprecation warnings during its local
-  evaluation test; evaluation/scorer semantics themselves pass.
+## 3. Lifecycle evaluation publication — complete, remote read-back verified
 
-## Real integrations versus fixtures
+- The user configured this machine's own ignored `server/.env`. Corrected the team
+  settings-page URL to the authenticated account's default team, preserving the key
+  and project. No credentials were printed, committed or borrowed from another lane.
+- Published with `python -m eval.run --publish-weave --output eval/reports/local.json`.
+- [Saved Weave evaluation](https://wandb.ai/eliohd-ucl/cysense/r/call/01a149cf-d231-742c-bb0b-9cdfea9f93a7):
+  **21/21 synthetic lifecycle scenarios pass**. Authenticated SDK read-back confirmed
+  the completed `Evaluation.evaluate` call, no exception, `true_count=21`, and
+  `true_fraction=1.0`. The saved aggregate operation independently reports 21/21.
+- `server/eval/reports/local.json` records `published_verified` with the durable call
+  reference. The command itself still returns `submitted_unverified` until a separate
+  remote read-back is performed; this receipt was verified after upload.
+- These are deterministic scenario results, not real-video extraction accuracy.
+  Recorded clip labels remain pending. Weave's model latency measures replay harness
+  execution here, not video-model inference.
+- Publication includes hashed IDs, labels, provenance, saved answers and metrics;
+  captions, reviewer names, credentials and media URLs are excluded. Code capture
+  and automatic integrations are disabled.
 
-- Engine/scoring: real deterministic implementation, network-independent.
-- Canonical API/runtime integration: exercised against A's **synthetic** shared fixtures.
-- `eval/fixtures/clip_labels.pending.csv`: **12 planned footage slots, zero reviewed clips**.
-  No footage access or human labelling has been fabricated.
-- `eval/fixtures/synthetic_captions.csv`: **12 authored text fixtures**, not video evaluation.
-  Structured/verified model metrics are unavailable until genuine C predictions arrive.
-- `eval/fixtures/lifecycle_scenarios.json`: 15 explicit simulator truth cases, separate
-  from extraction labels and not derived from persistence weights.
-- `eval/reports/local.json` and `synthetic.json` contain reproducible local results.
-  Real extraction precision/recall remains undefined with zero reviewed real clips.
-- Weave publisher is implemented and actual SDK Evaluation semantics are tested locally.
-  Current publication status is `local_only_not_configured`. No remote publication or
-  sponsor inference is claimed. Trace rows exclude captions, media URLs and credentials.
+## 4. Extra lifecycle cases — complete locally
 
-## Known limitations
+- Expanded independent scenario truth from **15 to 21 cases**. New cases cover:
+  opposite-direction clearance, conflicting bearing on the same directed ID, a parallel
+  road at the same synthetic coordinates, independent corroboration becoming stale,
+  different observers sharing a source group, and renamed observers sharing evidence.
+- The evaluator now also checks authored `expected_strengths` where supplied, so source
+  independence is assessed separately from state/action.
+- **21/21 synthetic scenarios pass**, including deterministic reset/replay. No model
+  estimates serve as ground-truth labels. These are scenario tests, not real-video accuracy.
+- Real clip input and publication blockers from steps 2–3 were recorded before doing
+  this independent local test work. Publication is now verified; clip inputs remain open.
 
-- A's route model has geometry but no directed road-edge IDs or segment ETAs. The canonical
-  adapter labels geometry/bearing/uncertainty matching and uniform provider-speed ETA as
-  approximations; nearby parallel roads may remain ambiguous. The internal policy can use
-  explicit directed-road passages once those are available.
-- Cross-ride chronology without original aware timestamps relies on C/A's correctly
-  normalized replay/session times. Naive timestamps are not assigned the machine's timezone.
-- A's `Hazard` includes observation IDs but not evidence IDs. `engine.score_routes` resolves
-  them from stored observations. The standalone scorer with detached hazards returns an
-  empty evidence list with an assumption, rather than mislabelling observation IDs.
-- Pure engine operations do no network tracing. A's runtime already traces sessions and
-  decisions; a sanitized hazard-transition trace point is still an A-owned wiring request.
-- No real archive labels, live routing check, held-out accuracy, TTC, collision estimates
-  or legal guarantees are introduced by lane D.
+## Verification
 
-## Requested changes outside ownership
+- Actual **`make verify`** invoked through the installed MSYS make/bash toolchain.
+- Server stage: ruff formatting/lint and pyright clean; **138 pytest passed, 1 live ORS
+  test skipped**. Installed Weave emits existing Pydantic deprecation warnings.
+- Publication follow-up verification: server formatting/lint/type checks still pass,
+  with **138 tests passed, 1 skipped**. The frontend stage reaches `pnpm verify`
+  through a temporary Windows shell adapter but stops because `prettier` is absent.
+- Earlier frontend dependency installation was blocked locally by
+  `ERR_PNPM_MINIMUM_RELEASE_AGE_VIOLATION` for six unchanged locked packages:
+  `@shadcn/registry`, `cn`, `electron-to-chromium`, `eslint`, `lucide-react`, `shadcn`.
+  No supply-chain policy override or lockfile/package change was made. A reports its
+  own full verification green; this local frontend limitation is still distinct.
+- D-owned reports and the synthetic demo fixture are regenerated; A-owned generated
+  OpenAPI/types/shared snapshots are untouched. Evaluation commands and formats are in
+  `server/eval/README.md`.
 
-1. **A — reconcile the default demo fixture and old runtime assertion.** The default
-   assumed delay is 45 s; the detour adds about 86.5 s. The first hazard is about 520 m
-   ahead, outside the 200 m nearby radius. Default behavior is therefore `heads_up`,
-   not an unconditional reroute. Either update the old assertion/story, or explicitly
-   use a larger, labelled scenario-specific delay (D's demo/runtime test uses **180 s**).
-   Do not alter the policy just to force a more expensive detour. Shared fixture/test
-   ownership is respected: D has not edited either.
-2. **A — optional contract extensions:** route directed-road passages + segment/provider
-   arrival estimates, direct hazard evidence references, and versioned continuation-gap
-   settings would remove remaining adapter assumptions. Preserve existing field names.
-3. **C — supply the actual clip shortlist, reviewed footage labels and saved structured/
-   verification predictions.** Include normal, negated and uncertain scenes; disclose
-   overlap with prompt tuning, source IDs, model/prompt versions, calls and latency.
-   Real clearance needs matching `Verification(road_space_visible=True,
-   obstruction_visible=False, verdict='supported')`; missing detections are insufficient.
-4. **A — sanitize and trace hazard transitions** with stable observation/hazard IDs and
-   outcome only; keep authenticated media and video payloads out of trace arguments.
-5. **B/A — resolve the existing frontend package-age installation policy** according to
-   team policy before running and claiming the full repository verification.
+## Remaining requests outside ownership
 
-Evaluation commands and input formats: [`server/eval/README.md`](../../server/eval/README.md).
+1. **C/A:** actual playable shortlist footage or independently reviewed labels, and W&B
+   structured/cached pipeline predictions, as described in step 2.
+2. **A (optional contract extensions):** directed-road passages, segment ETAs, direct
+   hazard evidence references and versioned continuation-gap settings. Existing
+   geometry/bearing/anchor-uncertainty and uniform-speed approximations remain labelled.
+3. **A/B:** run full frontend verification in the approved team environment or resolve
+   this machine's package-age restriction under team policy. D has not changed it.

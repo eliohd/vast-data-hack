@@ -77,7 +77,7 @@ def test_demo_connects_engine_and_scoring_without_future_clearance_leakage() -> 
 def test_pending_sheet_is_not_fabricated_human_evaluation() -> None:
     labels, pending = load_labels(FIXTURES / "clip_labels.pending.csv")
     assert labels == []
-    assert pending == 12
+    assert pending == 10
     report = evaluate_extraction(labels, [])
     assert report["recorded_sample_size"] == 0
     assert report["methods"]["structured"]["precision"] is None

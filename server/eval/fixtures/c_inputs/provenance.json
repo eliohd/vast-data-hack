@@ -1,0 +1,12 @@
+{
+  "repository": "eliohd/vast-data-hack",
+  "branch": "rishik/rideahead-notes",
+  "commit": "c0922c221424b639b0153f3d50a80b08fda61dc2",
+  "shortlist_path": "server/fixtures/rideahead/cache/captions_gx010001_shortlist.json",
+  "verification_path": "server/fixtures/rideahead/cache/verify_lane_blocked_v1.json",
+  "handoff_path": "docs/rideahead/handoff-C.md",
+  "scope": "Ten recorded clip references; eight cached Cosmos checks, three overlapping the shortlist",
+  "review_status": "C labels its AI frame reviews ground_truth=false. These are not human-reviewed evaluation labels.",
+  "structured_extraction_status": "C reports W&B chat_json extraction has not run. No structured extraction predictions are supplied.",
+  "media_status": "These sanitized caches contain captions and verification metadata only; no footage or authenticated media URLs."
+}
