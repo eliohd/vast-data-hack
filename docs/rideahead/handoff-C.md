@@ -5,13 +5,90 @@ candidate extraction, model verification, VSS/GPU client changes.
 
 ## Current branch and commit
 
-- Branch `rishik/rideahead-notes`, rebased on `main` @ `a032693` (after A bootstrap `5b43e3f`; earlier work predates the contract
-  was not on `main` when this was written). Commit SHA: see `git log` for this file.
+- Branch `rishik/rideahead-notes`, rebased on `main` @ `5fd686f`. See `git log` for the head.
+
+## TL;DR for A (critical path)
+
+- `ArchivePerceptionProvider` is implemented (`server/app/agent/perception.py`). It reads the cache only
+  and makes no model calls at session creation. `RIDEAHEAD_PERCEPTION=archive` gives:
+  `/capabilities` → vast/cosmos/yolo/wandb_inference = `cached`; `/rides` → 1 ride
+  (`nyc_bike_gopro-1:68c66490-7e43-428d-b7af-b477ae296369`, 10 segments).
+- `inspect_ride()` returns 5 reviewed claim observations (`source="cached_model"`, evidence
+  `cached_recorded`, `media_ref=/api/archive/media?source=…`, cached Cosmos `Verification`,
+  location `manual_anchor`/`interpolated` on `manhattan-6th-ave:nb`, bearing 29°).
+- **Honest result: no clip reaches `present` + `supported`, so the real data creates no hazard.**
+  3 caption claims are `contradicted` (the trust layer rejecting them: the vehicle sits beside the
+  green lane, the lane is clear) and 2 are `uncertain`. Details and evidence are below. A demo
+  hazard therefore needs a **labelled scenario event** (A's call), placed at the anchors below.
+- Sponsor calls are real and traced: 11 × W&B `chat_json` (`OBSERVATION_EXTRACTION_PROMPT`,
+  `rideahead-extract-1`) + 11 × Cosmos `ask_video` (`verification_prompt()`, `rideahead-verify-2`),
+  Weave project `vastdata/team-46`. Cached in `server/fixtures/rideahead/cache/model_outputs_v2.json`.
+  Rebuild: `cd server && uv run python -m app.agent.perception_build`.
+
+## Anchors for the NYC scenario (6th Ave northbound, Manhattan)
+
+Hand-placed at intersections named by street signs / storefronts. Not GPS. `road_segment_id`
+`manhattan-6th-ave:nb`, travel bearing **29°** (Manhattan grid north). Section starts at ride
+offset **340 s** (`session_time_s = ride_offset_s - 340`).
+
+| Ride offset (s) | Session time (s) | Label (evidence) | lat | lon | ± m |
+|---|---|---|---|---|---|
+| 340 | 0 | W 29 St (caption sign) | 40.7466 | -73.9899 | 120 |
+| 380 | 40 | 100 W 33rd St (storefront) | 40.7491 | -73.9881 | 100 |
+| 395 | 55 | W 34th St / Herald Sq (Macy's, street sign) | 40.7498 | -73.9877 | 80 |
+| 430 | 90 | W 36 St (street sign) | 40.7510 | -73.9867 | 150 |
+| 460 | 120 | W 38 St (street sign) | 40.7522 | -73.9858 | 150 |
+| 479.5 | 139.5 | **W 39 St (street sign in frame, c15-s6 4.5 s)** | 40.7528 | -73.9853 | 60 |
+
+Suggested scenario hazard spot (where the recorded claims cluster, c15-s1…s6, W 38–39 St):
+**40.7525, -73.9856, ± 80 m**, heading 29°. A detour around 6th Ave between W 38 and W 39 would
+go via 5th Ave (southbound only) or Broadway/7th Ave. Check what ORS returns.
+Caveat: c13-s2 says the camera "turns right" at W 34th, so the ride between W 34th and W 36th may
+briefly leave 6th Ave. Uncertainties include this.
+
+## Reviewed observations (what `inspect_ride` returns)
+
+| Observation | Session t | Assertion | Support | Why |
+|---|---|---|---|---|
+| obs-gx010001-c14-s2 | 85 | present | uncertain | van "partially blocking the lane" at intersection; lane unidentified; Cosmos v2 unclear |
+| obs-gx010001-c14-s3 | 90 | unclear | uncertain | Cosmos v2 (twice): van parked in bike lane; W&B extraction unclear; frame ambiguous (parked SUV + van in curbside lane before the green paint starts) |
+| obs-gx010001-c15-s1 | 110 | present | **contradicted** | frames c15-s1 + c15-s2: UPS truck in traffic lane right of the buffer, rider passes without leaving the lane, green lane clear |
+| obs-gx010001-c15-s5 | 130 | present | **contradicted** | SUV in hatched buffer, green lane clear |
+| obs-gx010001-c15-s6 | 135 | present | **contradicted** | green lane clear up to W 39 St; sedan in buffer/traffic lane |
+
+Support rule (deterministic, recorded in the manifest as `review_rule`): `supported` only if the
+claim is present in caption/extraction AND Cosmos supports it AND frame review does not contradict
+it. Frame review = Agent C viewing 3 frames per clip; not ground truth.
+
+**Verifier reliability (important for eval, D):** Cosmos `rideahead-verify-2` said `supported` on
+5/11 shortlist clips, including `c16-s2` (clear lane; W&B extraction said `clear`). v1
+(`c-verify-lane-blocked-v1`) said `contradicted` on 3/3 of the same claims. Neither prompt is
+reliable alone; v2 over-calls obstruction when vehicles are beside or near the lane.
+
+Other rides: `gx050001-c05-s3` (red sedan at the curb in a wide curbside lane; rider passes on the
+left half of the same lane) = uncertain, and **cannot be anchored** (no street names in chunks
+2–8 of that ride). Not used.
+
+## Env var names (laptop `server/.env`; VM has these in its shell env / team config)
+
+`VSS_URL` `VSS_USERNAME` `VSS_PASSWORD` `GPU_BEARER_TOKEN` `COSMOS_REASON_URL` `COSMOS_EMBED_URL`
+`YOLO_URL` `CANARY_URL` `WANDB_API_KEY` `WANDB_TEAM` `WANDB_PROJECT` `S3_ENDPOINT` `S3_ACCESS_KEY`
+`S3_SECRET_KEY` `S3_CHUNKS_BUCKET` `S3_SEGMENTS_BUCKET` `VASTDB_BUCKET` `VDB_SCHEMA`
+`VDB_COLLECTION` `VDB_PROMPTS_COLLECTION` `TEAM`
+
+- VM team config (`/config/team-46.config`) has NO GPU URLs and NO W&B keys. On the VM: `WANDB_*`
+  and `GPU_BEARER_TOKEN` are shell env vars. GPU URLs follow the organisers' docs:
+  `http://${GPU_HOST}:8001` Cosmos Reason, `:8002` YOLO11, `:8003` Embed, `:8004` Canary.
+  `GPU_HOST` is the same host the VSS Backend Config shows.
+- Off-VM, `INGRESS_URL` is unreachable (ConnectError); use the public team URL for `VSS_URL`.
 
 ## Working entry points
 
 | Path | What it is | Status |
 |---|---|---|
+| `server/app/agent/perception.py` | `ArchivePerceptionProvider`: list_rides / inspect_ride / verify_evidence / statuses from cache | Real (cached model outputs) |
+| `server/app/agent/perception_build.py` | Cache builder: W&B extraction + Cosmos v2 verification, Weave-traced | Real, run once 2026-10-17 |
+| `server/tests/test_perception_archive.py` | Provider tests (protocol, provenance, no URL leaks, statuses) | pass |
 | `server/app/agent/perception_claims.py` | Clause-level lane-obstruction reading of captions: `caption_assertion(caption)` returns `present / denied / hedged / adjacent / unclear / none` plus `bike_lane / lane / roadway / unknown` and the clause | Real, pure, tested |
 | `server/fixtures/rideahead/cache/ride_gx010001_manifest.json` | Ride manifest: timing rules, reconstructed route, demo-section anchors, 10-segment shortlist with roles | Real corpus data; coordinates hand-placed |
 | `server/fixtures/rideahead/cache/captions_gx010001_shortlist.json` | Sanitised cached captions + YOLO11 counts for the 10 shortlisted segments (no media URLs) | Cached recorded |
@@ -99,7 +176,8 @@ Cosmos with the same prompt `c-verify-lane-blocked-v1` (sequential, 3.0–7.1 s 
 
 ## Checks run and results
 
-- `uv run pytest -q` (whole server): **34 passed**.
+- `uv run pytest -q` (whole server, after rebase on 5fd686f): **145 passed, 1 skipped**.
+- API smoke test with `RIDEAHEAD_PERCEPTION=archive`: `/capabilities` and `/rides` 200, statuses cached.
 - `uv run ruff check` / `ruff format --check` / `pyright` on new files: clean.
 - `make verify` (full, incl. web) not run yet.
 
