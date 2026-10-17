@@ -77,6 +77,134 @@
    "video_sha256": "572b144bb38cd6d4771141e0167bcd48500fe867fdb005e9a0a9b2f3300f2f74",
    "video_bytes": 10373001,
    "checked_at": "2026-10-17T11:32:03+00:00"
+  },
+  {
+   "segment_id": "gx050001-c05-s3",
+   "segment_file": "20261008_074847_GX050001_chunk_0005_segment_003_of_006.mp4",
+   "role": "candidate (ranked caption claim)",
+   "provenance": "cached recorded",
+   "status": "ok",
+   "obstruction": "supported",
+   "parsed": {
+    "bike_lane_visible": true,
+    "obstruction": "supported",
+    "vehicle_type": "car",
+    "evidence_seconds": [
+     3.3,
+     4.8
+    ],
+    "reason": "A red car is parked in the bike lane ahead, partially obstructing it."
+   },
+   "raw_text": "```json\n{\n  \"bike_lane_visible\": true,\n  \"obstruction\": \"supported\",\n  \"vehicle_type\": \"car\",\n  \"evidence_seconds\": [3.3, 4.8],\n  \"reason\": \"A red car is parked in the bike lane ahead, partially obstructing it.\"\n}\n```",
+   "model": "nvidia/cosmos3-nano-reasoner",
+   "prompt_version": "c-verify-lane-blocked-v1",
+   "latency_ms": 5026,
+   "video_sha256": "67adcf237c9bb77e1c9b1c34c03b6ab10971f6aa31d3025c08a0faa402c45ee7",
+   "video_bytes": 7647210,
+   "checked_at": "2026-10-17T11:34:58+00:00",
+   "frame_review": {
+    "by": "Agent C (Claude) visual check of 3 extracted frames",
+    "note": "Frames 0.5/2.5/4.5 s: at 4.5 s a red car is parked at the right curb ahead, inside the wide curbside lane the rider is using. No bike-lane paint visible in these frames, so 'in the bike lane' is not confirmed. Real obstruction of the rider's path; bike-lane status uncertain.",
+    "reviewer_verdict": "uncertain",
+    "ground_truth": false
+   }
+  },
+  {
+   "segment_id": "gx010001-c07-s6",
+   "segment_file": "20261008_073944_GX010001_chunk_0007_segment_006_of_006.mp4",
+   "role": "candidate (ranked caption claim)",
+   "provenance": "cached recorded",
+   "status": "ok",
+   "obstruction": "contradicted",
+   "parsed": {
+    "bike_lane_visible": true,
+    "obstruction": "contradicted",
+    "vehicle_type": null,
+    "evidence_seconds": null,
+    "reason": "The bike lane is clear and no vehicle is present in it."
+   },
+   "raw_text": "{\"bike_lane_visible\": true, \"obstruction\": \"contradicted\", \"vehicle_type\": null, \"evidence_seconds\": null, \"reason\": \"The bike lane is clear and no vehicle is present in it.\"}",
+   "model": "nvidia/cosmos3-nano-reasoner",
+   "prompt_version": "c-verify-lane-blocked-v1",
+   "latency_ms": 4291,
+   "video_sha256": "2d4f23df458ea20e7120141a0cd483fd8552f256be4fe708b5da2365f1b3a7ab",
+   "video_bytes": 10493883,
+   "checked_at": "2026-10-17T11:35:06+00:00"
+  },
+  {
+   "segment_id": "gopr0130-c17-s4",
+   "segment_file": "20261008_073104_GOPR0130_chunk_0017_segment_004_of_006.mp4",
+   "role": "candidate (ranked caption claim)",
+   "provenance": "cached recorded",
+   "status": "ok",
+   "obstruction": "contradicted",
+   "parsed": {
+    "bike_lane_visible": true,
+    "obstruction": "contradicted",
+    "vehicle_type": null,
+    "evidence_seconds": null,
+    "reason": "The bicycle lane is clearly visible and unobstructed throughout the video, with no vehicle occupying part of it."
+   },
+   "raw_text": "```json\n{\n  \"bike_lane_visible\": true,\n  \"obstruction\": \"contradicted\",\n  \"vehicle_type\": null,\n  \"evidence_seconds\": null,\n  \"reason\": \"The bicycle lane is clearly visible and unobstructed throughout the video, with no vehicle occupying part of it.\"\n}\n```",
+   "model": "nvidia/cosmos3-nano-reasoner",
+   "prompt_version": "c-verify-lane-blocked-v1",
+   "latency_ms": 7118,
+   "video_sha256": "4b663be4b45af3a3acda0b74aa33fc1094b59bb7d6ddc5333caad55fd5574dd7",
+   "video_bytes": 8016943,
+   "checked_at": "2026-10-17T11:35:14+00:00"
+  },
+  {
+   "segment_id": "gx050001-c17-s2",
+   "segment_file": "20261008_075351_GX050001_chunk_0017_segment_002_of_006.mp4",
+   "role": "candidate (ranked caption claim)",
+   "provenance": "cached recorded",
+   "status": "ok",
+   "obstruction": "supported",
+   "parsed": {
+    "bike_lane_visible": true,
+    "obstruction": "supported",
+    "vehicle_type": "car",
+    "evidence_seconds": [
+     0.1,
+     4.8
+    ],
+    "reason": "A car is parked in the bike lane, partially obstructing it."
+   },
+   "raw_text": "```json\n{\n  \"bike_lane_visible\": true,\n  \"obstruction\": \"supported\",\n  \"vehicle_type\": \"car\",\n  \"evidence_seconds\": [0.1, 4.8],\n  \"reason\": \"A car is parked in the bike lane, partially obstructing it.\"\n}\n```",
+   "model": "nvidia/cosmos3-nano-reasoner",
+   "prompt_version": "c-verify-lane-blocked-v1",
+   "latency_ms": 3739,
+   "video_sha256": "d823f0d92e09aab75282ffa9baa6b8ed748b9ef94963be25ae4d411027990668",
+   "video_bytes": 7380876,
+   "checked_at": "2026-10-17T11:35:20+00:00",
+   "frame_review": {
+    "by": "Agent C (Claude) visual check of 3 extracted frames",
+    "note": "Frames 0.5/2.5/4.5 s: green bike lane is clear; parked cars and an orange cone are to its right (buffer/traffic side). Cosmos 'supported' is a false positive.",
+    "reviewer_verdict": "contradicted",
+    "ground_truth": false
+   }
+  },
+  {
+   "segment_id": "gx050001-c07-s2",
+   "segment_file": "20261008_074938_GX050001_chunk_0007_segment_002_of_006.mp4",
+   "role": "candidate (ranked caption claim)",
+   "provenance": "cached recorded",
+   "status": "ok",
+   "obstruction": "contradicted",
+   "parsed": {
+    "bike_lane_visible": true,
+    "obstruction": "contradicted",
+    "vehicle_type": null,
+    "evidence_seconds": null,
+    "reason": "The bike lane is clear of any vehicles throughout the video."
+   },
+   "raw_text": "```json\n{\n  \"bike_lane_visible\": true,\n  \"obstruction\": \"contradicted\",\n  \"vehicle_type\": null,\n  \"evidence_seconds\": null,\n  \"reason\": \"The bike lane is clear of any vehicles throughout the video.\"\n}\n```",
+   "model": "nvidia/cosmos3-nano-reasoner",
+   "prompt_version": "c-verify-lane-blocked-v1",
+   "latency_ms": 3064,
+   "video_sha256": "4590880ee96c55c589f4539cf6b33b664451033e93e4751bf5c7347eda908fdc",
+   "video_bytes": 10199622,
+   "checked_at": "2026-10-17T11:35:25+00:00"
   }
  ]
 }

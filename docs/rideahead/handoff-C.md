@@ -71,6 +71,32 @@ three bike rides and verify the top few.
 Weave was **not** initialised for this run (the client warned "Traces will not be logged"), so
 these calls are not traced yet.
 
+### Second pass: all three bike rides (2026-10-17)
+
+Ranking: `caption_assertion` over every bike segment (78 chunks, 3 rides). Only **7 segments**
+have a caption clause asserting something blocks the *bike lane*. 5 not yet checked were sent to
+Cosmos with the same prompt `c-verify-lane-blocked-v1` (sequential, 3.0–7.1 s each).
+
+| Segment | Caption claim | Cosmos v1 | Frame review (Agent C) |
+|---|---|---|---|
+| `gx050001-c05-s3` | red car parked, partially blocking bike lane | supported | **uncertain**: red car parked at the curb ahead, in the curbside lane the rider uses; no bike-lane paint visible |
+| `gx050001-c17-s2` | traffic cone near bike lane | supported ("car parked in the bike lane") | **contradicted**: green lane clear, cars and cone to its right |
+| `gx010001-c07-s6` | utility truck partially blocking bike lane | contradicted | not reviewed |
+| `gopr0130-c17-s4` | UPS truck near green lane | contradicted | not reviewed |
+| `gx050001-c07-s2` | bollards block the bike lane | contradicted (prompt asks about vehicles) | not reviewed |
+
+**Conclusions**
+- Across 8 Cosmos checks, the verifier was wrong at least once in each direction compared with frame
+  review (1 false "supported"). Treat Cosmos as one vote, not ground truth.
+- **Best real observation so far: `gx050001-c05-s3`** (ride GX050001, stream `aff9e3f6…`, chunk 5,
+  10–15 s): a parked red car in the rider's curbside lane. Use support = **uncertain**, assertion =
+  present, with caption + Cosmos + frame-review evidence. It is outside the anchored 6th Ave section,
+  so it needs its own anchor (captions near chunk 5 of that ride have no street names yet).
+- **No clean positive control exists** among caption-claimed bike-lane blockages in this corpus.
+- Proposed prompt v2 for A: ask separately (a) where the bike-lane markings are, (b) whether any
+  vehicle's wheels are inside them, (c) the second it is visible. Pair with YOLO11 boxes from the
+  stored detections (vehicle box overlapping the lane region) as a second, independent vote.
+
 ## Checks run and results
 
 - `uv run pytest -q` (whole server): **34 passed**.
