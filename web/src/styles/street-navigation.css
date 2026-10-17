@@ -1054,3 +1054,28 @@
   min-height: 44px;
   font-size: 13px;
 }
+
+/* Continuous recorded ride feed (phone overlay + desktop command centre). */
+.ra-road-feed {
+  position: relative;
+}
+.ra-desktop-feed .ra-road-recorded {
+  position: relative;
+  overflow: hidden;
+  border-radius: 14px;
+  background: #243d31;
+}
+.ra-desktop-feed video {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  background: #243d31;
+}
+.ra-desktop-feed .ra-feed-provenance {
+  position: absolute;
+  left: 8px;
+  bottom: 8px;
+  border-radius: 6px;
+  font-size: 10px;
+}

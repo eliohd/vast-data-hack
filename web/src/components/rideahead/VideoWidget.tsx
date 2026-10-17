@@ -3,16 +3,79 @@ import { createPortal } from 'react-dom';
 import { Camera, FlaskConical, Minimize2, Video, X } from 'lucide-react';
 import { useCamera } from '@/hooks/useCamera';
 import { withDemoKey } from '@/lib/demoKey';
+import type { FeedClip } from '@/lib/rideahead/feed';
 import type { RoadView } from '@/lib/rideahead/roadView';
 import { captureJpeg } from '@/lib/frames';
 import { LiveSocket } from '@/lib/socket';
 
 export type CameraInference = { text: string; label: string; model: string; live: boolean };
+export type RideFeed = { clips: FeedClip[]; index: number };
+
+/**
+ * Recorded ride footage that keeps playing for the whole replay: starts at the clip the replay
+ * clock points to, then plays the following clips in ride order (looping) until the clock moves on.
+ */
+export function FeedPlayer({ feed, className }: { feed: RideFeed; className?: string }) {
+  const [index, setIndex] = useState(feed.index);
+  const [blocked, setBlocked] = useState(false);
+  // Consecutive load failures; once every clip has failed, stop instead of cycling forever.
+  const [failures, setFailures] = useState(0);
+  const ref = useRef<HTMLVideoElement>(null);
+  useEffect(() => setIndex(feed.index), [feed.index]);
+  const clip = feed.clips[index % feed.clips.length];
+  const play = () =>
+    ref.current?.play().then(
+      () => setBlocked(false),
+      (cause: unknown) => {
+        if (!(cause instanceof DOMException && cause.name === 'AbortError')) setBlocked(true);
+      },
+    );
+  useEffect(() => void play(), [clip?.key]);
+  if (!clip) return null;
+  if (failures >= feed.clips.length)
+    return (
+      <div className="ra-video-placeholder" data-road-view="unavailable">
+        <strong>Ride footage unavailable</strong>
+      </div>
+    );
+  return (
+    <div className={['ra-road-recorded', 'ra-road-feed', className].filter(Boolean).join(' ')}>
+      <video
+        ref={ref}
+        key={clip.key}
+        muted
+        playsInline
+        autoPlay
+        preload="auto"
+        aria-label="Recorded ride footage"
+        src={withDemoKey(clip.src)}
+        onPlaying={() => setFailures(0)}
+        onEnded={() => setIndex((value) => (value + 1) % feed.clips.length)}
+        onError={() => {
+          setFailures((value) => value + 1);
+          setIndex((value) => (value + 1) % feed.clips.length);
+        }}
+      />
+      {blocked && (
+        <button className="ra-road-action" onClick={() => void play()}>
+          Tap to play
+        </button>
+      )}
+    </div>
+  );
+}
 
 type ClipStatus = 'loading' | 'playing' | 'blocked' | 'ended' | 'error';
 
 /** Recorded clip for the current observation. Autoplays once per clip; never fails silently. */
-function RecordedClip({ view }: { view: Extract<RoadView, { kind: 'recorded' }> }) {
+export function RecordedClip({
+  view,
+  compact = false,
+}: {
+  view: Extract<RoadView, { kind: 'recorded' }>;
+  /** Small map overlay: no native controls or provenance caption (shown in Evidence). */
+  compact?: boolean;
+}) {
   const ref = useRef<HTMLVideoElement>(null);
   const [status, setStatus] = useState<ClipStatus>('loading');
   const play = () => {
@@ -44,7 +107,7 @@ function RecordedClip({ view }: { view: Extract<RoadView, { kind: 'recorded' }> 
         ref={ref}
         muted
         playsInline
-        controls
+        controls={!compact}
         autoPlay
         preload="auto"
         aria-label={`${view.label}: recorded road clip`}
@@ -77,13 +140,15 @@ function RecordedClip({ view }: { view: Extract<RoadView, { kind: 'recorded' }> 
           Replay clip
         </button>
       )}
-      <span
-        className="ra-feed-provenance"
-        title={view.label + ' · ' + view.verdictLabel}
-        data-road-label
-      >
-        {view.label.replace('Recorded footage', 'Recorded')}
-      </span>
+      {!compact && (
+        <span
+          className="ra-feed-provenance"
+          title={view.label + ' · ' + view.verdictLabel}
+          data-road-label
+        >
+          {view.label.replace('Recorded footage', 'Recorded')}
+        </span>
+      )}
     </div>
   );
 }
@@ -94,7 +159,9 @@ export default function VideoWidget({
   onToggleCollapsed,
   onInference,
   toolsTarget,
+  feed,
 }: {
+  feed?: RideFeed;
   roadView: RoadView;
   collapsed: boolean;
   onToggleCollapsed: () => void;
@@ -218,9 +285,12 @@ export default function VideoWidget({
       />
       <canvas ref={canvasRef} hidden />
       {!collapsed && !local && roadView.kind === 'recorded' && (
-        <RecordedClip key={roadView.key} view={roadView} />
+        <RecordedClip key={roadView.key} view={roadView} compact />
       )}
-      {!collapsed && !local && roadView.kind === 'synthetic' && (
+      {!collapsed && !local && roadView.kind !== 'recorded' && !!feed?.clips.length && (
+        <FeedPlayer feed={feed} />
+      )}
+      {!collapsed && !local && roadView.kind === 'synthetic' && !feed?.clips.length && (
         <div className="ra-road-synthetic" data-road-view="synthetic">
           <span className="ra-synthetic-chip">
             <FlaskConical size={12} aria-hidden="true" />
@@ -230,7 +300,7 @@ export default function VideoWidget({
           <span>{roadView.detail}</span>
         </div>
       )}
-      {!collapsed && !local && roadView.kind === 'unavailable' && (
+      {!collapsed && !local && roadView.kind === 'unavailable' && !feed?.clips.length && (
         <div className="ra-video-placeholder" data-road-view="unavailable">
           <Camera size={18} aria-hidden="true" />
           <strong>{roadView.label}</strong>
@@ -242,7 +312,7 @@ export default function VideoWidget({
           Recorded clip ready
         </button>
       )}
-      {!collapsed && !local && (
+      {!collapsed && !local && roadView.kind !== 'recorded' && !feed?.clips.length && (
         <button className="ra-enable-camera" onClick={() => void camera.start()}>
           <Camera size={11} />
           Use camera

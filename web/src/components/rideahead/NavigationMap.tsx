@@ -41,6 +41,8 @@ export default function NavigationMap({
   const [tileState, setTileState] = useState<'loading' | 'available' | 'unavailable'>('loading');
   const { size, obstacles } = useMapChrome(ref);
   const fittedSession = useRef<string | null>(null);
+  // Navigation-app camera: follow the moving rider until the user drags the map.
+  const following = useRef(true);
   const renderedRevision = useRef<string | null>(null);
   const latest = useRef(snapshot);
   const chrome = useRef({ size, obstacles });
@@ -101,6 +103,9 @@ export default function NavigationMap({
           setTileState(errors || !loaded ? 'unavailable' : 'available');
         });
         tiles.addTo(map);
+        map.on('dragstart', () => {
+          following.current = false;
+        });
         setReady(true);
       })
       .catch(() => {
@@ -144,6 +149,29 @@ export default function NavigationMap({
   const recenterRef = useRef(recenter);
   useEffect(() => {
     recenterRef.current = recenter;
+  });
+
+  /** Centre ahead of the rider being guided (or the observer before they set off). */
+  function follow() {
+    const state = runtime.current;
+    const value = latest.current;
+    if (!state) return;
+    const moving = (rider: SnapshotView['riders'][number] | undefined) =>
+      rider && rider.status !== 'waiting' && pointToLatLng(rider.point) ? rider : undefined;
+    const rider =
+      moving(value.riders.find((item) => item.id === value.decision?.riderId)) ??
+      value.riders.find((item) => moving(item));
+    const point = rider && pointToLatLng(rider.point);
+    if (!point) return;
+    const { map, L } = state;
+    const zoom = Math.max(map.getZoom(), 17);
+    // Rider sits below centre, like a sat-nav: more road ahead than behind.
+    const ahead = map.project(point, zoom).subtract(L.point(0, map.getSize().y * 0.18));
+    map.setView(map.unproject(ahead, zoom), zoom, { animate: true, duration: 0.9 });
+  }
+  const followRef = useRef(follow);
+  useEffect(() => {
+    followRef.current = follow;
   });
 
   useEffect(() => {
@@ -266,11 +294,12 @@ export default function NavigationMap({
       });
       marker.on('click', () => select.current(hazard.id));
     }
-    // Polling, decisions and rider movement never change the user's zoom/pan.
+    // Follow mode pans to the rider; once the user drags, their zoom/pan is left alone.
     if (size && shouldFitSession(fittedSession.current, snapshot)) {
       recenterRef.current();
       fittedSession.current = snapshot.id;
     }
+    if (following.current) followRef.current();
     map.getContainer().setAttribute('data-session-revision', String(snapshot.revision));
   }, [ready, snapshot, size]);
   useEffect(() => {
@@ -302,7 +331,14 @@ export default function NavigationMap({
         >
           <Minus size={19} />
         </button>
-        <button aria-label="Recenter route" disabled={!ready || !points.length} onClick={recenter}>
+        <button
+          aria-label="Follow rider"
+          disabled={!ready || !points.length}
+          onClick={() => {
+            following.current = true;
+            follow();
+          }}
+        >
           <Crosshair size={19} />
         </button>
       </div>
