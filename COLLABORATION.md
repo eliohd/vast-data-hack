@@ -26,10 +26,13 @@ it). Fill in names on the day.
 
 | Lane | Who (tool) | Owns | Scope |
 |---|---|---|---|
-| **A. Agent** | Elio (Claude) | `server/app/agent/` (new modules), `server/app/agent/prompts.py`, `server/app/clients/llm.py` | Orchestration, Nemotron / W&B LLM step, self-healing re-ingest loop |
-| **B. Web** | _____ (Claude) | `web/src/**`, `web/package.json`, `web/pnpm-lock.yaml` | Phone UI, result islands next to `LiveCamera`, deployed `/app` |
-| **C. Archive + Cosmos** | _____ (Codex) | `server/app/clients/vss.py`, `server/app/clients/gpu.py`, `server/app/clients/vastdb_client.py`, `server/app/api/archive.py`, `server/app/api/clips.py` | VSS search / ingest, Cosmos3-Reason video verification, VastDB |
-| **D. Severity + eval** | _____ (Codex) | `server/app/agent/severity.py` (new, pure + tested), `server/eval/` (new), matching tests | YOLO geometry, time-to-collision (TTC) severity score, Weave evaluation numbers |
+| **A. Integrator + runtime** | Elio (Claude) | `server/app/agent/{models,interfaces,runtime,routing,geo,perception_fixture,prompts}.py`, `server/app/api/rideahead.py`, `server/app/{services,main,config}.py`, `server/app/clients/llm.py`, Python deps, `server/fixtures/rideahead/*.json`, generated artifacts, root docs | RideAhead contract, session runtime, openrouteservice adapter, wiring, deploy |
+| **B. Interface** | _____ | `web/src/**` (except generated `schema.d.ts`), `web/package.json`, `web/pnpm-lock.yaml`, web tests | RideAhead island: map, riders, evidence playback, decision card, controls |
+| **C. Archive + perception** | _____ | `server/app/agent/perception.py`, `server/app/clients/{vss,gpu,vastdb_client}.py`, `server/app/api/{archive,clips}.py`, `server/fixtures/rideahead/cache/`, perception tests | Ride discovery, anchors, extraction + Cosmos/YOLO verification, cached outputs |
+| **D. Hazard engine + eval** | _____ | `server/app/agent/hazards.py`, `server/app/agent/scoring.py`, `server/eval/`, engine/eval tests | Lifecycle, dedup/corroboration, persistence, route relevance + decisions, evaluation. **No TTC / collision prediction.** |
+
+RideAhead specifics: see [master-prompt.md](master-prompt.md) section 4 and
+[docs/rideahead/handoff-A.md](docs/rideahead/handoff-A.md) for the frozen contract.
 
 Starting a new file in your own lane is always fine. That's the easiest way to avoid conflicts.
 
@@ -39,7 +42,7 @@ Starting a new file in your own lane is always fine. That's the easiest way to a
 |---|---|---|
 | `server/app/agent/analyser.py` (`build_analyser`) | A | Others add their analyser in their own module; A wires it in. |
 | `server/app/core/protocol.py` ⇄ `web/src/lib/protocol.ts` | A + B together | Change both in one commit. |
-| `server/app/clients/gpu.py` | C | D adds YOLO calls as a separate function, telling C first. |
+| `server/app/clients/gpu.py` | C | Others request changes through `handoff-C.md`. |
 | `server/pyproject.toml`, `server/uv.lock` | A | Ask A to add Python deps. |
 | `web/src/pages/index.astro` | B | Others hand B a component to mount. |
 | `README.md`, `AGENTS.md`, this file | A | Anyone may suggest a change; A merges. |

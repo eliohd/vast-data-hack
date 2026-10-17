@@ -161,10 +161,120 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/rideahead/capabilities": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Capabilities */
+        get: operations["capabilities_api_rideahead_capabilities_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/rideahead/rides": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Rides */
+        get: operations["rides_api_rideahead_rides_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/rideahead/sessions": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Create Session */
+        post: operations["create_session_api_rideahead_sessions_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/rideahead/sessions/{session_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get Session */
+        get: operations["get_session_api_rideahead_sessions__session_id__get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/rideahead/sessions/{session_id}/advance": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Advance */
+        post: operations["advance_api_rideahead_sessions__session_id__advance_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/rideahead/sessions/{session_id}/config": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /** Update Config */
+        patch: operations["update_config_api_rideahead_sessions__session_id__config_patch"];
+        trace?: never;
+    };
 }
 export type webhooks = Record<string, never>;
 export interface components {
     schemas: {
+        /** AdvanceRequest */
+        AdvanceRequest: {
+            /**
+             * To S
+             * @description target replay time; earlier than now resets + replays
+             */
+            to_s: number;
+        };
         /** AskRequest */
         AskRequest: {
             /** Original Video */
@@ -195,6 +305,26 @@ export interface components {
             /** Scenario */
             scenario?: string | null;
         };
+        /** Capabilities */
+        Capabilities: {
+            default_config: components["schemas"]["SessionConfig"];
+            /** Hazard Engine */
+            hazard_engine: string;
+            /** Hazard Types */
+            hazard_types: components["schemas"]["HazardTypeConfig"][];
+            /** Integrations */
+            integrations: components["schemas"]["IntegrationStatus"][];
+            /** Perception Provider */
+            perception_provider: string;
+            /** Routing Provider */
+            routing_provider: string;
+            /**
+             * Schema Version
+             * @default 1
+             * @constant
+             */
+            schema_version: "1";
+        };
         /** ClipList */
         ClipList: {
             /** Clips */
@@ -213,10 +343,230 @@ export interface components {
                 [key: string]: unknown;
             } | null;
         };
+        /** CreateSessionRequest */
+        CreateSessionRequest: {
+            /** Ride Id */
+            ride_id?: string | null;
+            /** Scenario Id */
+            scenario_id?: string | null;
+        };
+        /** Decision */
+        Decision: {
+            /**
+             * Action
+             * @enum {string}
+             */
+            action: "continue" | "heads_up" | "slow" | "wait" | "reroute" | "unavailable";
+            /**
+             * Arrival In S
+             * @description estimated seconds until the hazard
+             */
+            arrival_in_s?: number | null;
+            /** Assumptions */
+            assumptions?: string[];
+            /**
+             * Changed
+             * @description set by the runtime vs the previous decision
+             * @default false
+             */
+            changed: boolean;
+            /** Decision Id */
+            decision_id: string;
+            /** Detour Cost S */
+            detour_cost_s?: number | null;
+            /** Estimated Delay S */
+            estimated_delay_s?: number | null;
+            /** Evidence Ids */
+            evidence_ids?: string[];
+            /**
+             * Explanation
+             * @description optional LLM wording of the facts
+             */
+            explanation?: string | null;
+            /** Hazard Ids */
+            hazard_ids?: string[];
+            /**
+             * Reason
+             * @description short deterministic reason
+             */
+            reason: string;
+            /**
+             * Revision
+             * @description set by the runtime
+             * @default 0
+             */
+            revision: number;
+            /** Rider Id */
+            rider_id: string;
+            /**
+             * Schema Version
+             * @default 1
+             * @constant
+             */
+            schema_version: "1";
+            /** Selected Route Id */
+            selected_route_id?: string | null;
+            /**
+             * Session Time S
+             * @default 0
+             */
+            session_time_s: number;
+        };
+        /** Evidence */
+        Evidence: {
+            /** Camera Id */
+            camera_id?: string | null;
+            /**
+             * Caption
+             * @description source caption / description excerpt
+             */
+            caption?: string | null;
+            /**
+             * Clip End S
+             * @description end within the segment clip, seconds
+             */
+            clip_end_s: number;
+            /**
+             * Clip Start S
+             * @description start within the segment clip, seconds
+             */
+            clip_start_s: number;
+            /** Evidence Id */
+            evidence_id: string;
+            /**
+             * Media Ref
+             * @description app-controlled media path, e.g. /api/archive/media?source=… (never a JWT URL)
+             */
+            media_ref?: string | null;
+            /** Model */
+            model?: string | null;
+            /**
+             * Object Counts
+             * @description YOLO11 object counts for this clip, if available
+             */
+            object_counts?: {
+                [key: string]: number;
+            };
+            /** Prompt Version */
+            prompt_version?: string | null;
+            /**
+             * Provenance
+             * @enum {string}
+             */
+            provenance: "recorded" | "cached_recorded" | "synthetic";
+            /**
+             * Recorded At
+             * @description original recording time, if known
+             */
+            recorded_at?: string | null;
+            /** Ride Id */
+            ride_id: string;
+            /**
+             * Ride Offset S
+             * @description seconds from the start of the recorded ride
+             */
+            ride_offset_s: number;
+            /**
+             * Segment Id
+             * @description VSS source segment id (the `source` of the clip)
+             */
+            segment_id: string;
+        };
         /** HTTPValidationError */
         HTTPValidationError: {
             /** Detail */
             detail?: components["schemas"]["ValidationError"][];
+        };
+        /** Hazard */
+        Hazard: {
+            /** Clearance Evidence Id */
+            clearance_evidence_id?: string | null;
+            /** Clearance Observation Id */
+            clearance_observation_id?: string | null;
+            /** Confirmation Kind */
+            confirmation_kind?: ("persistence" | "independent") | null;
+            /**
+             * Evidence Strength
+             * @default unknown
+             * @enum {string}
+             */
+            evidence_strength: "weak" | "moderate" | "strong" | "unknown";
+            /**
+             * First Seen S
+             * @description session time
+             */
+            first_seen_s: number;
+            /** Hazard Id */
+            hazard_id: string;
+            /**
+             * Hazard Type
+             * @enum {string}
+             */
+            hazard_type: "lane_blocked" | "work_zone";
+            /**
+             * Impact
+             * @default unknown
+             * @enum {string}
+             */
+            impact: "low" | "medium" | "high" | "unknown";
+            /**
+             * Last Supported S
+             * @description session time
+             */
+            last_supported_s: number;
+            location: components["schemas"]["LocationEstimate"];
+            /** Observation Ids */
+            observation_ids: string[];
+            persistence: components["schemas"]["PersistencePrior"];
+            /**
+             * Persistence Weight
+             * @description 2 ** (-age_s / half_life_s) at snapshot time; heuristic weight
+             */
+            persistence_weight?: number | null;
+            /**
+             * Schema Version
+             * @default 1
+             * @constant
+             */
+            schema_version: "1";
+            /**
+             * State
+             * @enum {string}
+             */
+            state: "observed" | "confirmed" | "stale" | "disputed" | "cleared";
+            /**
+             * Summary
+             * @default
+             */
+            summary: string;
+        };
+        /** HazardTypeConfig */
+        HazardTypeConfig: {
+            /**
+             * Default Impact
+             * @default medium
+             * @enum {string}
+             */
+            default_impact: "low" | "medium" | "high";
+            /** Display Name */
+            display_name: string;
+            /**
+             * Expected Delay S
+             * @description assumed delay if the rider meets it (demonstration assumption)
+             * @default 60
+             */
+            expected_delay_s: number;
+            /**
+             * Hazard Type
+             * @enum {string}
+             */
+            hazard_type: "lane_blocked" | "work_zone";
+            /**
+             * Match Radius M
+             * @default 40
+             */
+            match_radius_m: number;
+            persistence: components["schemas"]["PersistencePrior"];
         };
         /** Health */
         Health: {
@@ -228,6 +578,267 @@ export interface components {
             team: string;
             /** Tracing */
             tracing: boolean;
+        };
+        /** IntegrationStatus */
+        IntegrationStatus: {
+            /**
+             * Detail
+             * @default
+             */
+            detail: string;
+            /**
+             * Name
+             * @enum {string}
+             */
+            name: "vast" | "cosmos" | "yolo" | "wandb_inference" | "weave" | "routing";
+            /**
+             * State
+             * @enum {string}
+             */
+            state: "connected" | "configured" | "cached" | "fixture" | "unavailable" | "not_configured";
+        };
+        /** LatLon */
+        LatLon: {
+            /** Lat */
+            lat: number;
+            /** Lon */
+            lon: number;
+        };
+        /**
+         * LineString
+         * @description GeoJSON LineString. coordinates are [lon, lat] pairs.
+         */
+        LineString: {
+            /** Coordinates */
+            coordinates: number[][];
+            /**
+             * Type
+             * @default LineString
+             * @constant
+             */
+            type: "LineString";
+        };
+        /** LocationEstimate */
+        LocationEstimate: {
+            /**
+             * Bearing Deg
+             * @description travel bearing, degrees from north
+             */
+            bearing_deg?: number | null;
+            /** Lat */
+            lat?: number | null;
+            /** Lon */
+            lon?: number | null;
+            /**
+             * Method
+             * @default unknown
+             * @enum {string}
+             */
+            method: "metadata" | "manual_anchor" | "interpolated" | "unknown";
+            /**
+             * Notes
+             * @default
+             */
+            notes: string;
+            /**
+             * Road Segment Id
+             * @description directed road segment, e.g. 'southwark-st:eb' (direction-specific)
+             */
+            road_segment_id?: string | null;
+            /** Uncertainty M */
+            uncertainty_m?: number | null;
+        };
+        /** Observation */
+        Observation: {
+            /**
+             * Assertion
+             * @enum {string}
+             */
+            assertion: "present" | "clear" | "unclear";
+            /**
+             * Description
+             * @description short factual description
+             */
+            description: string;
+            /** Evidence */
+            evidence: components["schemas"]["Evidence"][];
+            /**
+             * Hazard Type
+             * @enum {string}
+             */
+            hazard_type: "lane_blocked" | "work_zone";
+            /**
+             * Label
+             * @description event-level label, e.g. 'Synthetic clearance (scenario event)'
+             */
+            label?: string | null;
+            location: components["schemas"]["LocationEstimate"];
+            /**
+             * Model Confidence
+             * @description model self-reported, UNCALIBRATED
+             */
+            model_confidence?: number | null;
+            /** Observation Id */
+            observation_id: string;
+            /**
+             * Observer Id
+             * @description who saw it, e.g. 'bike_a'
+             */
+            observer_id: string;
+            /** Ride Offset S */
+            ride_offset_s: number;
+            /**
+             * Schema Version
+             * @default 1
+             * @constant
+             */
+            schema_version: "1";
+            /**
+             * Session Time S
+             * @description replay time at which this becomes available
+             */
+            session_time_s: number;
+            /**
+             * Source
+             * @enum {string}
+             */
+            source: "live_model" | "cached_model" | "synthetic_scenario" | "fixture";
+            /**
+             * Source Group Id
+             * @description one sighting: adjacent chunks / repeated frames share this id, so they are never counted as independent observers
+             */
+            source_group_id: string;
+            /**
+             * Support
+             * @enum {string}
+             */
+            support: "supported" | "uncertain" | "contradicted";
+            verification?: components["schemas"]["Verification"] | null;
+        };
+        /**
+         * PersistencePrior
+         * @description Type-based persistence assumption. A heuristic, not a validated probability.
+         */
+        PersistencePrior: {
+            /** Half Life S */
+            half_life_s: number;
+            /**
+             * Label
+             * @default demonstration assumption
+             */
+            label: string;
+            /** Stale After S */
+            stale_after_s: number;
+            /**
+             * Version
+             * @default demo-1
+             */
+            version: string;
+        };
+        /** RideManifest */
+        RideManifest: {
+            /** Camera Id */
+            camera_id?: string | null;
+            /** Duration S */
+            duration_s: number;
+            /**
+             * Has Gps
+             * @default false
+             */
+            has_gps: boolean;
+            /**
+             * Location Label
+             * @description e.g. 'manually reconstructed route, Southwark (London)'
+             * @default
+             */
+            location_label: string;
+            /**
+             * Provenance
+             * @default recorded
+             * @enum {string}
+             */
+            provenance: "recorded" | "cached_recorded" | "synthetic";
+            /** Ride Id */
+            ride_id: string;
+            /** Segments */
+            segments?: components["schemas"]["SegmentRef"][];
+            /** Title */
+            title: string;
+        };
+        /** Rider */
+        Rider: {
+            /** Active Route Id */
+            active_route_id?: string | null;
+            /** Bearing Deg */
+            bearing_deg?: number | null;
+            /** Candidate Route Ids */
+            candidate_route_ids?: string[];
+            destination?: components["schemas"]["LatLon"] | null;
+            /** Label */
+            label: string;
+            origin?: components["schemas"]["LatLon"] | null;
+            position?: components["schemas"]["LatLon"] | null;
+            /**
+             * Progress M
+             * @description distance travelled along active_route_id
+             * @default 0
+             */
+            progress_m: number;
+            /** Rider Id */
+            rider_id: string;
+            /** Simulated */
+            simulated: boolean;
+            /**
+             * Speed Mps
+             * @default 5
+             */
+            speed_mps: number;
+            /**
+             * Status
+             * @default waiting
+             * @enum {string}
+             */
+            status: "waiting" | "riding" | "arrived" | "recorded";
+        };
+        /** RouteCandidate */
+        RouteCandidate: {
+            /** Avoids Hazard Ids */
+            avoids_hazard_ids?: string[];
+            /** Distance M */
+            distance_m: number;
+            /** Duration S */
+            duration_s: number;
+            geometry: components["schemas"]["LineString"];
+            /**
+             * Label
+             * @default bicycle route from provider, subject to map restrictions
+             */
+            label: string;
+            /**
+             * Profile
+             * @description e.g. 'cycling-regular'
+             */
+            profile: string;
+            /**
+             * Provenance
+             * @enum {string}
+             */
+            provenance: "live_provider" | "cached_provider" | "fixture";
+            /**
+             * Provider
+             * @description 'openrouteservice' or 'fixture'
+             */
+            provider: string;
+            /**
+             * Role
+             * @default primary
+             * @enum {string}
+             */
+            role: "primary" | "alternative" | "detour";
+            /** Route Id */
+            route_id: string;
+            /** Warnings */
+            warnings?: string[];
         };
         /** SearchRequest */
         SearchRequest: {
@@ -257,6 +868,129 @@ export interface components {
              * @default 15
              */
             top_k: number;
+        };
+        /** SegmentRef */
+        SegmentRef: {
+            /** Caption */
+            caption?: string | null;
+            /** Duration S */
+            duration_s: number;
+            /** Media Ref */
+            media_ref?: string | null;
+            /** Ride Offset S */
+            ride_offset_s: number;
+            /** Segment Id */
+            segment_id: string;
+        };
+        /** SessionConfig */
+        SessionConfig: {
+            /**
+             * Config Version
+             * @default 1
+             */
+            config_version: string;
+            /**
+             * Explain With Llm
+             * @default false
+             */
+            explain_with_llm: boolean;
+            /** Hazard Types */
+            hazard_types?: {
+                [key: string]: components["schemas"]["HazardTypeConfig"];
+            };
+            /**
+             * Planning Radius M
+             * @description planning-area setting
+             * @default 2000
+             */
+            planning_radius_m: number;
+            /**
+             * Share Radius M
+             * @description short-radius alert setting
+             * @default 200
+             */
+            share_radius_m: number;
+        };
+        /**
+         * SessionConfigUpdate
+         * @description PATCH body: every field optional.
+         */
+        SessionConfigUpdate: {
+            /** Explain With Llm */
+            explain_with_llm?: boolean | null;
+            /** Planning Radius M */
+            planning_radius_m?: number | null;
+            /** Share Radius M */
+            share_radius_m?: number | null;
+        };
+        /**
+         * SessionEvent
+         * @description Local activity log line. NOT a Weave trace.
+         */
+        SessionEvent: {
+            /**
+             * Kind
+             * @enum {string}
+             */
+            kind: "observation" | "hazard" | "decision" | "route" | "system";
+            /** Message */
+            message: string;
+            /** Ref Ids */
+            ref_ids?: string[];
+            /** Session Time S */
+            session_time_s: number;
+        };
+        /** SessionSnapshot */
+        SessionSnapshot: {
+            config: components["schemas"]["SessionConfig"];
+            /** Decision History */
+            decision_history?: components["schemas"]["Decision"][];
+            /**
+             * Decisions
+             * @description current decision per simulated rider
+             */
+            decisions: components["schemas"]["Decision"][];
+            /** Duration S */
+            duration_s: number;
+            /** Events */
+            events?: components["schemas"]["SessionEvent"][];
+            /** Hazards */
+            hazards: components["schemas"]["Hazard"][];
+            /** Integrations */
+            integrations: components["schemas"]["IntegrationStatus"][];
+            /**
+             * Labels
+             * @description simulation / provenance labels to always show
+             */
+            labels?: string[];
+            /**
+             * Observations
+             * @description only those revealed by replay_time_s
+             */
+            observations: components["schemas"]["Observation"][];
+            /** Replay Time S */
+            replay_time_s: number;
+            /**
+             * Revision
+             * @description monotonic; increases on every state change
+             */
+            revision: number;
+            /** Ride Id */
+            ride_id: string;
+            /** Riders */
+            riders: components["schemas"]["Rider"][];
+            /** Routes */
+            routes: components["schemas"]["RouteCandidate"][];
+            /** Scenario Id */
+            scenario_id: string;
+            /**
+             * Schema Version
+             * @default 1
+             * @constant
+             */
+            schema_version: "1";
+            /** Session Id */
+            session_id: string;
         };
         /** UpstreamReport */
         UpstreamReport: {
@@ -291,6 +1025,42 @@ export interface components {
             msg: string;
             /** Error Type */
             type: string;
+        };
+        /**
+         * Verification
+         * @description Result of re-checking a clip (Cosmos Reason). Model checking is not ground truth.
+         */
+        Verification: {
+            /** Evidence Id */
+            evidence_id: string;
+            /** Latency Ms */
+            latency_ms?: number | null;
+            /** Model */
+            model?: string | null;
+            /** Obstruction Visible */
+            obstruction_visible?: boolean | null;
+            /** Prompt Version */
+            prompt_version?: string | null;
+            /** Question */
+            question: string;
+            /**
+             * Rationale
+             * @default
+             */
+            rationale: string;
+            /** Road Space Visible */
+            road_space_visible?: boolean | null;
+            /**
+             * Source
+             * @default fixture
+             * @enum {string}
+             */
+            source: "live_model" | "cached_model" | "fixture";
+            /**
+             * Verdict
+             * @enum {string}
+             */
+            verdict: "supported" | "contradicted" | "unclear";
         };
     };
     responses: never;
@@ -592,6 +1362,180 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["UpstreamReport"];
+                };
+            };
+        };
+    };
+    capabilities_api_rideahead_capabilities_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Capabilities"];
+                };
+            };
+        };
+    };
+    rides_api_rideahead_rides_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["RideManifest"][];
+                };
+            };
+        };
+    };
+    create_session_api_rideahead_sessions_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CreateSessionRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["SessionSnapshot"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    get_session_api_rideahead_sessions__session_id__get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                session_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["SessionSnapshot"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    advance_api_rideahead_sessions__session_id__advance_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                session_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["AdvanceRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["SessionSnapshot"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    update_config_api_rideahead_sessions__session_id__config_patch: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                session_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["SessionConfigUpdate"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["SessionSnapshot"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
                 };
             };
         };

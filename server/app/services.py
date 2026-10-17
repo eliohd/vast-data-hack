@@ -11,6 +11,13 @@ import httpx
 from fastapi import Request, WebSocket
 
 from app.agent.analyser import FrameAnalyser, StubAnalyser, build_analyser
+from app.agent.hazards import build_engine
+from app.agent.interfaces import PerceptionProvider, RoutingProvider
+from app.agent.models import IntegrationName, IntegrationStatus
+from app.agent.perception import ArchivePerceptionProvider
+from app.agent.perception_fixture import FixturePerceptionProvider
+from app.agent.routing import CachedRouting, FixtureRoutingProvider, OpenRouteServiceProvider
+from app.agent.runtime import RideAheadRuntime, Scenario
 from app.clients.gpu import Canary, CosmosEmbed, CosmosReason, Yolo
 from app.clients.llm import LLM
 from app.clients.vss import VSSClient
@@ -31,6 +38,7 @@ class Services:
     llm: LLM
     analyser: FrameAnalyser = field(default_factory=StubAnalyser)
     tracing: bool = False
+    rideahead: RideAheadRuntime = field(init=False)
 
     @property
     def analyser_name(self) -> str:
@@ -42,7 +50,80 @@ class Services:
         services = cls.build(settings)
         services.tracing = init_tracing(settings)
         services.analyser = build_analyser(settings.analyser, services.cosmos)
+        services.rideahead = services.build_rideahead()
         return services
+
+    # -- RideAhead wiring ------------------------------------------------------------------
+
+    def build_rideahead(self) -> RideAheadRuntime:
+        s = self.settings
+        fixtures = s.rideahead_fixtures
+        perception: PerceptionProvider
+        if s.rideahead_perception == "archive":
+            perception = ArchivePerceptionProvider(
+                self.vss, self.cosmos, self.yolo, self.llm, fixtures / "cache"
+            )
+        else:
+            perception = FixturePerceptionProvider(fixtures / "observations.json")
+        routing: RoutingProvider
+        ors_key = s.ors_api_key.get_secret_value()
+        if s.rideahead_routing == "ors" or (s.rideahead_routing == "auto" and ors_key):
+            routing = OpenRouteServiceProvider(self.http, ors_key, s.ors_base_url, s.ors_profile)
+        else:
+            routing = FixtureRoutingProvider(fixtures / "routes.json")
+        return RideAheadRuntime(
+            perception=perception,
+            routing=CachedRouting(routing),
+            engine_factory=build_engine,
+            scenario=Scenario.load(fixtures / s.rideahead_scenario),
+            integrations=self.rideahead_integrations,
+            snapshot_dir=s.data_dir / "rideahead" if s.rideahead_snapshots else None,
+        )
+
+    def rideahead_integrations(self) -> list[IntegrationStatus]:
+        """Honest status per integration. A provider may override with `statuses()`."""
+        rt = self.rideahead
+        live = rt.perception.name != "fixture"
+
+        def upstream(name: IntegrationName, configured: bool, what: str) -> IntegrationStatus:
+            if not live:
+                return IntegrationStatus(
+                    name=name, state="fixture", detail=f"fixture perception; {what} not called"
+                )  # type: ignore[arg-type]
+            state = "configured" if configured else "not_configured"
+            return IntegrationStatus(name=name, state=state, detail=what)  # type: ignore[arg-type]
+
+        statuses = {
+            "vast": upstream("vast", self.vss.configured, "VSS retrieval"),
+            "cosmos": upstream("cosmos", self.cosmos.configured, "Cosmos Reason"),
+            "yolo": upstream("yolo", self.yolo.configured, "YOLO11"),
+            "wandb_inference": upstream("wandb_inference", self.llm.configured, "W&B Inference"),
+            "weave": IntegrationStatus(
+                name="weave",
+                state="connected" if self.tracing else "not_configured",
+                detail=self.settings.wandb_entity_project if self.tracing else "tracing off",
+            ),
+        }
+        routing = rt.routing
+        if routing.name == "fixture":
+            statuses["routing"] = IntegrationStatus(
+                name="routing", state="fixture", detail="hand-drawn fixture routes"
+            )
+        elif routing.last_error:
+            statuses["routing"] = IntegrationStatus(
+                name="routing", state="unavailable", detail=routing.last_error
+            )
+        else:
+            state = "connected" if routing.calls else "configured"
+            statuses["routing"] = IntegrationStatus(
+                name="routing", state=state, detail=f"{routing.name} {self.settings.ors_profile}"
+            )
+        extra = getattr(rt.perception, "statuses", None)
+        if callable(extra):
+            provided: list[IntegrationStatus] = extra()  # type: ignore[assignment]
+            for st in provided:
+                statuses[st.name] = st
+        return list(statuses.values())
 
     @classmethod
     def build(cls, settings: Settings) -> Services:

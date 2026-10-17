@@ -53,6 +53,7 @@ TEAM_CONFIG_KEYS: dict[str, tuple[str, ...]] = {
     "vdb_schema": ("VDB_SCHEMA",),
     "vdb_collection": ("VDB_COLLECTION",),
     "vdb_prompts_collection": ("VDB_PROMPTS_COLLECTION",),
+    "ors_api_key": ("ORS_API_KEY", "OPENROUTESERVICE_API_KEY"),
 }
 
 
@@ -156,6 +157,16 @@ class Settings(BaseSettings):
     vdb_schema: str = "vss-schema"
     vdb_collection: str = "vss-collection"
     vdb_prompts_collection: str = "vss-prompts-events"
+
+    # RideAhead
+    ors_api_key: SecretStr = SecretStr("")  # openrouteservice (bicycle routing)
+    ors_base_url: str = "https://api.openrouteservice.org"
+    ors_profile: str = "cycling-regular"
+    rideahead_routing: Literal["auto", "fixture", "ors"] = "auto"  # auto: ors if key set
+    rideahead_perception: Literal["fixture", "archive"] = "fixture"
+    rideahead_fixtures: Path = SERVER_DIR / "fixtures" / "rideahead"
+    rideahead_scenario: str = "scenario.json"  # file name inside rideahead_fixtures
+    rideahead_snapshots: bool = False  # write <data_dir>/rideahead/<session>.json on change
 
     # app
     analyser: Literal["auto", "stub", "cosmos"] = "auto"

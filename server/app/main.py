@@ -19,7 +19,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from fastapi.staticfiles import StaticFiles
 
-from app.api import archive, clips, health, live
+from app.api import archive, clips, health, live, rideahead
 from app.api.guard import ApiGuard
 from app.clients.vss import VSSError
 from app.config import Settings, get_settings
@@ -62,7 +62,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     async def upstream_error(_: Request, exc: httpx.HTTPError) -> JSONResponse:
         return JSONResponse({"detail": f"upstream error: {exc}"}, status_code=502)
 
-    for module in (health, live, clips, archive):
+    for module in (health, live, clips, archive, rideahead):
         app.include_router(module.router)
 
     # Last: the static site, so it never shadows /api or /ws.

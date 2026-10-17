@@ -1,0 +1,101 @@
+{
+  "_note": "SYNTHETIC development fixture. Hand-drawn lines, durations at 4.5 m/s. Not real routing.",
+  "routes": [
+    {
+      "route_id": "fx-primary",
+      "role": "primary",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -0.105,
+            51.5058
+          ],
+          [
+            -0.102,
+            51.5057
+          ],
+          [
+            -0.0975,
+            51.5055
+          ],
+          [
+            -0.0945,
+            51.5052
+          ],
+          [
+            -0.0907,
+            51.5046
+          ],
+          [
+            -0.088,
+            51.505
+          ]
+        ]
+      },
+      "duration_s": 265.3,
+      "distance_m": 1193.9,
+      "provider": "fixture",
+      "profile": "cycling-regular",
+      "provenance": "fixture",
+      "warnings": [
+        "hand-drawn fixture via Southwark Street"
+      ],
+      "label": "FIXTURE route (hand-drawn) \u2014 not provider routing"
+    },
+    {
+      "route_id": "fx-alt-union-st",
+      "role": "alternative",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -0.105,
+            51.5058
+          ],
+          [
+            -0.1046,
+            51.5044
+          ],
+          [
+            -0.1043,
+            51.503
+          ],
+          [
+            -0.1,
+            51.5028
+          ],
+          [
+            -0.095,
+            51.5027
+          ],
+          [
+            -0.0915,
+            51.503
+          ],
+          [
+            -0.091,
+            51.5038
+          ],
+          [
+            -0.0907,
+            51.5046
+          ],
+          [
+            -0.088,
+            51.505
+          ]
+        ]
+      },
+      "duration_s": 351.8,
+      "distance_m": 1583.3,
+      "provider": "fixture",
+      "profile": "cycling-regular",
+      "provenance": "fixture",
+      "warnings": [
+        "hand-drawn fixture via Union Street"
+      ],
+      "label": "FIXTURE route (hand-drawn) \u2014 not provider routing"
+    }
+  ]
+}

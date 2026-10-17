@@ -39,7 +39,7 @@ fmt: ## Auto-format both halves
 	cd web && pnpm format
 
 gen-api: ## Export server OpenAPI → regenerate web/src/lib/api/schema.d.ts
-	cd server && uv run python -m app.export_openapi
+	cd server && uv run python -m app.export_openapi && uv run python -m app.export_fixtures
 	cd web && pnpm gen:api
 
 build: ## Static web build into web/dist (FastAPI serves it)
