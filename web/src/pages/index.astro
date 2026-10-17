@@ -1,19 +1,11 @@
 ---
 import BaseLayout from '@/layouts/BaseLayout.astro';
-import LiveCamera from '@/components/camera/LiveCamera';
-import StatusPanel from '@/components/status/StatusPanel';
+import RideAheadApp from '@/components/rideahead/RideAheadApp';
 ---
 
-<BaseLayout title="Hack · Live">
-  <main class="mx-auto flex max-w-6xl flex-col gap-6 px-4 py-6 pb-[max(1.5rem,env(safe-area-inset-bottom))]">
-    <header class="flex flex-col gap-1">
-      <h1 class="text-2xl font-semibold tracking-tight">Live</h1>
-      <p class="text-sm text-muted-foreground">
-        Phone camera → WebSocket → FastAPI → Cosmos / YOLO / W&B. Replace this page with the product
-        once the idea is locked.
-      </p>
-    </header>
-    <LiveCamera client:only="react" />
-    <StatusPanel client:only="react" />
-  </main>
+<BaseLayout
+  title="RideAhead · One bike sees it. The next bike avoids it."
+  description="Evidence-linked road reports and replay navigation for cyclists."
+>
+  <RideAheadApp client:only="react" />
 </BaseLayout>

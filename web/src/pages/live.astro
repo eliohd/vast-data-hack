@@ -1,0 +1,19 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import LiveCamera from '@/components/camera/LiveCamera';
+import StatusPanel from '@/components/status/StatusPanel';
+---
+
+<BaseLayout title="RideAhead · Live camera">
+  <main class="mx-auto flex max-w-6xl flex-col gap-6 px-4 py-6">
+    <a href="/" class="text-sm underline">
+      ← RideAhead replay
+    </a>
+    <h1 class="text-2xl font-semibold">Live camera</h1>
+    <p class="text-sm text-muted-foreground">
+      Existing live camera tools. Separate from the RideAhead archive demonstration.
+    </p>
+    <LiveCamera client:only="react" />
+    <StatusPanel client:only="react" />
+  </main>
+</BaseLayout>
