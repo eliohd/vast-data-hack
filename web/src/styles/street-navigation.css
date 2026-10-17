@@ -977,3 +977,80 @@
     outline: 3px solid #9bcb76;
   }
 }
+
+/* Phone-only demo controls (rendered only when useIsPhone() is true). */
+.ra-phone-inference {
+  position: absolute;
+  z-index: 505;
+  left: 12px;
+  right: 68px; /* clear of the zoom / locate column (.ra-map-tools) */
+  bottom: calc(max(29px, env(safe-area-inset-bottom)) + 200px);
+  display: grid;
+  gap: 4px;
+  padding: 10px 14px;
+  border-radius: 18px;
+  text-align: left;
+  color: #264533;
+}
+.ra-phone-inference-title {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.ra-phone-inference-text {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  font-size: 13px;
+  line-height: 1.35;
+}
+.ra-phone-demo {
+  display: grid;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+.ra-phone-demo .ra-mode-bar {
+  display: grid;
+  gap: 8px;
+}
+.ra-phone-demo .ra-mode-bar select,
+.ra-phone-demo .ra-mode-bar button {
+  min-height: 44px;
+  padding: 8px 12px;
+  border: 1px solid #ccd8c3;
+  border-radius: 12px;
+  background: white;
+  font-size: 14px;
+}
+.ra-phone-demo .ra-mode-bar button[aria-pressed='true'] {
+  background: #e4eddc;
+}
+.ra-phone-demo-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+.ra-phone-demo-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px;
+  border-radius: 14px;
+  background: white;
+}
+.ra-phone-demo-toggle > span {
+  display: grid;
+  gap: 2px;
+  font-size: 14px;
+}
+.ra-phone-demo .ra-camera-tools button {
+  min-height: 44px;
+  font-size: 13px;
+}

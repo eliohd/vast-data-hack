@@ -1,6 +1,8 @@
 import { useCallback, useEffect, useRef, useState, type ReactNode } from 'react';
 import { Play, Pause, RotateCcw, X, SlidersHorizontal, Navigation, Sparkles } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { Switch } from '@/components/ui/switch';
+import { useIsPhone } from '@/hooks/useIsPhone';
 import {
   decisionKey,
   formatArrival,
@@ -35,6 +37,15 @@ const noRoadView: RoadView = {
   detail: 'Waiting for the session.',
 };
 const HIGHLIGHT_MS = 1600;
+const SHOW_INFERENCE_KEY = 'cysense.phone.showInference';
+
+function readShowInference(): boolean {
+  try {
+    return localStorage.getItem(SHOW_INFERENCE_KEY) === '1';
+  } catch {
+    return false;
+  }
+}
 
 export default function RideAhead({
   connection,
@@ -174,6 +185,18 @@ export default function RideAhead({
   const config = configDraft ?? snapshot?.config;
   const [navigationActive, setNavigationActive] = useState(true);
   const [cameraTools, setCameraTools] = useState<HTMLDivElement | null>(null);
+  // Phone layout hides both desktop asides, so their controls move into the settings sheet.
+  const isPhone = useIsPhone();
+  const [phoneCameraTools, setPhoneCameraTools] = useState<HTMLDivElement | null>(null);
+  const [showInference, setShowInference] = useState(readShowInference);
+  const toggleInference = (value: boolean) => {
+    setShowInference(value);
+    try {
+      localStorage.setItem(SHOW_INFERENCE_KEY, value ? '1' : '0');
+    } catch {
+      // per-device convenience only
+    }
+  };
   const unmapped = snapshot?.hazards.filter((hazard) => !isValidPoint(hazard.point)).length ?? 0;
   const cosmos = snapshot?.cosmos;
   const cosmosLabel = {
@@ -182,6 +205,11 @@ export default function RideAhead({
     fixture: 'Fixture · no live inference',
     unavailable: 'Waiting for inference',
   };
+  const inferenceTitle =
+    cameraInference && cameraInference.model !== 'cosmos' ? 'Camera model' : 'Cosmos';
+  const inferenceLabel = cameraInference?.label ?? cosmosLabel[cosmos?.source ?? 'unavailable'];
+  const inferenceText =
+    cameraInference?.text ?? cosmos?.text ?? 'Waiting for a model-checked observation.';
 
   return (
     <main className="ra-command-layout">
@@ -196,7 +224,7 @@ export default function RideAhead({
           <span>The next bike knows.</span>
         </h1>
         <p className="ra-command-intro">A shared view of the road, grounded in evidence.</p>
-        <section className="ra-control-card">{sessionControls}</section>
+        {!isPhone && <section className="ra-control-card">{sessionControls}</section>}
         {snapshot && (
           <section className="ra-control-card">
             <div className="ra-control-title">
@@ -350,9 +378,24 @@ export default function RideAhead({
                 collapsed={overlayCollapsed}
                 onToggleCollapsed={() => setOverlayCollapsed((value) => !value)}
                 onInference={setCameraInference}
-                toolsTarget={cameraTools}
+                toolsTarget={isPhone ? phoneCameraTools : cameraTools}
               />
             </div>
+            {isPhone && showInference && (
+              <button
+                className="ra-phone-inference ra-glass"
+                data-map-chrome
+                onClick={() => openPanel('evidence')}
+                aria-live="polite"
+              >
+                <span className="ra-phone-inference-title">
+                  <Sparkles size={13} />
+                  {inferenceTitle}
+                  <span className="ra-tag">{inferenceLabel}</span>
+                </span>
+                <span className="ra-phone-inference-text">{inferenceText}</span>
+              </button>
+            )}
             {error && snapshot && (
               <div className="ra-connection-toast" role="alert">
                 Connection lost · last snapshot shown
@@ -384,14 +427,10 @@ export default function RideAhead({
         <section className="ra-control-card ra-inference-card">
           <h3>
             <Sparkles size={16} />
-            {cameraInference && cameraInference.model !== 'cosmos' ? 'Camera model' : 'Cosmos'}
+            {inferenceTitle}
           </h3>
-          <span className="ra-tag">
-            {cameraInference?.label ?? cosmosLabel[cosmos?.source ?? 'unavailable']}
-          </span>
-          <p>
-            {cameraInference?.text ?? cosmos?.text ?? 'Waiting for a model-checked observation.'}
-          </p>
+          <span className="ra-tag">{inferenceLabel}</span>
+          <p>{inferenceText}</p>
         </section>
         {snapshot && (
           <>
@@ -425,6 +464,48 @@ export default function RideAhead({
           <div className="ra-error" role="alert">
             {error}
           </div>
+        )}
+        {isPhone && panel === 'settings' && (
+          <section className="ra-panel ra-phone-demo">
+            {sessionControls}
+            {snapshot && (
+              <div className="ra-phone-demo-row">
+                <Button
+                  disabled={busy || snapshot.timeS >= snapshot.endS}
+                  onClick={() => {
+                    setPlaying(!playing);
+                    if (!playing) panelRef.current?.close();
+                  }}
+                >
+                  {playing ? <Pause size={16} /> : <Play size={16} />}
+                  {playing ? 'Pause replay' : 'Play replay'}
+                </Button>
+                <Button
+                  variant="outline"
+                  onClick={() => {
+                    setPlaying(false);
+                    setDraftTime(null);
+                    advance(0);
+                  }}
+                >
+                  <RotateCcw size={15} />
+                  Reset
+                </Button>
+                <span className="ra-subtle">
+                  {timeLabel(snapshot.timeS)} / {timeLabel(snapshot.endS)}
+                </span>
+              </div>
+            )}
+            <label className="ra-phone-demo-toggle">
+              <span>
+                <strong>Show live Cosmos inference</strong>
+                <span className="ra-subtle">Model output on the map while you ride</span>
+              </span>
+              <Switch checked={showInference} onCheckedChange={toggleInference} />
+            </label>
+            <h3>Camera</h3>
+            <div ref={setPhoneCameraTools} />
+          </section>
         )}
         {panel === 'evidence' && cameraInference && (
           <section className="ra-panel">
