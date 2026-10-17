@@ -34,7 +34,7 @@ Not yet built (waiting for A's frozen models): `list_rides()`, `inspect_ride(rid
 - **Demo section: 6th Ave northbound, W 29th → W 38th St** (chunks 11–15), protected green bike
   lane on the left. 5 anchors with 80–150 m uncertainty. Caveat: segment 13.2 says the camera
   "turns right" at W 34th (Herald Square), so north of 34th it may be Broadway.
-- **Primary observation candidate: `gx010001-c15-s1`** (ride offset ≈ 450 s, near W 38 St):
+- ~~Primary observation candidate~~ **Rejected after verification: `gx010001-c15-s1`** (ride offset ≈ 450 s, near W 38 St):
   *"A large black delivery truck is in the left lane, partially blocking the bike lane."* YOLO11
   max-per-frame counts: truck 1, car 7, bicycle 2.
 - `gx010001-c15-s5` (≈ 470 s), SUV partially blocking the bike lane, is the **same ride ~20 s
@@ -47,6 +47,30 @@ Not yet built (waiting for A's frozen models): `list_rides()`, `inspect_ride(rid
 - Caption caveat: in this ride all "accident/collision/near-miss" mentions are negated. Real
   accident footage was not found.
 
+## First real Cosmos verification (2026-10-17)
+
+Cache: `server/app/perception/cache/verify_v1.json` (prompt `c-verify-lane-blocked-v1`, model
+discovered from `/v1/models`, temperature 0, one call at a time, video SHA-256 recorded; no media
+URLs, tokens or video bytes stored). Media fetched server-side through `VSSClient.stream_url`.
+
+| Segment | Caption claim | Cosmos v1 | Latency | Frame review (Agent C, 3 frames) |
+|---|---|---|---|---|
+| `gx010001-c15-s1` | truck "partially blocking the bike lane" | **contradicted**: bike lane clearly visible and unobstructed | 4.0 s | Agrees: truck is in the adjacent traffic lane, green lane clear |
+| `gx010001-c15-s5` | SUV "partially blocking the lane" | **contradicted** | 6.5 s | Agrees: SUV is in the hatched buffer, green lane clear |
+| `gx010001-c16-s2` | none (control) | **contradicted** (clear lane) | 4.2 s | not reviewed |
+
+**Result:** both caption-claimed bike-lane obstructions in the demo section are **false positives**
+(vehicles beside the lane described as blocking it). This is the trust layer working, but it means
+**there is no verified real obstruction yet**. Frame review is not ground truth.
+
+Open question: three "contradicted" answers in a row could also mean the prompt is biased toward
+"contradicted". A **positive control** (a clip with a vehicle actually in the bike lane) is needed
+before trusting the verifier. Next step: rank `present` + `bike_lane` caption claims across all
+three bike rides and verify the top few.
+
+Weave was **not** initialised for this run (the client warned "Traces will not be logged"), so
+these calls are not traced yet.
+
 ## Checks run and results
 
 - `uv run pytest -q` (whole server): **34 passed**.
@@ -57,8 +81,8 @@ Not yet built (waiting for A's frozen models): `list_rides()`, `inspect_ride(rid
 
 | Integration | Status |
 |---|---|
-| VSS explore / metadata / detections | **Real**, read through the browser session for corpus inspection only. Server-side `VSSClient` not exercised from this laptop: it needs `INGRESS_URL` + team username/password from `/config/<team>.config` on the lab VM. |
-| Cosmos `ask_video` verification | Not run yet |
+| VSS explore / metadata / detections / stream | **Real**. Server-side `VSSClient` works from a laptop when `VSS_URL` is the public team URL (`https://team-46-vss.thecosmoslabs.com`) with the team login. `INGRESS_URL` from the team config is private (ConnectError off-VM). |
+| Cosmos `ask_video` verification | **Real**: 3 calls on recorded segments, cached with provenance (see above) |
 | YOLO11 endpoint | Not called; stored detections used |
 | W&B Inference `chat_json` extraction | Not run yet |
 | Weave | Not connected from this lane yet |
@@ -79,5 +103,7 @@ Not yet built (waiting for A's frozen models): `list_rides()`, `inspect_ride(rid
 - **A (prompts):** Add a Cosmos verification prompt: "Is a vehicle stopped in or partially in the
   green bike lane ahead? Is the bike-lane area visible? Answer JSON: {visible, obstruction:
   supported|contradicted|unclear, evidence_seconds, reason}."
-- **A (config/ops):** Agent C needs server-side upstream access (VM shell or a private
-  `server/.env` from the team config) to run real Cosmos / W&B calls.
+- **A (config/ops):** the team config has no GPU URLs. They follow
+  `http://<GPU_HOST>:8001` (Cosmos Reason), `:8002` (YOLO11), `:8003` (Embed), `:8004` (Canary).
+  W&B keys are in the VM shell environment, not the config file. Laptop probe: VSS(public),
+  Cosmos Reason, Embed, YOLO and W&B Inference all HTTP 200.

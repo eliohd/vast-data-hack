@@ -1,0 +1,82 @@
+{
+ "prompt_version": "c-verify-lane-blocked-v1",
+ "prompt": "You are checking a 5-second forward-facing bicycle camera clip for one specific claim.\nClaim: a motor vehicle is stopped or parked in, or partially in, the bicycle lane ahead.\nAnswer ONLY with JSON:\n{\"bike_lane_visible\": true|false, \"obstruction\": \"supported\"|\"contradicted\"|\"unclear\", \"vehicle_type\": string|null, \"evidence_seconds\": [start, end]|null, \"reason\": \"one short factual sentence\"}\nUse 'supported' only if you can see a vehicle occupying part of the bike lane. Use 'contradicted' only if the bike lane is clearly visible and unobstructed. Otherwise 'unclear'.",
+ "results": [
+  {
+   "segment_id": "gx010001-c15-s1",
+   "segment_file": "20261008_074307_GX010001_chunk_0015_segment_001_of_006.mp4",
+   "role": "primary",
+   "provenance": "cached recorded",
+   "status": "ok",
+   "obstruction": "contradicted",
+   "parsed": {
+    "bike_lane_visible": true,
+    "obstruction": "contradicted",
+    "vehicle_type": null,
+    "evidence_seconds": null,
+    "reason": "The bike lane is clearly visible and unobstructed throughout the video."
+   },
+   "raw_text": "```json\n{\n  \"bike_lane_visible\": true,\n  \"obstruction\": \"contradicted\",\n  \"vehicle_type\": null,\n  \"evidence_seconds\": null,\n  \"reason\": \"The bike lane is clearly visible and unobstructed throughout the video.\"\n}\n```",
+   "model": "nvidia/cosmos3-nano-reasoner",
+   "prompt_version": "c-verify-lane-blocked-v1",
+   "latency_ms": 4038,
+   "video_sha256": "0cad9c07491feeaf74fba4de9c9af16082ca50d2f86171a293e948009aa6a1ec",
+   "video_bytes": 10186050,
+   "checked_at": "2026-10-17T11:31:48+00:00",
+   "frame_review": {
+    "by": "Agent C (Claude) visual check of 3 extracted frames",
+    "note": "Frames at 0.5/2.5/4.5 s: black delivery truck is ahead in the traffic lane adjacent to the bike lane; green bike lane on the left is unobstructed. Agrees with Cosmos (contradicted). Caption claim was a false positive.",
+    "ground_truth": false
+   }
+  },
+  {
+   "segment_id": "gx010001-c15-s5",
+   "segment_file": "20261008_074307_GX010001_chunk_0015_segment_005_of_006.mp4",
+   "role": "same-ride follow-up",
+   "provenance": "cached recorded",
+   "status": "ok",
+   "obstruction": "contradicted",
+   "parsed": {
+    "bike_lane_visible": true,
+    "obstruction": "contradicted",
+    "vehicle_type": null,
+    "evidence_seconds": null,
+    "reason": "The bike lane is clearly visible and unobstructed throughout the video."
+   },
+   "raw_text": "```json\n{\n  \"bike_lane_visible\": true,\n  \"obstruction\": \"contradicted\",\n  \"vehicle_type\": null,\n  \"evidence_seconds\": null,\n  \"reason\": \"The bike lane is clearly visible and unobstructed throughout the video.\"\n}\n```",
+   "model": "nvidia/cosmos3-nano-reasoner",
+   "prompt_version": "c-verify-lane-blocked-v1",
+   "latency_ms": 6465,
+   "video_sha256": "8abee8f7c57a26bec58dcb9e5bb2f3bbbfeba320bd142bfdf19e259ac4714e77",
+   "video_bytes": 10171965,
+   "checked_at": "2026-10-17T11:31:56+00:00",
+   "frame_review": {
+    "by": "Agent C (Claude) visual check of 3 extracted frames",
+    "note": "Frames at 0.5/2.5 s: black SUV is in the hatched buffer between bike lane and traffic, not in the green lane; bike lane unobstructed. Agrees with Cosmos (contradicted). Caption claim was a false positive.",
+    "ground_truth": false
+   }
+  },
+  {
+   "segment_id": "gx010001-c16-s2",
+   "segment_file": "20261008_074332_GX010001_chunk_0016_segment_002_of_006.mp4",
+   "role": "clear-lane control",
+   "provenance": "cached recorded",
+   "status": "ok",
+   "obstruction": "contradicted",
+   "parsed": {
+    "bike_lane_visible": true,
+    "obstruction": "contradicted",
+    "vehicle_type": null,
+    "evidence_seconds": null,
+    "reason": "The bicycle lane is clearly visible and unobstructed throughout the video."
+   },
+   "raw_text": "```json\n{\n  \"bike_lane_visible\": true,\n  \"obstruction\": \"contradicted\",\n  \"vehicle_type\": null,\n  \"evidence_seconds\": null,\n  \"reason\": \"The bicycle lane is clearly visible and unobstructed throughout the video.\"\n}\n```",
+   "model": "nvidia/cosmos3-nano-reasoner",
+   "prompt_version": "c-verify-lane-blocked-v1",
+   "latency_ms": 4169,
+   "video_sha256": "572b144bb38cd6d4771141e0167bcd48500fe867fdb005e9a0a9b2f3300f2f74",
+   "video_bytes": 10373001,
+   "checked_at": "2026-10-17T11:32:03+00:00"
+  }
+ ]
+}
