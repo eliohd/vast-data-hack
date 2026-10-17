@@ -1,9 +1,19 @@
 # Handoff B — browser interface
 
+## Phone navigation revision — current
+
+- User requested a phone silhouette, a dominant navigation map, small top-right video overlay, journey-time strip, and Cosmos inference strip. Implemented in `16aefa8` on the same branch.
+- `/` now uses `NavigationMap.tsx` inside a responsive phone frame. The map occupies about 66% of the screen at 390×844, with no horizontal overflow. Desktop frames scale to fit the available height.
+- Timeline, evidence, routes and settings now open in keyboard-accessible modal panels. Demo connection controls are collapsed outside the phone. Existing REST transport and authoritative server decisions are retained.
+- `VideoWidget.tsx` plays safe recorded media or offers tap-to-start local camera preview using the existing camera hook. An explicit `Analyse live` button uses the unchanged `/ws/live` protocol and `LiveSocket`, one frame in flight, with a 15-second reply timeout. Stopping analysis closes the socket. Camera results only appear in the inference strip; they do not modify route decisions or lifecycle state.
+- The bottom inference strip distinguishes actual Cosmos live results, other camera analyser results, cached verification, synthetic fixture verification and missing inference. Whole-route journey duration comes from the selected server route and is not represented as a remaining-time countdown.
+- Final checks: lint, type checks, all 27 tests, production build, and formatting with Windows line endings accounted for passed. Browser checked phone frame, map prominence, overlay, route-time strip, Cosmos strip and timeline panel. Real camera permission and live model execution were not exercised; they need the running backend/device check by A. Original full-stack verification limitations below still apply.
+- The earlier dashboard entry points below describe the initial revision; `NavigationMap` supersedes `RouteMap` on the primary screen, and details are now on-demand panels.
+
 ## Current branch and commit
 
 - Branch: `agent-b/rideahead-interface`.
-- Implementation commit: `c135c0eec96ec97b414e682eca80497a6e74f7de`.
+- Initial implementation commit: `c135c0eec96ec97b414e682eca80497a6e74f7de`; phone revision: `16aefa8`.
 - Integrated A's bootstrap `5b43e3f`, including the handoff update at `d0a2330`.
 - No server files or generated REST types were edited by B. Only A merges and deploys.
 
