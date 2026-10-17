@@ -72,7 +72,8 @@ def main() -> int:
         save_report(args.output, report)
     print(f"Lifecycle: {report['lifecycle']['passed']}/{report['lifecycle']['sample_size']} passed")
     print(
-        f"Reviewed recorded clips: {report['video_interpretation']['recorded_sample_size']}; "
+        f"Human-reviewed clips: {report['video_interpretation']['human_reviewed_sample_size']}; "
+        f"AI-reviewed clips: {report['video_interpretation']['ai_reviewed_sample_size']}; "
         f"synthetic captions: {report['video_interpretation']['synthetic_sample_size']}; "
         f"pending labels: {report['pending_clip_labels']}"
     )

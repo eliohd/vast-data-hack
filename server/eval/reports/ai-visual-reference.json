@@ -1,0 +1,612 @@
+{
+  "schema_version": "1",
+  "publication": {
+    "status": "local_only"
+  },
+  "video_interpretation": {
+    "sample_size": 10,
+    "recorded_sample_size": 10,
+    "synthetic_sample_size": 0,
+    "human_reviewed_sample_size": 0,
+    "ai_reviewed_sample_size": 10,
+    "human_ground_truth_metrics_available": false,
+    "development_overlap_count": 10,
+    "held_out_claim": false,
+    "methods": {
+      "keyword": {
+        "status": "complete",
+        "available_predictions": 10,
+        "missing_predictions": 0,
+        "true_positives": null,
+        "false_positives": null,
+        "false_negatives": null,
+        "precision": null,
+        "recall": null,
+        "accuracy": null,
+        "false_positives_from_negation": null,
+        "uncertain_or_missing_predictions": 0,
+        "model_call_count": 0,
+        "total_latency_ms": 0.0,
+        "mean_latency_ms": 0.0,
+        "model_prompt_versions": [],
+        "ai_visual_reference": {
+          "true_positives": 0,
+          "false_positives": 5,
+          "false_negatives": 0,
+          "precision": 0.0,
+          "recall": null,
+          "false_positives_from_negation": 1,
+          "label_agreement": 0.3
+        },
+        "metric_basis": "AI sampled-frame review; not human ground truth"
+      },
+      "structured": {
+        "status": "complete",
+        "available_predictions": 10,
+        "missing_predictions": 0,
+        "true_positives": null,
+        "false_positives": null,
+        "false_negatives": null,
+        "precision": null,
+        "recall": null,
+        "accuracy": null,
+        "false_positives_from_negation": null,
+        "uncertain_or_missing_predictions": 2,
+        "model_call_count": 10,
+        "total_latency_ms": 10452.0,
+        "mean_latency_ms": 1045.2,
+        "model_prompt_versions": [
+          [
+            "meta-llama/Llama-3.3-70B-Instruct",
+            "rideahead-extract-1"
+          ]
+        ],
+        "ai_visual_reference": {
+          "true_positives": 0,
+          "false_positives": 4,
+          "false_negatives": 0,
+          "precision": 0.0,
+          "recall": null,
+          "false_positives_from_negation": 0,
+          "label_agreement": 0.6
+        },
+        "metric_basis": "AI sampled-frame review; not human ground truth"
+      },
+      "verified": {
+        "status": "complete",
+        "available_predictions": 10,
+        "missing_predictions": 0,
+        "true_positives": null,
+        "false_positives": null,
+        "false_negatives": null,
+        "precision": null,
+        "recall": null,
+        "accuracy": null,
+        "false_positives_from_negation": null,
+        "uncertain_or_missing_predictions": 4,
+        "model_call_count": 20,
+        "total_latency_ms": 55131.0,
+        "mean_latency_ms": 5513.1,
+        "model_prompt_versions": [
+          [
+            "meta-llama/Llama-3.3-70B-Instruct + nvidia/cosmos3-nano-reasoner",
+            "rideahead-extract-1 + rideahead-verify-2"
+          ]
+        ],
+        "ai_visual_reference": {
+          "true_positives": 0,
+          "false_positives": 3,
+          "false_negatives": 0,
+          "precision": 0.0,
+          "recall": null,
+          "false_positives_from_negation": 0,
+          "label_agreement": 0.6
+        },
+        "metric_basis": "AI sampled-frame review; not human ground truth"
+      }
+    }
+  },
+  "pending_clip_labels": 0,
+  "lifecycle": {
+    "sample_size": 21,
+    "passed": 21,
+    "ground_truth": "explicit synthetic scenario labels; not persistence-model output",
+    "results": [
+      {
+        "scenario_id": "observed",
+        "passed": true,
+        "expected_states": [
+          "observed"
+        ],
+        "actual_states": [
+          "observed"
+        ],
+        "expected_action": "reroute",
+        "actual_action": "reroute",
+        "expected_strengths": null,
+        "actual_strengths": [
+          "single_sighting"
+        ],
+        "reset_replay_equal": true,
+        "provenance": "synthetic"
+      },
+      {
+        "scenario_id": "stale-is-unresolved",
+        "passed": true,
+        "expected_states": [
+          "stale"
+        ],
+        "actual_states": [
+          "stale"
+        ],
+        "expected_action": "slow",
+        "actual_action": "slow",
+        "expected_strengths": null,
+        "actual_strengths": [
+          "single_sighting"
+        ],
+        "reset_replay_equal": true,
+        "provenance": "synthetic"
+      },
+      {
+        "scenario_id": "explicit-synthetic-clearance",
+        "passed": true,
+        "expected_states": [
+          "cleared"
+        ],
+        "actual_states": [
+          "cleared"
+        ],
+        "expected_action": "continue",
+        "actual_action": "continue",
+        "expected_strengths": null,
+        "actual_strengths": [
+          "single_sighting"
+        ],
+        "reset_replay_equal": true,
+        "provenance": "synthetic"
+      },
+      {
+        "scenario_id": "duplicate-does-not-refresh",
+        "passed": true,
+        "expected_states": [
+          "stale"
+        ],
+        "actual_states": [
+          "stale"
+        ],
+        "expected_action": "slow",
+        "actual_action": "slow",
+        "expected_strengths": null,
+        "actual_strengths": [
+          "single_sighting"
+        ],
+        "reset_replay_equal": true,
+        "provenance": "synthetic"
+      },
+      {
+        "scenario_id": "adjacent-not-independent",
+        "passed": true,
+        "expected_states": [
+          "observed"
+        ],
+        "actual_states": [
+          "observed"
+        ],
+        "expected_action": "reroute",
+        "actual_action": "reroute",
+        "expected_strengths": null,
+        "actual_strengths": [
+          "single_sighting"
+        ],
+        "reset_replay_equal": true,
+        "provenance": "synthetic"
+      },
+      {
+        "scenario_id": "independent-observer",
+        "passed": true,
+        "expected_states": [
+          "confirmed"
+        ],
+        "actual_states": [
+          "confirmed"
+        ],
+        "expected_action": "reroute",
+        "actual_action": "reroute",
+        "expected_strengths": null,
+        "actual_strengths": [
+          "independent_corroboration"
+        ],
+        "reset_replay_equal": true,
+        "provenance": "synthetic"
+      },
+      {
+        "scenario_id": "continued-observation",
+        "passed": true,
+        "expected_states": [
+          "confirmed"
+        ],
+        "actual_states": [
+          "confirmed"
+        ],
+        "expected_action": "reroute",
+        "actual_action": "reroute",
+        "expected_strengths": null,
+        "actual_strengths": [
+          "continued_observation"
+        ],
+        "reset_replay_equal": true,
+        "provenance": "synthetic"
+      },
+      {
+        "scenario_id": "opposite-direction",
+        "passed": true,
+        "expected_states": [
+          "observed"
+        ],
+        "actual_states": [
+          "observed"
+        ],
+        "expected_action": "continue",
+        "actual_action": "continue",
+        "expected_strengths": null,
+        "actual_strengths": [
+          "single_sighting"
+        ],
+        "reset_replay_equal": true,
+        "provenance": "synthetic"
+      },
+      {
+        "scenario_id": "parallel-road",
+        "passed": true,
+        "expected_states": [
+          "observed"
+        ],
+        "actual_states": [
+          "observed"
+        ],
+        "expected_action": "continue",
+        "actual_action": "continue",
+        "expected_strengths": null,
+        "actual_strengths": [
+          "single_sighting"
+        ],
+        "reset_replay_equal": true,
+        "provenance": "synthetic"
+      },
+      {
+        "scenario_id": "future-clearance-hidden",
+        "passed": true,
+        "expected_states": [
+          "stale"
+        ],
+        "actual_states": [
+          "stale"
+        ],
+        "expected_action": "slow",
+        "actual_action": "slow",
+        "expected_strengths": null,
+        "actual_strengths": [
+          "single_sighting"
+        ],
+        "reset_replay_equal": true,
+        "provenance": "synthetic"
+      },
+      {
+        "scenario_id": "occlusion-never-clears",
+        "passed": true,
+        "expected_states": [
+          "stale"
+        ],
+        "actual_states": [
+          "stale"
+        ],
+        "expected_action": "slow",
+        "actual_action": "slow",
+        "expected_strengths": null,
+        "actual_strengths": [
+          "single_sighting"
+        ],
+        "reset_replay_equal": true,
+        "provenance": "synthetic"
+      },
+      {
+        "scenario_id": "inadequate-clearance-disputed",
+        "passed": true,
+        "expected_states": [
+          "disputed"
+        ],
+        "actual_states": [
+          "disputed"
+        ],
+        "expected_action": "slow",
+        "actual_action": "slow",
+        "expected_strengths": null,
+        "actual_strengths": [
+          "single_sighting"
+        ],
+        "reset_replay_equal": true,
+        "provenance": "synthetic"
+      },
+      {
+        "scenario_id": "provider-unavailable",
+        "passed": true,
+        "expected_states": [
+          "observed"
+        ],
+        "actual_states": [
+          "observed"
+        ],
+        "expected_action": "unavailable",
+        "actual_action": "unavailable",
+        "expected_strengths": null,
+        "actual_strengths": [
+          "single_sighting"
+        ],
+        "reset_replay_equal": true,
+        "provenance": "synthetic"
+      },
+      {
+        "scenario_id": "passed-the-report",
+        "passed": true,
+        "expected_states": [
+          "observed"
+        ],
+        "actual_states": [
+          "observed"
+        ],
+        "expected_action": "continue",
+        "actual_action": "continue",
+        "expected_strengths": null,
+        "actual_strengths": [
+          "single_sighting"
+        ],
+        "reset_replay_equal": true,
+        "provenance": "synthetic"
+      },
+      {
+        "scenario_id": "route-change",
+        "passed": true,
+        "expected_states": [
+          "observed"
+        ],
+        "actual_states": [
+          "observed"
+        ],
+        "expected_action": "slow",
+        "actual_action": "slow",
+        "expected_strengths": null,
+        "actual_strengths": [
+          "single_sighting"
+        ],
+        "reset_replay_equal": true,
+        "provenance": "synthetic"
+      },
+      {
+        "scenario_id": "opposite-direction-clearance-not-clear",
+        "passed": true,
+        "expected_states": [
+          "stale"
+        ],
+        "actual_states": [
+          "stale"
+        ],
+        "expected_action": "slow",
+        "actual_action": "slow",
+        "expected_strengths": null,
+        "actual_strengths": [
+          "single_sighting"
+        ],
+        "reset_replay_equal": true,
+        "provenance": "synthetic"
+      },
+      {
+        "scenario_id": "same-edge-conflicting-bearing-not-clear",
+        "passed": true,
+        "expected_states": [
+          "stale"
+        ],
+        "actual_states": [
+          "stale"
+        ],
+        "expected_action": "slow",
+        "actual_action": "slow",
+        "expected_strengths": null,
+        "actual_strengths": [
+          "single_sighting"
+        ],
+        "reset_replay_equal": true,
+        "provenance": "synthetic"
+      },
+      {
+        "scenario_id": "parallel-road-at-same-anchor-not-corroboration",
+        "passed": true,
+        "expected_states": [
+          "observed",
+          "observed"
+        ],
+        "actual_states": [
+          "observed",
+          "observed"
+        ],
+        "expected_action": "reroute",
+        "actual_action": "reroute",
+        "expected_strengths": [
+          "single_sighting",
+          "single_sighting"
+        ],
+        "actual_strengths": [
+          "single_sighting",
+          "single_sighting"
+        ],
+        "reset_replay_equal": true,
+        "provenance": "synthetic"
+      },
+      {
+        "scenario_id": "independent-corroboration-then-stale",
+        "passed": true,
+        "expected_states": [
+          "stale"
+        ],
+        "actual_states": [
+          "stale"
+        ],
+        "expected_action": "slow",
+        "actual_action": "slow",
+        "expected_strengths": [
+          "independent_corroboration"
+        ],
+        "actual_strengths": [
+          "independent_corroboration"
+        ],
+        "reset_replay_equal": true,
+        "provenance": "synthetic"
+      },
+      {
+        "scenario_id": "different-observer-shared-source-group-not-independent",
+        "passed": true,
+        "expected_states": [
+          "observed"
+        ],
+        "actual_states": [
+          "observed"
+        ],
+        "expected_action": "reroute",
+        "actual_action": "reroute",
+        "expected_strengths": [
+          "single_sighting"
+        ],
+        "actual_strengths": [
+          "single_sighting"
+        ],
+        "reset_replay_equal": true,
+        "provenance": "synthetic"
+      },
+      {
+        "scenario_id": "renamed-observer-shared-evidence-not-independent",
+        "passed": true,
+        "expected_states": [
+          "observed"
+        ],
+        "actual_states": [
+          "observed"
+        ],
+        "expected_action": "reroute",
+        "actual_action": "reroute",
+        "expected_strengths": [
+          "single_sighting"
+        ],
+        "actual_strengths": [
+          "single_sighting"
+        ],
+        "reset_replay_equal": true,
+        "provenance": "synthetic"
+      }
+    ]
+  },
+  "cached_prediction_coverage": {
+    "status": "predictions_only_not_accuracy",
+    "cache_sha256": "e3f117ba88f7e37928b1d56524060c32f53c72606f38778e892cfcffbd9711ea",
+    "built_at": "2026-10-17T12:21:51+00:00",
+    "source_weave_project": "vastdata/team-46",
+    "source_weave_traced": true,
+    "selection_policy": "first cached attempt per source; no frame-review overrides",
+    "verification_policy": "extraction and visible-lane verifier must agree; otherwise abstain",
+    "shortlist_size": 10,
+    "unique_cached_sources": 10,
+    "covered_shortlist_sources": 10,
+    "duplicate_attempts_excluded_from_scoring": 1,
+    "executed_calls": {
+      "structured": 11,
+      "cosmos": 11
+    },
+    "original_run_latency_ms": {
+      "structured": 11539.0,
+      "cosmos": 48490.0
+    },
+    "answer_counts": {
+      "keyword": {
+        "present": 5,
+        "absent": 5
+      },
+      "structured": {
+        "absent": 4,
+        "present": 4,
+        "uncertain": 2
+      },
+      "verified": {
+        "absent": 3,
+        "uncertain": 4,
+        "present": 3
+      }
+    },
+    "answers": [
+      {
+        "sample_id": "gx010001-c03-s1",
+        "keyword": "present",
+        "structured": "absent",
+        "verified": "absent"
+      },
+      {
+        "sample_id": "gx010001-c12-s5",
+        "keyword": "absent",
+        "structured": "absent",
+        "verified": "absent"
+      },
+      {
+        "sample_id": "gx010001-c13-s2",
+        "keyword": "absent",
+        "structured": "absent",
+        "verified": "absent"
+      },
+      {
+        "sample_id": "gx010001-c14-s2",
+        "keyword": "present",
+        "structured": "present",
+        "verified": "uncertain"
+      },
+      {
+        "sample_id": "gx010001-c14-s3",
+        "keyword": "absent",
+        "structured": "uncertain",
+        "verified": "uncertain"
+      },
+      {
+        "sample_id": "gx010001-c15-s1",
+        "keyword": "present",
+        "structured": "present",
+        "verified": "present"
+      },
+      {
+        "sample_id": "gx010001-c15-s3",
+        "keyword": "absent",
+        "structured": "uncertain",
+        "verified": "uncertain"
+      },
+      {
+        "sample_id": "gx010001-c15-s5",
+        "keyword": "present",
+        "structured": "present",
+        "verified": "present"
+      },
+      {
+        "sample_id": "gx010001-c15-s6",
+        "keyword": "present",
+        "structured": "present",
+        "verified": "present"
+      },
+      {
+        "sample_id": "gx010001-c16-s2",
+        "keyword": "absent",
+        "structured": "absent",
+        "verified": "uncertain"
+      }
+    ],
+    "notes": [
+      "Predictions are not ground truth or engine clearance observations.",
+      "Verified cost includes extraction; do not add it to structured cost.",
+      "Original cached timings exclude VSS download and are not replay timings."
+    ],
+    "reviewed_sources_scored": 10
+  }
+}
