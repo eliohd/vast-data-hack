@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { previewAt } from '@/lib/rideahead/preview';
-import { mapProjection, safeMediaPath, timeLabel } from '@/lib/rideahead/view';
+import { safeMediaPath, timeLabel } from '@/lib/rideahead/view';
 
 describe('replay presentation', () => {
   it('never exposes a future observation or clearance', () => {
@@ -38,27 +38,5 @@ describe('application media boundary', () => {
       '/other.mp4',
     ])
       expect(safeMediaPath(path)).toBeNull();
-  });
-});
-describe('route overview projection', () => {
-  it('keeps north up, east right and fits a small geographic area', () => {
-    const southWest = { lat: 51.5, lon: -0.12 };
-    const northEast = { lat: 51.51, lon: -0.11 };
-    const project = mapProjection([southWest, northEast])!;
-    const a = project(southWest),
-      b = project(northEast);
-    expect(a[0]).toBeLessThan(b[0]);
-    expect(a[1]).toBeGreaterThan(b[1]);
-    for (const [x, y] of [a, b]) {
-      expect(x).toBeGreaterThanOrEqual(20);
-      expect(x).toBeLessThanOrEqual(680);
-      expect(y).toBeGreaterThanOrEqual(30 - 1e-6);
-      expect(y).toBeLessThanOrEqual(390 + 1e-6);
-    }
-  });
-  it('leaves unknown geography unmapped and handles a single point', () => {
-    expect(mapProjection([])).toBeNull();
-    expect(mapProjection([{ lat: 100, lon: 0 }])).toBeNull();
-    expect(mapProjection([{ lat: 0, lon: 0 }])!({ lat: 0, lon: 0 })).toEqual([350, 210]);
   });
 });

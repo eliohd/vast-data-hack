@@ -1,6 +1,10 @@
+import type { Schemas } from '@/lib/api/client';
+
 /** Presentation models, not REST contracts. Map generated Agent A types here at integration. */
 export type Point = { lat: number; lon: number };
-export type HazardState = 'observed' | 'confirmed' | 'stale' | 'disputed' | 'cleared';
+/** Driven by the generated enum, so a new server state fails type checks until it is styled. */
+export type HazardState = Schemas['Hazard']['state'];
+export type DecisionAction = Schemas['Decision']['action'];
 export type RouteView = {
   id: string;
   name: string;
@@ -10,10 +14,25 @@ export type RouteView = {
   provenance: string;
   warnings: string[];
 };
+export type VerificationView = {
+  evidenceId: string;
+  verdict: Schemas['Verification']['verdict'];
+  rationale: string;
+  source: Schemas['Verification']['source'];
+  model: string | null;
+};
 export type EvidenceView = {
   id: string;
   source: string;
   provenance: string;
+  provenanceKind: Schemas['Evidence']['provenance'];
+  observationId: string;
+  observationSource: Schemas['Observation']['source'];
+  observationLabel: string | null;
+  /** Server's combined trust outcome for the claim (caption + verification + review). */
+  support: Schemas['Observation']['support'];
+  assertion: Schemas['Observation']['assertion'];
+  verification: VerificationView | null;
   mediaPath: string | null;
   clipStartS: number;
   clipEndS: number;
@@ -35,6 +54,15 @@ export type SnapshotView = {
     source: 'live_model' | 'cached_model' | 'fixture' | 'unavailable';
     timeS: number | null;
   };
+  /** Latest observation revealed by the server replay clock (no browser inference). */
+  currentObservation: {
+    id: string;
+    timeS: number;
+    label: string | null;
+    source: Schemas['Observation']['source'];
+    evidenceIds: string[];
+    assertion: Schemas['Observation']['assertion'];
+  } | null;
   riders: { id: string; name: string; simulated: boolean; point: Point | null }[];
   hazards: {
     id: string;
@@ -47,18 +75,29 @@ export type SnapshotView = {
     evidenceIds: string[];
     strength: string;
     impact: string;
+    /** Every supporting observation is a labelled synthetic scenario/fixture event. */
+    synthetic: boolean;
   }[];
   evidence: EvidenceView[];
   routes: RouteView[];
   decision: {
+    id: string;
+    revision: number;
+    timeS: number;
     riderId: string;
-    action: 'continue' | 'heads_up' | 'slow' | 'wait' | 'reroute' | 'unavailable';
+    action: DecisionAction;
     reason: string;
     selectedRouteId: string | null;
     delayS: number | null;
     detourS: number | null;
+    /** Server estimate of seconds until the hazard (not until the destination). */
+    arrivalS: number | null;
     changed: boolean;
+    /** Previous server decision for this rider, from decision_history. */
+    previous: { action: DecisionAction; selectedRouteId: string | null } | null;
     evidenceIds: string[];
+    /** The decision's evidence is entirely synthetic scenario/fixture evidence. */
+    syntheticBasis: boolean;
     assumptions: string[];
   } | null;
   config: { shortRadiusM: number; planningRadiusM: number };
@@ -80,6 +119,15 @@ export const stateLabels: Record<HazardState, string> = {
   cleared: 'Cleared · later evidence',
 };
 
+export const actionLabels: Record<DecisionAction, string> = {
+  continue: 'Continue your ride',
+  heads_up: 'Heads up ahead',
+  slow: 'Slow down',
+  wait: 'Wait before continuing',
+  reroute: 'Take the alternative',
+  unavailable: 'Recommendation unavailable',
+};
+
 export function timeLabel(seconds: number): string {
   const safe = Math.max(0, Math.floor(seconds));
   return `${Math.floor(safe / 60)}:${String(safe % 60).padStart(2, '0')}`;
@@ -91,28 +139,4 @@ export function safeMediaPath(value: string | null): string | null {
   const query = new URLSearchParams(value.split('?')[1]);
   if ([...query.keys()].some((key) => key !== 'source')) return null;
   return query.get('source') ? value : null;
-}
-
-/** Local equirectangular projection for a small route overview, not route computation. */
-export function mapProjection(points: Point[]) {
-  const valid = points.filter(
-    (p) =>
-      Number.isFinite(p.lat) &&
-      Number.isFinite(p.lon) &&
-      Math.abs(p.lat) <= 90 &&
-      Math.abs(p.lon) <= 180,
-  );
-  if (!valid.length) return null;
-  const cosLat = Math.cos((valid[0].lat * Math.PI) / 180);
-  const xs = valid.map((p) => p.lon * cosLat);
-  const ys = valid.map((p) => p.lat);
-  const minX = Math.min(...xs);
-  const maxX = Math.max(...xs);
-  const minY = Math.min(...ys);
-  const maxY = Math.max(...ys);
-  const scale = Math.min(660 / Math.max(maxX - minX, 0.0001), 360 / Math.max(maxY - minY, 0.0001));
-  return (p: Point): [number, number] => [
-    350 + (p.lon * cosLat - (minX + maxX) / 2) * scale,
-    210 - (p.lat - (minY + maxY) / 2) * scale,
-  ];
 }

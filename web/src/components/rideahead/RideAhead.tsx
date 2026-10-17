@@ -10,25 +10,43 @@ import {
   ChevronRight,
   Sparkles,
   Navigation,
+  RefreshCw,
+  FlaskConical,
   Signal,
   BatteryFull,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { previewAt, previewFrames } from '@/lib/rideahead/preview';
-import { timeLabel, type RideAheadConnection, type SnapshotView } from '@/lib/rideahead/view';
+import {
+  decisionKey,
+  formatArrival,
+  formatDelay,
+  formatDetour,
+  initialDecisionTracker,
+  trackDecisionChange,
+  type DecisionChange,
+} from '@/lib/rideahead/decisionChange';
+import { previewAt, previewChapters, previewFrames } from '@/lib/rideahead/preview';
+import { roadViewFor, type RoadView } from '@/lib/rideahead/roadView';
+import { isValidPoint } from '@/lib/rideahead/projection';
+import {
+  actionLabels,
+  timeLabel,
+  type RideAheadConnection,
+  type SnapshotView,
+} from '@/lib/rideahead/view';
 import NavigationMap from './NavigationMap';
+import MapLegend from './MapLegend';
 import VideoWidget, { type CameraInference } from './VideoWidget';
 import EvidencePanel from './EvidencePanel';
 import '@/styles/rideahead.css';
 
-const actionLabels = {
-  continue: 'Continue your ride',
-  heads_up: 'Heads up ahead',
-  slow: 'Slow down',
-  wait: 'Wait before continuing',
-  reroute: 'Take the alternative',
-  unavailable: 'Recommendation unavailable',
+const noRoadView: RoadView = {
+  kind: 'unavailable',
+  key: null,
+  label: 'No recorded clip for this moment',
+  detail: 'Waiting for the session.',
 };
+const HIGHLIGHT_MS = 1600;
 
 export default function RideAhead({ connection }: { connection?: RideAheadConnection }) {
   const [snapshot, setSnapshot] = useState<SnapshotView | null>(connection ? null : previewAt(0));
@@ -39,7 +57,15 @@ export default function RideAhead({ connection }: { connection?: RideAheadConnec
   const [selectedHazard, setSelectedHazard] = useState<string | null>(null);
   const [draftTime, setDraftTime] = useState<number | null>(null);
   const [configDraft, setConfigDraft] = useState<SnapshotView['config'] | null>(null);
-  const locked = useRef(false);
+  const [applying, setApplying] = useState(false);
+  const [configError, setConfigError] = useState<string | null>(null);
+  const [overlayCollapsed, setOverlayCollapsed] = useState(false);
+  const [announced, setAnnounced] = useState<DecisionChange | null>(null);
+  const [highlightKey, setHighlightKey] = useState<string | null>(null);
+  const [decisionLog, setDecisionLog] = useState<DecisionChange[]>([]);
+  const pending = useRef(0);
+  const queue = useRef<Promise<unknown>>(Promise.resolve());
+  const tracker = useRef(initialDecisionTracker);
   const current = useRef(snapshot);
   const isPlaying = useRef(playing);
   useEffect(() => {
@@ -49,30 +75,43 @@ export default function RideAhead({ connection }: { connection?: RideAheadConnec
     current.current = snapshot;
   }, [snapshot]);
 
-  const request = useCallback(async (operation: () => Promise<SnapshotView>) => {
-    if (locked.current) return;
-    locked.current = true;
-    setBusy(true);
-    try {
-      const next = await operation();
-      current.current = next;
-      setSnapshot(next);
-      setError(null);
-    } catch (cause) {
-      setPlaying(false);
-      setError(cause instanceof Error ? cause.message : 'The session could not be updated.');
-    } finally {
-      locked.current = false;
-      setBusy(false);
-    }
-  }, []);
+  // Serialized server requests. Background polls and play ticks are dropped while another request
+  // is pending; user actions queue behind it instead of being silently ignored.
+  const request = useCallback(
+    (operation: () => Promise<SnapshotView>, { drop = false }: { drop?: boolean } = {}) => {
+      if (drop && pending.current > 0) return Promise.resolve(false);
+      pending.current += 1;
+      setBusy(true);
+      const run = async () => {
+        try {
+          const next = await operation();
+          current.current = next;
+          setSnapshot(next);
+          setError(null);
+          return true;
+        } catch (cause) {
+          setPlaying(false);
+          setError(cause instanceof Error ? cause.message : 'The session could not be updated.');
+          return false;
+        } finally {
+          pending.current -= 1;
+          if (!pending.current) setBusy(false);
+        }
+      };
+      const result = queue.current.then(run);
+      queue.current = result;
+      return result;
+    },
+    [],
+  );
 
   useEffect(() => {
     if (!connection) return;
     const controller = new AbortController();
-    void request(() => connection.read(controller.signal));
+    void request(() => connection.read(controller.signal), { drop: true });
     const poll = window.setInterval(() => {
-      if (!isPlaying.current) void request(() => connection.read(controller.signal));
+      if (!isPlaying.current)
+        void request(() => connection.read(controller.signal), { drop: true });
     }, 2500);
     return () => {
       controller.abort();
@@ -81,8 +120,8 @@ export default function RideAhead({ connection }: { connection?: RideAheadConnec
   }, [connection, request]);
 
   const advance = useCallback(
-    (timeS: number) => {
-      if (connection) void request(() => connection.advance(timeS));
+    (timeS: number, options?: { drop?: boolean }) => {
+      if (connection) void request(() => connection.advance(timeS), options);
       else setSnapshot(previewAt(timeS));
     },
     [connection, request],
@@ -100,10 +139,40 @@ export default function RideAhead({ connection }: { connection?: RideAheadConnec
         connection
           ? Math.min(value.timeS + 5, value.endS)
           : (previewFrames.find((frame) => frame.timeS > value.timeS)?.timeS ?? value.endS),
+        { drop: true },
       );
     }, 1000);
     return () => window.clearInterval(timer);
   }, [playing, advance, connection]);
+
+  // Announce each server-flagged decision change once, however many polls return it.
+  useEffect(() => {
+    if (!snapshot) return;
+    const result = trackDecisionChange(tracker.current, snapshot);
+    tracker.current = result.state;
+    const change = result.change;
+    if (!change) return;
+    setAnnounced(change);
+    setHighlightKey(change.key);
+    setDecisionLog((log) =>
+      [change, ...log.filter((item) => item.key !== change.key)].slice(0, 20),
+    );
+  }, [snapshot]);
+  useEffect(() => {
+    if (!highlightKey) return;
+    const timer = window.setTimeout(() => setHighlightKey(null), HIGHLIGHT_MS);
+    return () => window.clearTimeout(timer);
+  }, [highlightKey]);
+
+  const roadView = snapshot ? roadViewFor(snapshot) : noRoadView;
+  const recordedKey = roadView.kind === 'recorded' ? roadView.key : null;
+  // The key demo moment: reveal the overlay whenever replay reaches a new recorded clip.
+  useEffect(() => {
+    if (recordedKey) setOverlayCollapsed(false);
+  }, [recordedKey]);
+  const onNeedsMoreRoom = useCallback((value: boolean) => {
+    if (value) setOverlayCollapsed(true);
+  }, []);
 
   const panelRef = useRef<HTMLDialogElement>(null);
   const [panel, setPanel] = useState<'replay' | 'evidence' | 'settings' | 'routes'>('replay');
@@ -112,9 +181,14 @@ export default function RideAhead({ connection }: { connection?: RideAheadConnec
     panelRef.current?.showModal();
   };
   const selected = snapshot?.decision;
+  const currentKey = selected ? decisionKey(selected) : null;
+  const change = announced && announced.key === currentKey ? announced : null;
+  const decisionMeta = [formatDetour(selected?.detourS), formatArrival(selected?.arrivalS)].filter(
+    (item): item is string => item !== null,
+  );
   const config = configDraft ?? snapshot?.config;
   const route = snapshot?.routes.find((item) => item.id === selected?.selectedRouteId);
-  const latestEvidence = snapshot?.evidence.at(-1);
+  const unmapped = snapshot?.hazards.filter((hazard) => !isValidPoint(hazard.point)).length ?? 0;
   const cosmos = snapshot?.cosmos;
   const cosmosLabel = {
     live_model: 'Live model result',
@@ -148,6 +222,7 @@ export default function RideAhead({ connection }: { connection?: RideAheadConnec
             {snapshot ? (
               <NavigationMap
                 snapshot={snapshot}
+                onNeedsMoreRoom={onNeedsMoreRoom}
                 onSelect={(id) => {
                   setSelectedHazard(id);
                   openPanel('evidence');
@@ -167,34 +242,83 @@ export default function RideAhead({ connection }: { connection?: RideAheadConnec
                 )}
               </div>
             )}
-            <div className="ra-navigation-instruction">
-              <span className="ra-direction-icon">
-                <Navigation size={23} />
-              </span>
-              <div>
-                <strong>
-                  {selected ? actionLabels[selected.action] : 'Your shared road ahead'}
-                </strong>
-                <span>{selected?.reason ?? 'Waiting for a route recommendation'}</span>
+            {/* Map chrome: every overlay is marked so the map fits geometry around it. */}
+            <div className="ra-map-top">
+              <div
+                className={[
+                  'ra-navigation-instruction',
+                  highlightKey && highlightKey === currentKey && 'is-changed',
+                ]
+                  .filter(Boolean)
+                  .join(' ')}
+                data-map-chrome
+              >
+                <span className="ra-direction-icon">
+                  {change ? <RefreshCw size={21} /> : <Navigation size={23} />}
+                </span>
+                <div>
+                  {(change || selected?.syntheticBasis) && (
+                    <span className="ra-card-badges">
+                      {change && (
+                        <span className="ra-change-badge">
+                          <RefreshCw size={10} aria-hidden="true" />
+                          {change.title}
+                        </span>
+                      )}
+                      {selected?.syntheticBasis && (
+                        <span className="ra-synthetic-chip">
+                          <FlaskConical size={10} aria-hidden="true" />
+                          SYNTHETIC EVENT
+                        </span>
+                      )}
+                    </span>
+                  )}
+                  <strong>
+                    {selected ? actionLabels[selected.action] : 'Your shared road ahead'}
+                  </strong>
+                  <span className="ra-decision-reason">
+                    {selected?.reason ?? 'Waiting for a route recommendation'}
+                  </span>
+                  {decisionMeta.length > 0 && (
+                    <span className="ra-decision-meta">{decisionMeta.join(' · ')}</span>
+                  )}
+                  <span className="ra-decision-event" aria-live="polite">
+                    {change?.summary ?? ''}
+                  </span>
+                </div>
               </div>
+              <VideoWidget
+                roadView={roadView}
+                collapsed={overlayCollapsed}
+                onToggleCollapsed={() => setOverlayCollapsed((value) => !value)}
+                onInference={setCameraInference}
+              />
             </div>
-            <VideoWidget evidence={latestEvidence} onInference={setCameraInference} />
-            <button
-              className="ra-map-layer"
-              aria-label="Show route alternatives"
-              onClick={() => openPanel('routes')}
-            >
-              <Route size={18} />
-            </button>
-            <span className="ra-phone-provenance">
-              {connection ? 'Session replay' : 'Synthetic fixture'} ·{' '}
-              {snapshot ? timeLabel(snapshot.timeS) : 'connecting'}
-            </span>
-            {error && snapshot && (
-              <span className="ra-phone-update-error" role="alert">
-                Connection lost · last snapshot shown
+            <div className="ra-map-footer-left" data-map-chrome>
+              {error && snapshot && (
+                <span className="ra-phone-update-error" role="alert">
+                  Connection lost · last snapshot shown
+                </span>
+              )}
+              <span className="ra-phone-provenance">
+                {connection ? 'Session replay' : 'Synthetic fixture'} ·{' '}
+                {snapshot ? timeLabel(snapshot.timeS) : 'connecting'}
               </span>
-            )}
+              <MapLegend unmapped={unmapped} />
+              <span className="ra-map-disclaimer">Route overview · no street basemap</span>
+            </div>
+            <div className="ra-map-footer-right" data-map-chrome>
+              <span className="ra-compass" role="img" aria-label="North is up">
+                ↑<small>N</small>
+              </span>
+              <button
+                className="ra-map-layer"
+                aria-label="Show route alternatives"
+                onClick={() => openPanel('routes')}
+              >
+                <Route size={18} />
+              </button>
+            </div>
           </section>
           <button
             className="ra-journey-strip"
@@ -311,7 +435,6 @@ export default function RideAhead({ connection }: { connection?: RideAheadConnec
                   </p>
                   <Button
                     variant="outline"
-                    disabled={busy}
                     onClick={() => {
                       setPlaying(false);
                       setDraftTime(null);
@@ -330,7 +453,6 @@ export default function RideAhead({ connection }: { connection?: RideAheadConnec
                   max={snapshot.endS}
                   step="1"
                   value={draftTime ?? snapshot.timeS}
-                  disabled={busy}
                   onChange={(event) => {
                     setPlaying(false);
                     setDraftTime(Number(event.target.value));
@@ -338,7 +460,6 @@ export default function RideAhead({ connection }: { connection?: RideAheadConnec
                 />
                 {draftTime !== null && (
                   <Button
-                    disabled={busy}
                     onClick={() => {
                       advance(draftTime);
                       setDraftTime(null);
@@ -350,30 +471,35 @@ export default function RideAhead({ connection }: { connection?: RideAheadConnec
                 <p className="ra-subtle">
                   {connection
                     ? 'Replay advances the session clock. Reads never advance it.'
-                    : 'Offline playback steps through canonical synthetic snapshots.'}
+                    : 'Offline playback steps through the generated canonical snapshots.'}
                 </p>
                 {!connection && (
                   <div className="ra-chapters">
-                    {[
-                      [0, 'Start'],
-                      [60, 'Observed'],
-                      [200, 'Bike B departs'],
-                      [330, 'Stale'],
-                      [450, 'Synthetic clearance'],
-                    ].map(([time, label]) => (
+                    {previewChapters().map((chapter) => (
                       <button
-                        key={time}
+                        key={chapter.timeS}
+                        data-chapter={chapter.timeS}
                         onClick={() => {
                           setPlaying(false);
                           setDraftTime(null);
-                          advance(Number(time));
+                          advance(chapter.timeS);
                           panelRef.current?.close();
                         }}
                       >
-                        {label}
+                        {chapter.label}
                       </button>
                     ))}
                   </div>
+                )}
+                <h3>Decision changes</h3>
+                {decisionLog.length ? (
+                  <ol className="ra-decision-log" aria-label="Decision change events">
+                    {decisionLog.map((item) => (
+                      <li key={item.key}>{item.line}</li>
+                    ))}
+                  </ol>
+                ) : (
+                  <p className="ra-subtle">No server-flagged route or recommendation change yet.</p>
                 )}
               </section>
             )}
@@ -414,9 +540,9 @@ export default function RideAhead({ connection }: { connection?: RideAheadConnec
                   arrival.
                 </p>
                 <p className="ra-subtle">
-                  Estimated obstruction delay:{' '}
-                  {selected?.delayS == null ? 'unknown' : `${selected.delayS}s`} · Detour:{' '}
-                  {selected?.detourS == null ? 'unknown' : `${selected.detourS}s`}
+                  Estimated obstruction delay: {formatDelay(selected?.delayS) ?? 'unknown'} ·
+                  Detour: {formatDetour(selected?.detourS) ?? 'not supplied'} · Report ahead:{' '}
+                  {formatArrival(selected?.arrivalS) ?? 'not supplied'}
                 </p>
                 {selected?.assumptions.map((assumption) => (
                   <p className="ra-subtle" key={assumption}>
@@ -440,10 +566,11 @@ export default function RideAhead({ connection }: { connection?: RideAheadConnec
                           max={Math.max(config[name], name === 'shortRadiusM' ? 1000 : 5000)}
                           step="50"
                           value={config[name]}
-                          disabled={busy}
-                          onChange={(event) =>
-                            setConfigDraft({ ...config, [name]: Number(event.target.value) })
-                          }
+                          disabled={applying}
+                          onChange={(event) => {
+                            setConfigError(null);
+                            setConfigDraft({ ...config, [name]: Number(event.target.value) });
+                          }}
                         />
                       </label>
                     ))}
@@ -451,25 +578,43 @@ export default function RideAhead({ connection }: { connection?: RideAheadConnec
                       <>
                         <p className="ra-subtle">
                           {connection
-                            ? 'Unsaved settings'
+                            ? 'Unsaved settings · Apply sends them to the server session'
                             : 'Preview draft only · requires server to apply'}
                         </p>
                         <Button
-                          disabled={busy || !connection}
+                          disabled={applying || !connection}
                           onClick={() => {
-                            if (connection)
-                              void request(async () => {
-                                const next = await connection.configure(configDraft);
-                                setConfigDraft(null);
-                                return next;
-                              });
+                            if (!connection) return;
+                            const draft = configDraft;
+                            setApplying(true);
+                            setConfigError(null);
+                            void request(() => connection.configure(draft)).then((ok) => {
+                              setApplying(false);
+                              if (ok) setConfigDraft(null);
+                              else
+                                setConfigError(
+                                  'Settings were not applied. The server rejected or did not answer the update; your draft is kept.',
+                                );
+                            });
                           }}
                         >
-                          Apply settings
+                          {applying ? 'Applying…' : 'Apply settings'}
                         </Button>
-                        <Button variant="ghost" onClick={() => setConfigDraft(null)}>
+                        <Button
+                          variant="ghost"
+                          disabled={applying}
+                          onClick={() => {
+                            setConfigDraft(null);
+                            setConfigError(null);
+                          }}
+                        >
                           Discard
                         </Button>
+                        {configError && (
+                          <p className="ra-error" role="alert">
+                            {configError}
+                          </p>
+                        )}
                       </>
                     )}
                   </>

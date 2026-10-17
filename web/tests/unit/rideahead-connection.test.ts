@@ -38,6 +38,25 @@ describe('frozen API integration', () => {
       planning_radius_m: 2500,
     });
   });
+  it('applies radius sliders with PATCH /api/rideahead/sessions/{id}/config', async () => {
+    const created = raw();
+    created.session_id = 'session-under-test';
+    mock.POST.mockResolvedValue(response(created));
+    mock.PATCH.mockResolvedValue(response(created));
+    await createRideAheadConnection().configure({ shortRadiusM: 150, planningRadiusM: 3000 });
+    expect(mock.PATCH).toHaveBeenCalledTimes(1);
+    const [path, options] = mock.PATCH.mock.calls[0];
+    expect(path).toBe('/api/rideahead/sessions/{session_id}/config');
+    expect(options.params).toEqual({ path: { session_id: 'session-under-test' } });
+    expect(options.body).toEqual({ share_radius_m: 150, planning_radius_m: 3000 });
+  });
+  it('rejects a failed config update with a readable error, never fixture success', async () => {
+    mock.POST.mockResolvedValue(response(raw()));
+    mock.PATCH.mockResolvedValue({ response: new Response(null, { status: 422 }) });
+    await expect(
+      createRideAheadConnection().configure({ shortRadiusM: 150, planningRadiusM: 3000 }),
+    ).rejects.toThrow('RideAhead server returned 422');
+  });
   it('reports denied access instead of substituting fixture success', async () => {
     mock.POST.mockResolvedValue({ response: new Response(null, { status: 401 }) });
     await expect(createRideAheadConnection().read()).rejects.toThrow('valid demo key');
