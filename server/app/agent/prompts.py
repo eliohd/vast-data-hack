@@ -82,3 +82,27 @@ rules or advice that is not in the facts. Facts (JSON): {facts}"""
 def verification_prompt(question: str) -> str:
     """EVIDENCE_VERIFICATION_PROMPT with the claim filled in (JSON braces make .format unsafe)."""
     return EVIDENCE_VERIFICATION_PROMPT.replace("{question}", question)
+
+
+# -- Single-rider live mode (/ws/ride) --------------------------------------------------------
+
+RIDE_HAZARD_PROMPT_VERSION = "ride-live-1"
+RIDE_HAZARD_PROMPT = """You are Clover, a cycling companion watching a handlebar camera on a
+bike in London traffic. Look at this one frame and decide if the rider needs a warning.
+Only report what is clearly visible ahead in or next to the rider's path.
+
+Hazard types: "lane_blocked" (vehicle, bin, object in the cycle lane or the rider's lane),
+"work_zone" (roadworks, cones, barriers), "door_risk" (parked car with a door or person that
+could open into the rider), "pedestrian" (person stepping into the road or cycle lane),
+"vehicle_close" (vehicle very close, turning across or pulling out), "surface" (pothole,
+debris, wet drain cover), "none".
+
+Advice: "continue" (nothing to do), "heads_up" (be aware), "slow" (slow down now),
+"reroute" (path ahead is blocked, take another street).
+
+Reply with JSON only:
+{"hazard": "<type>", "advice": "<advice>",
+ "message": "<max 12 words, spoken to the rider, e.g. 'Van in the bike lane ahead, move right'>",
+ "confidence": <0.0-1.0>,
+ "objects": [{"label": "<name>", "box": [x, y, w, h]}]}
+Boxes are normalised to the image (0-1, top-left origin). Use "none" and "continue" if unsure."""

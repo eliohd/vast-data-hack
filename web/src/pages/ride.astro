@@ -1,0 +1,8 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import LiveRide from '@/components/ride/LiveRide';
+---
+
+<BaseLayout title="Cysense · Ride live">
+  <LiveRide client:only="react" />
+</BaseLayout>
