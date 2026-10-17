@@ -160,3 +160,41 @@ def test_nyc_scenario_archive_perception_on_recorded_ors_routes(tmp_path) -> Non
         assert snap["hazards"][0]["state"] == "cleared"
         assert snap["decisions"][0]["action"] == "continue"
         assert snap["riders"][1]["duration_remaining_s"] is not None
+
+
+def test_broadway_work_zone_scenario_real_cached_evidence(tmp_path) -> None:  # type: ignore[no-untyped-def]
+    """Second scenario: recorded street-camera work zone (cached Cosmos), recorded ORS routes."""
+    settings = make_settings(
+        tmp_path, ors_api_key=SecretStr(""), rideahead_routing="ors", rideahead_perception="archive"
+    )
+    with TestClient(create_app(settings)) as c:
+        caps = c.get("/api/rideahead/capabilities").json()
+        ids = [sc["scenario_id"] for sc in caps["scenarios"]]
+        assert ids[0].startswith("nyc-6th-ave") and "nyc-broadway-work-zone-v1" in ids
+
+        snap = c.post(
+            "/api/rideahead/sessions", json={"scenario_id": "nyc-broadway-work-zone-v1"}
+        ).json()
+        sid = snap["session_id"]
+        assert snap["ride_id"] == "nyc_streets_cam-1:walker-st"
+
+        snap = _advance(c, sid, 60)
+        obs = snap["observations"][0]
+        assert obs["source"] == "cached_model" and obs["hazard_type"] == "work_zone"
+        assert obs["evidence"][0]["provenance"] == "cached_recorded"
+        assert obs["evidence"][0]["media_ref"].startswith("/api/archive/media?source=")
+        assert obs["verification"]["verdict"] == "supported"
+        assert [h["state"] for h in snap["hazards"]] == ["observed"]
+        decision = snap["decisions"][0]
+        assert decision["action"] == "reroute"
+        assert snap["riders"][1]["active_route_id"] == decision["selected_route_id"]
+
+        snap = _advance(c, sid, 1489)  # same camera ~24 min later: persistence, not independent
+        assert snap["hazards"][0]["state"] == "confirmed"
+        assert snap["hazards"][0]["confirmation_kind"] == "persistence"
+
+        # ride_id selection picks the same scenario
+        again = c.post(
+            "/api/rideahead/sessions", json={"ride_id": "nyc_streets_cam-1:walker-st"}
+        ).json()
+        assert again["scenario_id"] == "nyc-broadway-work-zone-v1"

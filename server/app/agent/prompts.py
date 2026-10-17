@@ -56,6 +56,23 @@ Reply with JSON only:
  "evidence_seconds": [<start>, <end>] | null,
  "rationale": "<one short factual sentence about visible evidence>"}"""
 
+WORK_ZONE_VERIFICATION_PROMPT_VERSION = "c-verify-work-zone-1"
+# Lane C proposal for fixed street-camera clips (used for the Broadway & Walker St work zone).
+WORK_ZONE_VERIFICATION_PROMPT = """You are checking a short fixed street-camera clip of an
+intersection.
+Claim to check: construction barriers, barrels or cones occupy part of the roadway (a traffic or
+cycle lane or the crosswalk on the road), so a cyclist on that road would have to go around them.
+Answer step by step from what is visible, then give JSON:
+1. List the barriers/barrels/cones you can see and where they stand (sidewalk, crosswalk,
+   road lane).
+2. Is any of them on the road surface, not only on the sidewalk?
+3. Is a person directing traffic (flagger) visible?
+4. Which street name signs or building numbers are readable?
+Reply with JSON only:
+{"road_space_visible": true|false|null, "obstruction_visible": true|false|null,
+ "verdict": "supported"|"contradicted"|"unclear", "objects": [..], "flagger": true|false|null,
+ "readable_signs": [..], "rationale": "<one short factual sentence>"}"""
+
 DECISION_EXPLANATION_PROMPT_VERSION = "rideahead-explain-1"
 DECISION_EXPLANATION_PROMPT = """Rephrase this navigation decision for a cyclist in one short,
 calm sentence. Use only the facts given; do not add locations, times, probabilities, legal

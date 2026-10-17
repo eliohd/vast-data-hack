@@ -1,6 +1,445 @@
 {
  "_note": "Genuine openrouteservice responses recorded by CachedRouting. Route data \u00a9 openrouteservice.org | \u00a9 OpenStreetMap contributors (ODbL).",
  "responses": {
+  "[40.7199, -74.00146, 40.71741, -74.00356, [[40.71876, -74.00243, 30.0]]]": [
+   {
+    "avoids_hazard_ids": [
+     "hazard-71211ac9031e2a0a"
+    ],
+    "distance_m": 600.9,
+    "duration_s": 120.2,
+    "geometry": {
+     "coordinates": [
+      [
+       -74.001462,
+       40.719895
+      ],
+      [
+       -74.001806,
+       40.71949
+      ],
+      [
+       -74.001881,
+       40.719402
+      ],
+      [
+       -74.001806,
+       40.719345
+      ],
+      [
+       -74.001268,
+       40.718964
+      ],
+      [
+       -74.000618,
+       40.718499
+      ],
+      [
+       -74.000552,
+       40.718449
+      ],
+      [
+       -74.000633,
+       40.71836
+      ],
+      [
+       -74.00081,
+       40.718168
+      ],
+      [
+       -74.000967,
+       40.717992
+      ],
+      [
+       -74.001008,
+       40.717948
+      ],
+      [
+       -74.001052,
+       40.717899
+      ],
+      [
+       -74.001546,
+       40.71736
+      ],
+      [
+       -74.001583,
+       40.717318
+      ],
+      [
+       -74.001666,
+       40.71736
+      ],
+      [
+       -74.00235,
+       40.71769
+      ],
+      [
+       -74.002433,
+       40.717731
+      ],
+      [
+       -74.002951,
+       40.717992
+      ],
+      [
+       -74.003043,
+       40.718034
+      ],
+      [
+       -74.003085,
+       40.717983
+      ],
+      [
+       -74.003494,
+       40.717496
+      ],
+      [
+       -74.003533,
+       40.717449
+      ],
+      [
+       -74.003564,
+       40.717412
+      ]
+     ],
+     "type": "LineString"
+    },
+    "label": "bicycle route from provider, subject to map restrictions",
+    "profile": "cycling-regular",
+    "provenance": "live_provider",
+    "provider": "openrouteservice",
+    "role": "detour",
+    "route_id": "ors-96c4dbffc2",
+    "steps": [
+     {
+      "distance_m": 65.3,
+      "duration_s": 13.1,
+      "end_index": 2,
+      "instruction": "Head southwest on Broadway",
+      "maneuver_type": "depart",
+      "start_index": 0,
+      "street_name": "Broadway"
+     },
+     {
+      "distance_m": 154.2,
+      "duration_s": 30.8,
+      "end_index": 6,
+      "instruction": "Turn left onto Canal Street",
+      "maneuver_type": "left",
+      "start_index": 2,
+      "street_name": "Canal Street"
+     },
+     {
+      "distance_m": 152.9,
+      "duration_s": 30.6,
+      "end_index": 13,
+      "instruction": "Turn right onto Lafayette Street",
+      "maneuver_type": "right",
+      "start_index": 6,
+      "street_name": "Lafayette Street"
+     },
+     {
+      "distance_m": 146.6,
+      "duration_s": 29.3,
+      "end_index": 18,
+      "instruction": "Turn right onto White Street",
+      "maneuver_type": "right",
+      "start_index": 13,
+      "street_name": "White Street"
+     },
+     {
+      "distance_m": 81.9,
+      "duration_s": 16.4,
+      "end_index": 22,
+      "instruction": "Turn left onto Broadway",
+      "maneuver_type": "left",
+      "start_index": 18,
+      "street_name": "Broadway"
+     },
+     {
+      "distance_m": 0.0,
+      "duration_s": 0.0,
+      "end_index": 22,
+      "instruction": "Arrive at Broadway, straight ahead",
+      "maneuver_type": "arrive",
+      "start_index": 22,
+      "street_name": null
+     }
+    ],
+    "warnings": [
+     "Extra info requested but not available: roadaccessrestrictions"
+    ]
+   }
+  ],
+  "[40.7199, -74.00146, 40.71741, -74.00356, []]": [
+   {
+    "avoids_hazard_ids": [],
+    "distance_m": 328.1,
+    "duration_s": 65.6,
+    "geometry": {
+     "coordinates": [
+      [
+       -74.001462,
+       40.719895
+      ],
+      [
+       -74.001806,
+       40.71949
+      ],
+      [
+       -74.001881,
+       40.719402
+      ],
+      [
+       -74.001962,
+       40.719305
+      ],
+      [
+       -74.002091,
+       40.719153
+      ],
+      [
+       -74.002181,
+       40.719048
+      ],
+      [
+       -74.002498,
+       40.718675
+      ],
+      [
+       -74.002528,
+       40.718639
+      ],
+      [
+       -74.002575,
+       40.718585
+      ],
+      [
+       -74.003012,
+       40.718071
+      ],
+      [
+       -74.003043,
+       40.718034
+      ],
+      [
+       -74.003085,
+       40.717983
+      ],
+      [
+       -74.003494,
+       40.717496
+      ],
+      [
+       -74.003533,
+       40.717449
+      ],
+      [
+       -74.003564,
+       40.717412
+      ]
+     ],
+     "type": "LineString"
+    },
+    "label": "bicycle route from provider, subject to map restrictions",
+    "profile": "cycling-regular",
+    "provenance": "live_provider",
+    "provider": "openrouteservice",
+    "role": "primary",
+    "route_id": "ors-3933c19031",
+    "steps": [
+     {
+      "distance_m": 328.1,
+      "duration_s": 65.6,
+      "end_index": 14,
+      "instruction": "Head southwest on Broadway",
+      "maneuver_type": "depart",
+      "start_index": 0,
+      "street_name": "Broadway"
+     },
+     {
+      "distance_m": 0.0,
+      "duration_s": 0.0,
+      "end_index": 14,
+      "instruction": "Arrive at Broadway, straight ahead",
+      "maneuver_type": "arrive",
+      "start_index": 14,
+      "street_name": null
+     }
+    ],
+    "warnings": [
+     "Extra info requested but not available: roadaccessrestrictions"
+    ]
+   },
+   {
+    "avoids_hazard_ids": [],
+    "distance_m": 600.9,
+    "duration_s": 120.2,
+    "geometry": {
+     "coordinates": [
+      [
+       -74.001462,
+       40.719895
+      ],
+      [
+       -74.001806,
+       40.71949
+      ],
+      [
+       -74.001881,
+       40.719402
+      ],
+      [
+       -74.001806,
+       40.719345
+      ],
+      [
+       -74.001268,
+       40.718964
+      ],
+      [
+       -74.000618,
+       40.718499
+      ],
+      [
+       -74.000552,
+       40.718449
+      ],
+      [
+       -74.000633,
+       40.71836
+      ],
+      [
+       -74.00081,
+       40.718168
+      ],
+      [
+       -74.000967,
+       40.717992
+      ],
+      [
+       -74.001008,
+       40.717948
+      ],
+      [
+       -74.001052,
+       40.717899
+      ],
+      [
+       -74.001546,
+       40.71736
+      ],
+      [
+       -74.001583,
+       40.717318
+      ],
+      [
+       -74.001666,
+       40.71736
+      ],
+      [
+       -74.00235,
+       40.71769
+      ],
+      [
+       -74.002433,
+       40.717731
+      ],
+      [
+       -74.002951,
+       40.717992
+      ],
+      [
+       -74.003043,
+       40.718034
+      ],
+      [
+       -74.003085,
+       40.717983
+      ],
+      [
+       -74.003494,
+       40.717496
+      ],
+      [
+       -74.003533,
+       40.717449
+      ],
+      [
+       -74.003564,
+       40.717412
+      ]
+     ],
+     "type": "LineString"
+    },
+    "label": "bicycle route from provider, subject to map restrictions",
+    "profile": "cycling-regular",
+    "provenance": "live_provider",
+    "provider": "openrouteservice",
+    "role": "alternative",
+    "route_id": "ors-96c4dbffc2",
+    "steps": [
+     {
+      "distance_m": 65.3,
+      "duration_s": 13.1,
+      "end_index": 2,
+      "instruction": "Head southwest on Broadway",
+      "maneuver_type": "depart",
+      "start_index": 0,
+      "street_name": "Broadway"
+     },
+     {
+      "distance_m": 154.2,
+      "duration_s": 30.8,
+      "end_index": 6,
+      "instruction": "Turn left onto Canal Street",
+      "maneuver_type": "left",
+      "start_index": 2,
+      "street_name": "Canal Street"
+     },
+     {
+      "distance_m": 152.9,
+      "duration_s": 30.6,
+      "end_index": 13,
+      "instruction": "Turn right onto Lafayette Street",
+      "maneuver_type": "right",
+      "start_index": 6,
+      "street_name": "Lafayette Street"
+     },
+     {
+      "distance_m": 146.6,
+      "duration_s": 29.3,
+      "end_index": 18,
+      "instruction": "Turn right onto White Street",
+      "maneuver_type": "right",
+      "start_index": 13,
+      "street_name": "White Street"
+     },
+     {
+      "distance_m": 81.9,
+      "duration_s": 16.4,
+      "end_index": 22,
+      "instruction": "Turn left onto Broadway",
+      "maneuver_type": "left",
+      "start_index": 18,
+      "street_name": "Broadway"
+     },
+     {
+      "distance_m": 0.0,
+      "duration_s": 0.0,
+      "end_index": 22,
+      "instruction": "Arrive at Broadway, straight ahead",
+      "maneuver_type": "arrive",
+      "start_index": 22,
+      "street_name": null
+     }
+    ],
+    "warnings": [
+     "Extra info requested but not available: roadaccessrestrictions"
+    ]
+   }
+  ],
   "[40.74475, -73.99146, 40.75294, -73.98548, [[40.74791, -73.98914, 30.0]]]": [
    {
     "avoids_hazard_ids": [

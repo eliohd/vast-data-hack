@@ -381,6 +381,14 @@ class IntegrationStatus(BaseModel):
     detail: str = ""
 
 
+class ScenarioSummary(BaseModel):
+    scenario_id: str
+    title: str
+    ride_id: str
+    duration_s: float
+    labels: list[str] = Field(default_factory=list)
+
+
 class Capabilities(BaseModel):
     schema_version: Literal["1"] = SCHEMA_VERSION
     perception_provider: str
@@ -389,6 +397,9 @@ class Capabilities(BaseModel):
     integrations: list[IntegrationStatus]
     hazard_types: list[HazardTypeConfig]
     default_config: SessionConfig
+    scenarios: list[ScenarioSummary] = Field(
+        default_factory=list, description="selectable demo stories; first is the default"
+    )
 
 
 class SessionEvent(BaseModel):

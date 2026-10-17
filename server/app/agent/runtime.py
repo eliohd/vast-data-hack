@@ -82,6 +82,11 @@ class Scenario(BaseModel):
         default_factory=list, description="Bike A positions; manually reconstructed if no GPS"
     )
     simulated_rider: SimulatedRiderSpec = Field(default_factory=SimulatedRiderSpec)
+    cached_observations: list[Observation] = Field(
+        default_factory=list,
+        description="genuine cached model outputs bundled with the scenario; used only when the "
+        "perception provider returns none for this ride",
+    )
     fixture_observations: list[Observation] = Field(
         default_factory=list,
         description="placeholder observations used ONLY with the fixture perception provider",
@@ -435,11 +440,15 @@ class RideAheadRuntime:
         scenario: Scenario,
         integrations: Callable[[], list[IntegrationStatus]],
         snapshot_dir: Path | None = None,
+        extra_scenarios: list[Scenario] | None = None,
     ) -> None:
         self.perception = perception
         self.routing = routing
         self.engine_factory = engine_factory
-        self.scenario = scenario
+        self.scenario = scenario  # default
+        self.scenarios: dict[str, Scenario] = {scenario.scenario_id: scenario}
+        for extra in extra_scenarios or []:
+            self.scenarios.setdefault(extra.scenario_id, extra)
         self.integrations = integrations
         self.snapshot_dir = snapshot_dir
         self.sessions: dict[str, Session] = {}
@@ -449,27 +458,51 @@ class RideAheadRuntime:
     def engine_name(self) -> str:
         return self._engine_name
 
-    def default_config(self) -> SessionConfig:
-        config = SessionConfig()
-        for type_name, prior in self.scenario.persistence_overrides.items():
+    @staticmethod
+    def _apply_overrides(config: SessionConfig, scenario: Scenario) -> SessionConfig:
+        for type_name, prior in scenario.persistence_overrides.items():
             if type_name in config.hazard_types:
                 config.hazard_types[type_name].persistence = prior
         return config
 
+    def default_config(self) -> SessionConfig:
+        """Config for the default scenario."""
+        return self._apply_overrides(SessionConfig(), self.scenario)
+
+    def config_for(self, scenario: Scenario) -> SessionConfig:
+        if scenario is self.scenario:
+            return self.default_config()
+        return self._apply_overrides(SessionConfig(), scenario)
+
+    def pick_scenario(self, scenario_id: str | None = None, ride_id: str | None = None) -> Scenario:
+        """By scenario_id, else the scenario for ride_id, else the default."""
+        if scenario_id and scenario_id in self.scenarios:
+            return self.scenarios[scenario_id]
+        if ride_id:
+            for sc in self.scenarios.values():
+                if sc.ride_id == ride_id:
+                    return sc
+        return self.scenario
+
     @weave.op
-    async def create_session(self, ride_id: str | None = None) -> SessionSnapshot:
-        ride = ride_id or self.scenario.ride_id
+    async def create_session(
+        self, ride_id: str | None = None, scenario_id: str | None = None
+    ) -> SessionSnapshot:
+        scenario = self.pick_scenario(scenario_id, ride_id)
+        ride = ride_id or scenario.ride_id
         observations = await self.perception.inspect_ride(ride)
+        if not observations:
+            observations = [o.model_copy(deep=True) for o in scenario.cached_observations]
         if self.perception.name == "fixture":
-            observations += [o.model_copy(deep=True) for o in self.scenario.fixture_observations]
-        observations += [o.model_copy(deep=True) for o in self.scenario.synthetic_observations]
+            observations += [o.model_copy(deep=True) for o in scenario.fixture_observations]
+        observations += [o.model_copy(deep=True) for o in scenario.synthetic_observations]
         session = Session(
             uuid.uuid4().hex[:12],
-            self.scenario.model_copy(update={"ride_id": ride}),
+            scenario.model_copy(update={"ride_id": ride}),
             observations,
             self.engine_factory,
             self.routing,
-            self.default_config(),
+            self.config_for(scenario),
         )
         async with session.lock:
             await session.advance(0)

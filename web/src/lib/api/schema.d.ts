@@ -319,6 +319,11 @@ export interface components {
             /** Routing Provider */
             routing_provider: string;
             /**
+             * Scenarios
+             * @description selectable demo stories; first is the default
+             */
+            scenarios?: components["schemas"]["ScenarioSummary"][];
+            /**
              * Schema Version
              * @default 1
              * @constant
@@ -879,6 +884,19 @@ export interface components {
             start_index: number;
             /** Street Name */
             street_name?: string | null;
+        };
+        /** ScenarioSummary */
+        ScenarioSummary: {
+            /** Duration S */
+            duration_s: number;
+            /** Labels */
+            labels?: string[];
+            /** Ride Id */
+            ride_id: string;
+            /** Scenario Id */
+            scenario_id: string;
+            /** Title */
+            title: string;
         };
         /** SearchRequest */
         SearchRequest: {

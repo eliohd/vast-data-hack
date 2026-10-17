@@ -141,6 +141,14 @@
             "title": "Routing Provider",
             "type": "string"
           },
+          "scenarios": {
+            "description": "selectable demo stories; first is the default",
+            "items": {
+              "$ref": "#/components/schemas/ScenarioSummary"
+            },
+            "title": "Scenarios",
+            "type": "array"
+          },
           "schema_version": {
             "const": "1",
             "default": "1",
@@ -1427,6 +1435,41 @@
           "end_index"
         ],
         "title": "RouteStep",
+        "type": "object"
+      },
+      "ScenarioSummary": {
+        "properties": {
+          "duration_s": {
+            "title": "Duration S",
+            "type": "number"
+          },
+          "labels": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Labels",
+            "type": "array"
+          },
+          "ride_id": {
+            "title": "Ride Id",
+            "type": "string"
+          },
+          "scenario_id": {
+            "title": "Scenario Id",
+            "type": "string"
+          },
+          "title": {
+            "title": "Title",
+            "type": "string"
+          }
+        },
+        "required": [
+          "scenario_id",
+          "title",
+          "ride_id",
+          "duration_s"
+        ],
+        "title": "ScenarioSummary",
         "type": "object"
       },
       "SearchRequest": {

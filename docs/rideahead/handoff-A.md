@@ -166,6 +166,27 @@ Merged C `70e8212` (ArchivePerceptionProvider, traced W&B + Cosmos cache) and D 
   t0, 60, 140, 160, 300, 400, 450, 480, 660.
 - Deploy is run by lane C per `docs/rideahead/deploy-runbook.md`; A picks the SHA.
 
+## Second scenario: real recorded work zone (Broadway & Walker St)
+
+- `scenario_broadway.json` → `nyc-broadway-work-zone-v1`, ride `nyc_streets_cam-1:walker-st`.
+  Select with `POST /sessions {"scenario_id": "nyc-broadway-work-zone-v1"}` or that `ride_id`.
+  `GET /capabilities` lists `scenarios` (first = default 6th Ave). Extra scenarios come from
+  `RIDEAHEAD_EXTRA_SCENARIOS` (default `["scenario_broadway.json"]`).
+- Evidence: lane C's two recorded clips (`walker_work_zone_v1.json`), Cosmos `supported`
+  (prompt `c-verify-work-zone-1`, now `WORK_ZONE_VERIFICATION_PROMPT` in prompts.py), frame review
+  agrees. Bundled as `Scenario.cached_observations` (source `cached_model`, evidence
+  `cached_recorded`, proxy `media_ref`); used only when the perception provider returns nothing
+  for this ride, so C's provider takes over if it emits them.
+- Location: intersection geocoded (ORS) and map-matched onto Broadway, ±30 m, `manhattan-broadway:sb`,
+  213°. C's hand pin was ~45 m off. Timing nominal from filenames: clips at session t=60 and t=1489
+  (~24 min apart, same camera → persistence, not independent). No clearance (no later footage).
+- Real ORS: 40.719895,-74.001462 → 40.717412,-74.003564 (Broadway, near Canal → south of White).
+  Primary 328 m / 66 s through the work zone; provider alternative = avoid-area detour 601 m / 120 s
+  (Canal → Lafayette → White → Broadway). ORS prefers Lafayette from further north, so the trip is short.
+- Story (D's engine): t=60 work zone observed → Bike B **reroute** "Blockage 150 m ahead. Take the
+  detour; about 55 sec extra." → rides the detour with live next-turn data → t=1489 confirmed
+  (persistence). Observer is a fixed street camera, labelled.
+
 ## Navigation contract additions (for B's map, optional fields, backward compatible)
 
 - `RouteCandidate.steps: RouteStep[]` — `instruction`, `street_name?`, `maneuver_type`

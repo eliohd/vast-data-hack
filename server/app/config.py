@@ -168,6 +168,7 @@ class Settings(BaseSettings):
     rideahead_scenario: str = (
         "scenario_nyc.json"  # file in rideahead_fixtures; scenario.json = London fixture
     )
+    rideahead_extra_scenarios: list[str] = ["scenario_broadway.json"]  # selectable by id/ride
     rideahead_snapshots: bool = False  # write <data_dir>/rideahead/<session>.json on change
 
     # app

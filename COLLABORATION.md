@@ -131,7 +131,6 @@ The integrator (A) pulls `main` and runs the full pipeline end to end at every c
 |---|---|
 | Start | Lanes assigned, contracts + stubs on `main` |
 | Hourly (12:30, 13:30, 14:30) | Everyone merged; end-to-end run on `main`; adjust lanes |
-| **15:30** | **Feature freeze.** Only bug fixes, demo polish, eval numbers |
 | 16:00 | Final deploy + demo rehearsal on the phone |
 | **16:30** | **Submission closes / demos start** |
 

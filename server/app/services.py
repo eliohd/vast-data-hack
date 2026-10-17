@@ -83,6 +83,11 @@ class Services:
             routing=CachedRouting(routing, store_path=store),
             engine_factory=build_engine,
             scenario=Scenario.load(fixtures / s.rideahead_scenario),
+            extra_scenarios=[
+                Scenario.load(fixtures / name)
+                for name in s.rideahead_extra_scenarios
+                if name != s.rideahead_scenario and (fixtures / name).is_file()
+            ],
             integrations=self.rideahead_integrations,
             snapshot_dir=s.data_dir / "rideahead" if s.rideahead_snapshots else None,
         )

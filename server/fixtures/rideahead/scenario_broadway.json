@@ -1,0 +1,168 @@
+{
+  "scenario_id": "nyc-broadway-work-zone-v1",
+  "title": "Work zone on Broadway at Walker St (recorded street camera, Manhattan)",
+  "ride_id": "nyc_streets_cam-1:walker-st",
+  "duration_s": 1800,
+  "origin": {
+    "lat": 40.719895,
+    "lon": -74.001462
+  },
+  "destination": {
+    "lat": 40.717412,
+    "lon": -74.003564
+  },
+  "observer_label": "Street camera nyc_streets_cam-1 (recorded, fixed)",
+  "observer_track": [
+    {
+      "session_time_s": 0,
+      "lat": 40.718803,
+      "lon": -74.00251
+    }
+  ],
+  "simulated_rider": {
+    "rider_id": "bike_b",
+    "label": "Bike B (simulated)",
+    "depart_s": 120,
+    "speed_mps": 4.2
+  },
+  "cached_observations": [
+    {
+      "observation_id": "obs-walker-c17-s2",
+      "hazard_type": "work_zone",
+      "assertion": "present",
+      "evidence": [
+        {
+          "evidence_id": "ev-walker-c17-s2",
+          "ride_id": "nyc_streets_cam-1:walker-st",
+          "segment_id": "s3://team-46-vss-chunks-segments/segments/20261008_065146_VID_20261006_171812_002_chunk_0017_segment_002_of_006.mp4",
+          "camera_id": "nyc_streets_cam-1",
+          "clip_start_s": 0.0,
+          "clip_end_s": 5.0,
+          "ride_offset_s": 515.0,
+          "recorded_at": null,
+          "media_ref": "/api/archive/media?source=s3%3A%2F%2Fteam-46-vss-chunks-segments%2Fsegments%2F20261008_065146_VID_20261006_171812_002_chunk_0017_segment_002_of_006.mp4",
+          "provenance": "cached_recorded",
+          "caption": "A busy city street intersection is shown with pedestrians crossing in multiple directions. A black SUV is stopped near the crosswalk, and a white delivery truck is visible on the right side of the frame. A red construction barrier and orange traffic cones are placed on the road, partially blocking the crosswalk. Several people are walking across the street, including a woman in a red jacket carrying a backpack and a person in a gray hoodie. A man in a yellow safety vest is pushing a cart loaded with boxes. A traffic light showing a red hand signal is visible, indicating pedestrians should not cross. A street sign reading \"Walker St\" is mounted on a pole. The background includes storefronts, one with the word \"UNIFORM\" displayed on its window.",
+          "object_counts": {
+            "car": 2,
+            "person": 17,
+            "traffic light": 2,
+            "truck": 1,
+            "bicycle": 1,
+            "handbag": 4,
+            "backpack": 2,
+            "suitcase": 1
+          },
+          "model": "nvidia/cosmos3-nano-reasoner",
+          "prompt_version": "c-verify-work-zone-1"
+        }
+      ],
+      "location": {
+        "lat": 40.718761,
+        "lon": -74.002425,
+        "road_segment_id": "manhattan-broadway:sb",
+        "bearing_deg": 213.0,
+        "method": "manual_anchor",
+        "uncertainty_m": 30.0,
+        "notes": "Broadway & Walker St: 'Walker St' street sign and '401' readable in the clip (lane C); intersection geocoded and map-matched onto Broadway (OSM via openrouteservice)."
+      },
+      "observer_id": "street_cam_1",
+      "source_group_id": "grp-walker-c17-s2",
+      "description": "Construction barrier and traffic barrels in the Broadway roadway at Walker St.",
+      "support": "supported",
+      "verification": {
+        "evidence_id": "ev-walker-c17-s2",
+        "question": "Do construction barriers, barrels or cones occupy part of the roadway?",
+        "verdict": "supported",
+        "obstruction_visible": true,
+        "road_space_visible": true,
+        "rationale": "The video shows red plastic barriers and orange plastic barrels on the road surface, which occupy part of the roadway and would require a cyclist to go around them.",
+        "model": "nvidia/cosmos3-nano-reasoner",
+        "prompt_version": "c-verify-work-zone-1",
+        "source": "cached_model",
+        "latency_ms": 5214
+      },
+      "model_confidence": null,
+      "ride_offset_s": 515.0,
+      "session_time_s": 60.0,
+      "source": "cached_model",
+      "label": "Recorded street-camera clip (nominal 2026-10-06T17:26:47, timezone unknown); cached Cosmos check: supported"
+    },
+    {
+      "observation_id": "obs-walker-c04-s6",
+      "hazard_type": "work_zone",
+      "assertion": "present",
+      "evidence": [
+        {
+          "evidence_id": "ev-walker-c04-s6",
+          "ride_id": "nyc_streets_cam-1:walker-st",
+          "segment_id": "s3://team-46-vss-chunks-segments/segments/20261008_065931_VID_20261006_174811_003_chunk_0004_segment_006_of_006.mp4",
+          "camera_id": "nyc_streets_cam-1",
+          "clip_start_s": 0.0,
+          "clip_end_s": 5.0,
+          "ride_offset_s": 1944.0,
+          "recorded_at": null,
+          "media_ref": "/api/archive/media?source=s3%3A%2F%2Fteam-46-vss-chunks-segments%2Fsegments%2F20261008_065931_VID_20261006_174811_003_chunk_0004_segment_006_of_006.mp4",
+          "provenance": "cached_recorded",
+          "caption": "The scene is a city street intersection with a crosswalk in the foreground. A red plastic traffic barricade and orange traffic barrels are placed on the road, partially blocking the crosswalk. A person in a green striped shirt and beige pants stands on the right side of the crosswalk, holding an orange flag. Several pedestrians are crossing the street, including a woman with a blue backpack and another woman in a gray jacket. A black car is stopped near the crosswalk, and a white SUV is visible further down the street. A white truck is parked on the right side of the frame. Traffic lights are visible, showing a red signal for vehicles. A street sign reading \"Walker St\" is visible on a pole. A building with the number \"401\" and the word \"UNIFORM\" on its facade is seen in the background. A bicycle is parked on the sidewalk near the crosswalk.",
+          "object_counts": {
+            "person": 14,
+            "bicycle": 2,
+            "truck": 1,
+            "car": 4,
+            "handbag": 2,
+            "clock": 1,
+            "traffic light": 1,
+            "fire hydrant": 1,
+            "suitcase": 1,
+            "backpack": 1
+          },
+          "model": "nvidia/cosmos3-nano-reasoner",
+          "prompt_version": "c-verify-work-zone-1"
+        }
+      ],
+      "location": {
+        "lat": 40.718761,
+        "lon": -74.002425,
+        "road_segment_id": "manhattan-broadway:sb",
+        "bearing_deg": 213.0,
+        "method": "manual_anchor",
+        "uncertainty_m": 30.0,
+        "notes": "Broadway & Walker St: 'Walker St' street sign and '401' readable in the clip (lane C); intersection geocoded and map-matched onto Broadway (OSM via openrouteservice)."
+      },
+      "observer_id": "street_cam_1",
+      "source_group_id": "grp-walker-c04-s6",
+      "description": "Construction barrier and traffic barrels in the Broadway roadway at Walker St; flagger directing traffic.",
+      "support": "supported",
+      "verification": {
+        "evidence_id": "ev-walker-c04-s6",
+        "question": "Do construction barriers, barrels or cones occupy part of the roadway?",
+        "verdict": "supported",
+        "obstruction_visible": true,
+        "road_space_visible": true,
+        "rationale": "The video shows red plastic barriers and orange traffic barrels on the road surface, which occupy part of the roadway and would require a cyclist to go around them. A person holding an orange flag is visible, indicating traffic direction. The signs for Walker St, 401, and UNIFORM are clearly readable.",
+        "model": "nvidia/cosmos3-nano-reasoner",
+        "prompt_version": "c-verify-work-zone-1",
+        "source": "cached_model",
+        "latency_ms": 8399
+      },
+      "model_confidence": null,
+      "ride_offset_s": 1944.0,
+      "session_time_s": 1489.0,
+      "source": "cached_model",
+      "label": "Recorded street-camera clip (nominal 2026-10-06T17:50:36, timezone unknown); cached Cosmos check: supported"
+    }
+  ],
+  "fixture_observations": [],
+  "synthetic_observations": [],
+  "persistence_overrides": {},
+  "labels": [
+    "Observer is a fixed street camera (recorded), not a bike",
+    "Work zone: two recorded clips ~24 min apart from the same camera = continued observation, not independent corroboration",
+    "Cosmos verification cached (prompt c-verify-work-zone-1); frame review by lane C agrees; not ground truth",
+    "Location from a street sign visible in the clip, map-matched (±30 m)",
+    "Clip times nominal from filenames (timezone unknown)",
+    "Bike B is a simulated rider",
+    "No clearance: no later footage of this spot"
+  ]
+}

@@ -9,6 +9,7 @@ from app.agent.models import (
     Capabilities,
     CreateSessionRequest,
     RideManifest,
+    ScenarioSummary,
     SessionConfigUpdate,
     SessionSnapshot,
 )
@@ -33,6 +34,16 @@ async def capabilities(services: Services = Depends(get_services)) -> Capabiliti
         integrations=services.rideahead_integrations(),
         hazard_types=list(config.hazard_types.values()),
         default_config=config,
+        scenarios=[
+            ScenarioSummary(
+                scenario_id=sc.scenario_id,
+                title=sc.title,
+                ride_id=sc.ride_id,
+                duration_s=sc.duration_s,
+                labels=sc.labels,
+            )
+            for sc in rt.scenarios.values()
+        ],
     )
 
 
@@ -45,7 +56,7 @@ async def rides(rt: RideAheadRuntime = Depends(get_runtime)) -> list[RideManifes
 async def create_session(
     body: CreateSessionRequest, rt: RideAheadRuntime = Depends(get_runtime)
 ) -> SessionSnapshot:
-    return await rt.create_session(body.ride_id)
+    return await rt.create_session(body.ride_id, body.scenario_id)
 
 
 @router.get("/sessions/{session_id}", response_model=SessionSnapshot)
