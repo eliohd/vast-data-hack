@@ -1,0 +1,13 @@
+sample_id,source_segment_id,ride_id,clip_start_s,clip_end_s,caption,expected,negated_caption,reviewer,reviewed_at,development_overlap,provenance,status,selection_hint
+synthetic-01,synthetic-segment-01,synthetic-ride,0,2,A van is blocking the cycle lane.,present,false,synthetic-author,2026-10-17,true,synthetic,reviewed,Text fixture only
+synthetic-02,synthetic-segment-02,synthetic-ride,2,4,A stationary barrier leaves the cycle lane blocked.,present,false,synthetic-author,2026-10-17,true,synthetic,reviewed,Text fixture only
+synthetic-03,synthetic-segment-03,synthetic-ride,4,6,No crash occurred but a truck is blocking the lane.,present,true,synthetic-author,2026-10-17,true,synthetic,reviewed,Mixed clause fixture
+synthetic-04,synthetic-segment-04,synthetic-ride,6,8,A lane obstruction forces riders around a parked car.,present,false,synthetic-author,2026-10-17,true,synthetic,reviewed,Text fixture only
+synthetic-05,synthetic-segment-05,synthetic-ride,8,10,The cycle lane is clear.,absent,false,synthetic-author,2026-10-17,true,synthetic,reviewed,Absence never automatically clears a hazard
+synthetic-06,synthetic-segment-06,synthetic-ride,10,12,There is no obstruction in the visible lane.,absent,true,synthetic-author,2026-10-17,true,synthetic,reviewed,Negation fixture
+synthetic-07,synthetic-segment-07,synthetic-ride,12,14,The lane is not blocked.,absent,true,synthetic-author,2026-10-17,true,synthetic,reviewed,Negation fixture
+synthetic-08,synthetic-segment-08,synthetic-ride,14,16,A van is parked beside an unobstructed cycle lane.,absent,false,synthetic-author,2026-10-17,true,synthetic,reviewed,Presence does not prove blockage
+synthetic-09,synthetic-segment-09,synthetic-ride,16,18,Cyclists proceed through an ordinary junction.,absent,false,synthetic-author,2026-10-17,true,synthetic,reviewed,Ordinary scene fixture
+synthetic-10,synthetic-segment-10,synthetic-ride,18,20,A bus hides the cycle lane from view.,uncertain,false,synthetic-author,2026-10-17,true,synthetic,reviewed,Occlusion fixture
+synthetic-11,synthetic-segment-11,synthetic-ride,20,22,It is unclear whether the lane is blocked in the blurred image.,uncertain,false,synthetic-author,2026-10-17,true,synthetic,reviewed,Uncertain fixture
+synthetic-12,synthetic-segment-12,synthetic-ride,22,24,A vehicle is visible but the lane boundary cannot be determined.,uncertain,false,synthetic-author,2026-10-17,true,synthetic,reviewed,Uncertain fixture
