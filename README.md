@@ -47,6 +47,7 @@ so the whole camera → WebSocket → result loop works offline.
 - [Deploy](docs/deploy.md): lab VM, Cloudflare tunnel, demo key
 - [VSS + model endpoints](docs/vss-api.md): what each upstream does and how it's wrapped
 - [AGENTS.md](AGENTS.md): conventions for coding agents
+- [COLLABORATION.md](COLLABORATION.md): how the four of us work in parallel (lanes, ownership, git rhythm)
 
 ## Data and licences
 

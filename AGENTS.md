@@ -1,6 +1,9 @@
 # Agent guide
 
-Rules for coding agents (Claude Code, Cursor) working in this repo. Humans: see README.md.
+Rules for coding agents (Claude Code, Codex, Cursor) working in this repo. Humans: see README.md.
+
+**Four people build this in parallel.** Read [COLLABORATION.md](COLLABORATION.md) for lanes, file
+ownership and the git rhythm. Only edit files your lane owns.
 
 ## What this is
 
