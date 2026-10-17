@@ -1,0 +1,13 @@
+sample_id,source_segment_id,ride_id,clip_start_s,clip_end_s,caption,expected,negated_caption,reviewer,reviewed_at,development_overlap,provenance,status,selection_hint
+clip-01,,,,,,,,,,,recorded,pending,Visible vehicle blocking the cycle lane
+clip-02,,,,,,,,,,,recorded,pending,Visible stationary obstruction from another part of the ride
+clip-03,,,,,,,,,,,recorded,pending,Obstruction with weak or missing object detections
+clip-04,,,,,,,,,,,recorded,pending,Obstruction while other traffic flows normally
+clip-05,,,,,,,,,,,recorded,pending,Normal unobstructed cycle lane
+clip-06,,,,,,,,,,,recorded,pending,Vehicle beside lane with no blockage
+clip-07,,,,,,,,,,,recorded,pending,Normal junction or turn
+clip-08,,,,,,,,,,,recorded,pending,Negated caption explicitly says no obstruction
+clip-09,,,,,,,,,,,recorded,pending,Mixed caption no crash but visible lane blockage
+clip-10,,,,,,,,,,,recorded,pending,Occluded lane cannot be assessed
+clip-11,,,,,,,,,,,recorded,pending,Low light or blur makes blockage uncertain
+clip-12,,,,,,,,,,,recorded,pending,Ambiguous road-space boundary

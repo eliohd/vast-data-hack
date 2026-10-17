@@ -1,0 +1,230 @@
+{
+  "schema_version": "1",
+  "contract_status": "Integrated with A canonical bootstrap 5b43e3f",
+  "provenance": "synthetic",
+  "recorded_footage": false,
+  "assumptions": [
+    "Stationary simulated rider; synthetic clearance; fixture routes.",
+    "180 s obstruction delay and compressed freshness are demo assumptions."
+  ],
+  "snapshots": [
+    {
+      "now_s": 60,
+      "hazards": [
+        {
+          "schema_version": "1",
+          "hazard_id": "hazard-6c576638935340d3",
+          "hazard_type": "lane_blocked",
+          "location": {
+            "lat": 51.5055,
+            "lon": -0.0975,
+            "road_segment_id": "southwark-st:eb",
+            "bearing_deg": 92.0,
+            "method": "manual_anchor",
+            "uncertainty_m": 30.0,
+            "notes": "FIXTURE anchor: synthetic position for development, not derived from footage"
+          },
+          "state": "observed",
+          "confirmation_kind": null,
+          "observation_ids": [
+            "obs-fx-001"
+          ],
+          "first_seen_s": 60.0,
+          "last_supported_s": 60.0,
+          "persistence": {
+            "half_life_s": 240.0,
+            "stale_after_s": 240.0,
+            "version": "D-synthetic-cost-demo-v1",
+            "label": "demonstration assumption"
+          },
+          "persistence_weight": 1.0,
+          "evidence_strength": "moderate",
+          "impact": "medium",
+          "clearance_observation_id": null,
+          "clearance_evidence_id": null,
+          "summary": "Delivery truck parked across the eastbound cycle lane."
+        }
+      ],
+      "decision": {
+        "schema_version": "1",
+        "decision_id": "dec-bike_b-60",
+        "rider_id": "bike_b",
+        "hazard_ids": [
+          "hazard-6c576638935340d3"
+        ],
+        "action": "reroute",
+        "selected_route_id": "fx-alt-union-st",
+        "estimated_delay_s": 0.0,
+        "detour_cost_s": 86.5,
+        "arrival_in_s": 115.58921430597147,
+        "reason": "Supplied bicycle alternative avoids relevant reports at lower estimated total cost.",
+        "evidence_ids": [
+          "ev-fx-001"
+        ],
+        "assumptions": [
+          "Provider bicycle durations approximate arrival; traffic and map restrictions may differ.",
+          "Persistence and delay are versioned demonstration assumptions, not probabilities.",
+          "Alternatives start at the rider's current position; directed-road coverage is supplied.",
+          "Planning area 2000 m; nearby radius 200 m.",
+          "Route provenance: fixture; provider: fixture.",
+          "Route fx-alt-union-st: fixture, fixture, cycling-regular.",
+          "Route fx-primary: fixture, fixture, cycling-regular.",
+          "hand-drawn fixture via Union Street",
+          "hand-drawn fixture via Southwark Street",
+          "Prior lane_blocked:D-synthetic-cost-demo-v1; impact serious; evidence synthetic.",
+          "Road relevance uses geometry, bearing and anchor uncertainty; provider edge IDs are absent from the bootstrap contract, so parallel roads can remain ambiguous.",
+          "Arrival uses uniform speed along the provider geometry; segment durations are unavailable. Alternatives must join within 5 m of the current position."
+        ],
+        "changed": false,
+        "session_time_s": 60.0,
+        "revision": 0,
+        "explanation": null
+      }
+    },
+    {
+      "now_s": 330,
+      "hazards": [
+        {
+          "schema_version": "1",
+          "hazard_id": "hazard-6c576638935340d3",
+          "hazard_type": "lane_blocked",
+          "location": {
+            "lat": 51.5055,
+            "lon": -0.0975,
+            "road_segment_id": "southwark-st:eb",
+            "bearing_deg": 92.0,
+            "method": "manual_anchor",
+            "uncertainty_m": 30.0,
+            "notes": "FIXTURE anchor: synthetic position for development, not derived from footage"
+          },
+          "state": "stale",
+          "confirmation_kind": null,
+          "observation_ids": [
+            "obs-fx-001",
+            "obs-fx-002"
+          ],
+          "first_seen_s": 60.0,
+          "last_supported_s": 60.0,
+          "persistence": {
+            "half_life_s": 240.0,
+            "stale_after_s": 240.0,
+            "version": "D-synthetic-cost-demo-v1",
+            "label": "demonstration assumption"
+          },
+          "persistence_weight": 0.4585020216023356,
+          "evidence_strength": "moderate",
+          "impact": "medium",
+          "clearance_observation_id": null,
+          "clearance_evidence_id": null,
+          "summary": "Delivery truck parked across the eastbound cycle lane."
+        }
+      ],
+      "decision": {
+        "schema_version": "1",
+        "decision_id": "dec-bike_b-330",
+        "rider_id": "bike_b",
+        "hazard_ids": [
+          "hazard-6c576638935340d3"
+        ],
+        "action": "heads_up",
+        "selected_route_id": "fx-primary",
+        "estimated_delay_s": 59.10594615415278,
+        "detour_cost_s": null,
+        "arrival_in_s": 115.58921430597147,
+        "reason": "Uncertain report ahead by estimated arrival; it is not cleared.",
+        "evidence_ids": [
+          "ev-fx-001",
+          "ev-fx-002"
+        ],
+        "assumptions": [
+          "Provider bicycle durations approximate arrival; traffic and map restrictions may differ.",
+          "Persistence and delay are versioned demonstration assumptions, not probabilities.",
+          "Alternatives start at the rider's current position; directed-road coverage is supplied.",
+          "Planning area 2000 m; nearby radius 200 m.",
+          "Route provenance: fixture; provider: fixture.",
+          "Route fx-alt-union-st: fixture, fixture, cycling-regular.",
+          "Route fx-primary: fixture, fixture, cycling-regular.",
+          "hand-drawn fixture via Union Street",
+          "hand-drawn fixture via Southwark Street",
+          "Prior lane_blocked:D-synthetic-cost-demo-v1; impact serious; evidence synthetic.",
+          "Road relevance uses geometry, bearing and anchor uncertainty; provider edge IDs are absent from the bootstrap contract, so parallel roads can remain ambiguous.",
+          "Arrival uses uniform speed along the provider geometry; segment durations are unavailable. Alternatives must join within 5 m of the current position."
+        ],
+        "changed": false,
+        "session_time_s": 330.0,
+        "revision": 0,
+        "explanation": null
+      }
+    },
+    {
+      "now_s": 450,
+      "hazards": [
+        {
+          "schema_version": "1",
+          "hazard_id": "hazard-6c576638935340d3",
+          "hazard_type": "lane_blocked",
+          "location": {
+            "lat": 51.5055,
+            "lon": -0.0975,
+            "road_segment_id": "southwark-st:eb",
+            "bearing_deg": 92.0,
+            "method": "manual_anchor",
+            "uncertainty_m": 30.0,
+            "notes": "FIXTURE anchor: synthetic position for development, not derived from footage"
+          },
+          "state": "cleared",
+          "confirmation_kind": null,
+          "observation_ids": [
+            "obs-fx-001",
+            "obs-fx-002",
+            "obs-syn-clear-001"
+          ],
+          "first_seen_s": 60.0,
+          "last_supported_s": 60.0,
+          "persistence": {
+            "half_life_s": 240.0,
+            "stale_after_s": 240.0,
+            "version": "D-synthetic-cost-demo-v1",
+            "label": "demonstration assumption"
+          },
+          "persistence_weight": 0.3242098886627524,
+          "evidence_strength": "moderate",
+          "impact": "medium",
+          "clearance_observation_id": "obs-syn-clear-001",
+          "clearance_evidence_id": "ev-syn-clear-001",
+          "summary": "Delivery truck parked across the eastbound cycle lane."
+        }
+      ],
+      "decision": {
+        "schema_version": "1",
+        "decision_id": "dec-bike_b-450",
+        "rider_id": "bike_b",
+        "hazard_ids": [],
+        "action": "continue",
+        "selected_route_id": "fx-primary",
+        "estimated_delay_s": 0.0,
+        "detour_cost_s": null,
+        "arrival_in_s": null,
+        "reason": "No active report matches the directed route ahead within the planning area.",
+        "evidence_ids": [],
+        "assumptions": [
+          "Provider bicycle durations approximate arrival; traffic and map restrictions may differ.",
+          "Persistence and delay are versioned demonstration assumptions, not probabilities.",
+          "Alternatives start at the rider's current position; directed-road coverage is supplied.",
+          "Planning area 2000 m; nearby radius 200 m.",
+          "Route provenance: fixture; provider: fixture.",
+          "Route fx-alt-union-st: fixture, fixture, cycling-regular.",
+          "Route fx-primary: fixture, fixture, cycling-regular.",
+          "hand-drawn fixture via Union Street",
+          "hand-drawn fixture via Southwark Street",
+          "Road relevance uses geometry, bearing and anchor uncertainty; provider edge IDs are absent from the bootstrap contract, so parallel roads can remain ambiguous.",
+          "Arrival uses uniform speed along the provider geometry; segment durations are unavailable. Alternatives must join within 5 m of the current position."
+        ],
+        "changed": false,
+        "session_time_s": 450.0,
+        "revision": 0,
+        "explanation": null
+      }
+    }
+  ]
+}
