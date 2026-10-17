@@ -1,5 +1,6 @@
 """Writes server/fixtures/rideahead/snapshots.json — sample SessionSnapshots for the web lane,
-produced by running the real runtime on the fixture scenario (no network).
+produced by running the real runtime on the fixture scenario with recorded openrouteservice
+responses (no network; routes labelled cached_provider).
 
 uv run python -m app.export_fixtures      (also run by `make gen-api`)
 """
@@ -20,7 +21,7 @@ SAMPLE_TIMES = (0, 60, 200, 330, 450, 600)
 async def build() -> dict[str, dict]:
     settings = Settings(
         tracing=False,
-        rideahead_routing="fixture",
+        rideahead_routing="ors",  # no key → recorded genuine ORS responses (cached_provider)
         rideahead_perception="fixture",
         ors_api_key=SecretStr(""),
     )

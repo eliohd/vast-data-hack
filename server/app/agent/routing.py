@@ -214,9 +214,9 @@ class CachedRouting:
 
     @staticmethod
     def key(origin: LatLon, destination: LatLon, exclusions: list[RouteExclusion]) -> str:
+        # geometry only: hazard IDs are engine-specific, the avoided area is what matters
         ex = sorted(
-            (e.hazard_id, round(e.center.lat, 5), round(e.center.lon, 5), e.radius_m)
-            for e in exclusions
+            (round(e.center.lat, 5), round(e.center.lon, 5), e.radius_m) for e in exclusions
         )
         return json.dumps(
             [
@@ -233,12 +233,12 @@ class CachedRouting:
     ) -> list[RouteCandidate]:
         k = self.key(origin, destination, exclusions)
         if k in self._ok:
-            return [r.model_copy(deep=True) for r in self._ok[k]]
+            return self._relabel(self._ok[k], exclusions)
         failed = self._failed.get(k)
         if failed and time.monotonic() - failed[0] < self.failure_ttl_s:
             stored = self._from_store(k)
             if stored is not None:
-                return stored
+                return self._relabel(stored, exclusions)
             raise RoutingUnavailable(failed[1])
         self.calls += 1
         try:
@@ -248,10 +248,19 @@ class CachedRouting:
             self.last_error = str(exc)
             stored = self._from_store(k)
             if stored is not None:
-                return stored
+                return self._relabel(stored, exclusions)
             raise
         self.last_error = None
         self.serving_cached = False
         self._ok[k] = routes
         self._save(k, routes)
-        return [r.model_copy(deep=True) for r in routes]
+        return self._relabel(routes, exclusions)
+
+    @staticmethod
+    def _relabel(
+        routes: list[RouteCandidate], exclusions: list[RouteExclusion]
+    ) -> list[RouteCandidate]:
+        out = [r.model_copy(deep=True) for r in routes]
+        for r in out:
+            r.avoids_hazard_ids = _avoids(r, exclusions) if exclusions else []
+        return out

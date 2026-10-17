@@ -37,7 +37,8 @@ def test_rides_listed(client: TestClient) -> None:
     assert rides[0]["ride_id"] == "ride-fixture-001"
 
 
-def test_full_story_observed_reroute_stale_cleared(client: TestClient) -> None:
+def test_fixture_routes_story_observed_stale_cleared(client: TestClient) -> None:
+    """Hand-drawn fixture routes: the detour costs more than the assumed delay → heads_up."""
     snap = client.post("/api/rideahead/sessions", json={}).json()
     sid = snap["session_id"]
     assert snap["revision"] == 1
@@ -46,7 +47,7 @@ def test_full_story_observed_reroute_stale_cleared(client: TestClient) -> None:
 
     snap = _advance(client, sid, 60)
     assert [h["state"] for h in snap["hazards"]] == ["observed"]
-    assert snap["decisions"][0]["action"] == "reroute"
+    assert snap["decisions"][0]["action"] == "heads_up"
     assert any(e["kind"] == "decision" for e in snap["events"])
 
     snap = _advance(client, sid, 70)  # adjacent chunk, same sighting: no clock reset
@@ -64,6 +65,27 @@ def test_full_story_observed_reroute_stale_cleared(client: TestClient) -> None:
     clear = next(o for o in snap["observations"] if o["assertion"] == "clear")
     assert clear["source"] == "synthetic_scenario"
     assert "Synthetic" in clear["label"]
+
+
+def test_recorded_ors_story_reroutes_then_clears(tmp_path) -> None:  # type: ignore[no-untyped-def]
+    """Recorded genuine ORS responses (no key, no network): cheap provider detour → reroute."""
+    settings = make_settings(tmp_path, ors_api_key=SecretStr(""), rideahead_routing="ors")
+    with TestClient(create_app(settings)) as c:
+        sid = c.post("/api/rideahead/sessions", json={}).json()["session_id"]
+        snap = _advance(c, sid, 200)
+        assert {r["provenance"] for r in snap["routes"]} == {"cached_provider"}
+        assert any(r["role"] == "detour" for r in snap["routes"])
+        assert snap["decisions"][0]["action"] == "reroute"
+        assert snap["riders"][1]["active_route_id"] == snap["decisions"][0]["selected_route_id"]
+        assert {i["name"]: i["state"] for i in snap["integrations"]}["routing"] == "cached"
+
+        snap = _advance(c, sid, 330)
+        assert snap["hazards"][0]["state"] == "stale"
+        assert snap["decisions"][0]["action"] == "heads_up"  # stale is not clear
+
+        snap = _advance(c, sid, 450)
+        assert snap["hazards"][0]["state"] == "cleared"
+        assert snap["decisions"][0]["action"] == "continue"
 
 
 def test_reads_do_not_advance_and_backwards_replays_deterministically(client: TestClient) -> None:

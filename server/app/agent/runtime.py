@@ -259,6 +259,15 @@ class Session:
         for h in self.hazards:
             if before.get(h.hazard_id) != h.state:
                 self._event("hazard", f"{h.hazard_id} → {h.state}", [h.hazard_id])
+                record_hazard_transition(
+                    self.session_id,
+                    t,
+                    h.hazard_id,
+                    before.get(h.hazard_id),
+                    h.state,
+                    list(h.observation_ids),
+                    h.clearance_observation_id,
+                )
 
         self.rider_a.position = (
             track_position(self.scenario.observer_track, t) or self.rider_a.position
@@ -351,6 +360,20 @@ class Session:
         directory.mkdir(parents=True, exist_ok=True)
         path = directory / f"{self.session_id}.json"
         path.write_text(self.snapshot(integrations).model_dump_json(indent=2))
+
+
+@weave.op
+def record_hazard_transition(
+    session_id: str,
+    session_time_s: float,
+    hazard_id: str,
+    from_state: str | None,
+    to_state: str,
+    observation_ids: list[str],
+    clearance_observation_id: str | None,
+) -> str:
+    """Weave trace point per lifecycle change. IDs and states only: no captions, media or URLs."""
+    return to_state
 
 
 @weave.op

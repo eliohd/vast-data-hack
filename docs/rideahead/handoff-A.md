@@ -61,8 +61,10 @@ ticks server-side; `to_s` is rounded to whole seconds.
   (time-compressed prior, labelled), synthetic clearance at t=450, duration 600 s.
 - `observations.json` — fixture rides + observations (provenance `synthetic`, source `fixture`).
 - `routes.json` — two hand-drawn routes (`provenance: fixture`).
-- `snapshots.json` — generated `SessionSnapshot`s at t = 0, 60, 200, 330, 450, 600
-  (`make gen-api` regenerates it). **B: build the UI against these.**
+- `snapshots.json` — generated `SessionSnapshot`s at t = 0, 60, 200, 330, 450, 600 with D's
+  engine and recorded genuine ORS routes (`cached_provider`): continue → heads_up (pre-trip,
+  1.3 km away) → reroute (B departs; detour +8 s) → heads_up (stale, keep alternative) →
+  continue (synthetic clearance). `make gen-api` regenerates it. **B: build the UI against these.**
 
 ## Run the stub flow
 
@@ -101,6 +103,19 @@ Config (env or `server/.env`): `ORS_API_KEY` (empty → fixture routes), `RIDEAH
 
 - `5b43e3f` bootstrap contract · `5a8b35e` live ORS + detour, recorded-response fallback ·
   `d8d97b0` no-key replay, `docs/rideahead/extensions.md`. No B/C/D commits on main yet.
+
+## Lane D integration (merged from `agent-d/hazard-engine-eval` @ `714e4e8`)
+
+- D's engine/scoring/eval merged unchanged; protocol entry points unchanged.
+- Resolved D request 1: old runtime test expected an unconditional reroute on hand-drawn
+  fixture routes (86 s detour vs 45 s assumed delay). D's cost policy is correct → test now
+  expects `heads_up` there; a new offline test on recorded ORS routes asserts the reroute.
+  No delay inflation.
+- Resolved D request 4: `record_hazard_transition` Weave op (IDs + states only).
+- Route cache keys are now geometry-only (engine hazard IDs changed to `hazard-<hash>`);
+  `avoids_hazard_ids` is recomputed on every cache hit.
+- Open (optional, D request 2): directed-road passages / segment ETAs / hazard evidence IDs.
+- D's frontend pnpm min-release-age issue is local to D's machine; `make verify` is green here.
 
 ## Known limitations
 
