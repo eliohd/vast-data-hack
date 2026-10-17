@@ -1,7 +1,15 @@
 {
   "schema_version": "1",
   "publication": {
-    "status": "local_only_not_configured"
+    "status": "published_verified",
+    "local_results_preserved": true,
+    "project": "eliohd-ucl/cysense",
+    "call_id": "01a149cf-d231-742c-bb0b-9cdfea9f93a7",
+    "evaluation_url": "https://wandb.ai/eliohd-ucl/cysense/r/call/01a149cf-d231-742c-bb0b-9cdfea9f93a7",
+    "read_back_verified": true,
+    "remote_passed": 21,
+    "remote_total": 21,
+    "aggregate_call_id": "01a149cf-d2ec-72df-afa3-e3916ec4de40"
   },
   "video_interpretation": {
     "sample_size": 0,

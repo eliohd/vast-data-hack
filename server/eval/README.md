@@ -11,6 +11,7 @@ Run these commands from `server/`:
 uv run python -m eval.demo --output eval/fixtures/engine-demo.synthetic.json
 uv run python -m eval.run --output eval/reports/local.json
 uv run python -m eval.run --synthetic --output eval/reports/synthetic.json
+uv run python -m eval.run --publish-weave --output eval/reports/local.json
 uv run python -m eval.run --labels eval/fixtures/clip_labels.reviewed.csv --predictions eval/predictions.jsonl --publish-weave
 uv run pytest tests/test_hazard_engine.py tests/test_route_scoring.py tests/test_hazard_contract.py tests/test_hazard_runtime.py tests/test_rideahead_eval.py -q
 uv run ruff format --check .
@@ -123,8 +124,16 @@ are disabled for this command.
 Local reports are saved **before** publication. Missing configuration is
 `local_only_not_configured`; errors are `local_only_publication_failed` without exception
 text. A completed SDK upload is `submitted_unverified`, because it supplies no durable
-remote read-back receipt. This is not represented as confirmed publication. There are no
-configured W&B credentials here, so the recorded run remains local.
+remote read-back receipt. This is not represented as confirmed publication by the command.
+
+The current checked-in report has a separately verified remote receipt:
+[21/21 lifecycle scenarios in Weave](https://wandb.ai/eliohd-ucl/cysense/r/call/01a149cf-d231-742c-bb0b-9cdfea9f93a7).
+Authenticated SDK `get_call` read-back confirmed a completed `Evaluation.evaluate`, no
+exception, and `scenario_correct.correct` values `true_count=21`, `true_fraction=1.0`.
+The report therefore records `published_verified` with that call ID and URL. A fresh
+command run replaces this receipt until its new upload is independently verified.
+These are synthetic lifecycle results; zero recorded clips have reviewed labels.
+Weave model latency here measures deterministic replay, not video inference.
 
 ## Integration and verification
 
@@ -134,5 +143,6 @@ hazard-transition tracing. D's cyclist-facing wording now gives distance, action
 cost, with technical explanations in assumptions; actions and numeric outputs are unchanged.
 
 Run `make verify` from the repository root. On this Windows machine, its server stage passes
-but frontend installation is blocked by the local pnpm minimum-release-age policy for six
-existing locked dependencies. No policy or dependency versions are changed to bypass it.
+but the frontend formatter is unavailable because dependencies are not installed. The
+earlier install was blocked by the local pnpm minimum-release-age policy for six existing
+locked dependencies. No policy or dependency versions are changed to bypass it.

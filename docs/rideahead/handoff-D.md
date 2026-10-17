@@ -54,19 +54,25 @@
   for the accepted JSONL schema. Keep future clear-lane footage at another location
   separate from clearance of an earlier obstruction.
 
-## 3. Lifecycle evaluation publication — blocked by missing local W&B environment
+## 3. Lifecycle evaluation publication — complete, remote read-back verified
 
-- Publication command attempted with this machine's own `Settings`:
-  `uv run python -m eval.run --publish-weave --output eval/reports/local.json`.
-- W&B API key, team and project are all **unconfigured locally**. No credentials were
-  borrowed from another lane or printed. Result is `local_only_not_configured`.
-- User was asked to configure `WANDB_API_KEY`, `WANDB_TEAM`, `WANDB_PROJECT` locally
-  in `server/.env`; never paste/commit key values. Remote publication is not claimed.
-- Actual Weave Evaluation/scorer semantics are exercised locally by the tests.
-  Publishing passes only hashed IDs, labels, provenance, saved answers and metrics;
-  it excludes captions, reviewer names, credentials and media URLs.
-- Once local credentials exist, rerun the command above. The SDK-completed status
-  remains `submitted_unverified` until a remote read-back receipt is obtained.
+- The user configured this machine's own ignored `server/.env`. Corrected the team
+  settings-page URL to the authenticated account's default team, preserving the key
+  and project. No credentials were printed, committed or borrowed from another lane.
+- Published with `python -m eval.run --publish-weave --output eval/reports/local.json`.
+- [Saved Weave evaluation](https://wandb.ai/eliohd-ucl/cysense/r/call/01a149cf-d231-742c-bb0b-9cdfea9f93a7):
+  **21/21 synthetic lifecycle scenarios pass**. Authenticated SDK read-back confirmed
+  the completed `Evaluation.evaluate` call, no exception, `true_count=21`, and
+  `true_fraction=1.0`. The saved aggregate operation independently reports 21/21.
+- `server/eval/reports/local.json` records `published_verified` with the durable call
+  reference. The command itself still returns `submitted_unverified` until a separate
+  remote read-back is performed; this receipt was verified after upload.
+- These are deterministic scenario results, not real-video extraction accuracy.
+  Recorded clip labels remain pending. Weave's model latency measures replay harness
+  execution here, not video-model inference.
+- Publication includes hashed IDs, labels, provenance, saved answers and metrics;
+  captions, reviewer names, credentials and media URLs are excluded. Code capture
+  and automatic integrations are disabled.
 
 ## 4. Extra lifecycle cases — complete locally
 
@@ -79,14 +85,17 @@
 - **21/21 synthetic scenarios pass**, including deterministic reset/replay. No model
   estimates serve as ground-truth labels. These are scenario tests, not real-video accuracy.
 - Real clip input and publication blockers from steps 2–3 were recorded before doing
-  this independent local test work. They remain open.
+  this independent local test work. Publication is now verified; clip inputs remain open.
 
 ## Verification
 
 - Actual **`make verify`** invoked through the installed MSYS make/bash toolchain.
 - Server stage: ruff formatting/lint and pyright clean; **138 pytest passed, 1 live ORS
   test skipped**. Installed Weave emits existing Pydantic deprecation warnings.
-- Frontend stage: blocked locally during pnpm's automatic dependency installation by
+- Publication follow-up verification: server formatting/lint/type checks still pass,
+  with **138 tests passed, 1 skipped**. The frontend stage reaches `pnpm verify`
+  through a temporary Windows shell adapter but stops because `prettier` is absent.
+- Earlier frontend dependency installation was blocked locally by
   `ERR_PNPM_MINIMUM_RELEASE_AGE_VIOLATION` for six unchanged locked packages:
   `@shadcn/registry`, `cn`, `electron-to-chromium`, `eslint`, `lucide-react`, `shadcn`.
   No supply-chain policy override or lockfile/package change was made. A reports its
@@ -99,9 +108,8 @@
 
 1. **C/A:** actual playable shortlist footage or independently reviewed labels, and W&B
    structured/cached pipeline predictions, as described in step 2.
-2. **User/local setup:** configure this lane's W&B environment so step 3 can publish.
-3. **A (optional contract extensions):** directed-road passages, segment ETAs, direct
+2. **A (optional contract extensions):** directed-road passages, segment ETAs, direct
    hazard evidence references and versioned continuation-gap settings. Existing
    geometry/bearing/anchor-uncertainty and uniform-speed approximations remain labelled.
-4. **A/B:** run full frontend verification in the approved team environment or resolve
+3. **A/B:** run full frontend verification in the approved team environment or resolve
    this machine's package-age restriction under team policy. D has not changed it.
