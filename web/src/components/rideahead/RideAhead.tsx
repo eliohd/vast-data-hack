@@ -57,7 +57,10 @@ export default function RideAhead({
   connection,
   sessionControls,
   rideFeed,
+  onLive,
 }: {
+  /** Switch the phone app to live mode (GPS, destination, camera hazards). */
+  onLive?: () => void;
   connection?: RideAheadConnection;
   sessionControls?: ReactNode;
   /** Recorded segments of the connected ride and the ride offset at session t=0. */
@@ -390,6 +393,15 @@ export default function RideAhead({
               <div className="ra-phone-wordmark">
                 Cysense<span>.</span>
               </div>
+              {isPhone && onLive && (
+                <button
+                  className="ra-glass ra-live-pill"
+                  aria-label="Start live ride"
+                  onClick={onLive}
+                >
+                  ● Live
+                </button>
+              )}
               <button
                 className="ra-glass"
                 aria-label="Open ride settings"
