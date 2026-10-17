@@ -1,7 +1,7 @@
 # RideAhead evaluation — lane D
 
 The engine is integrated with Agent A's canonical contract at bootstrap `5b43e3f`
-(handoff commit `d0a2330`). Public entry points remain `hazards.build_engine(config)`
+and merged integration `b550ebb`. Public entry points remain `hazards.build_engine(config)`
 and `scoring.score_routes(routes, rider, hazards, config, now_s)`. The runtime already
 uses them; no wiring, dependency, API schema or WebSocket changes are required.
 
@@ -25,12 +25,17 @@ there is no recorded footage or genuine inference in this demonstration.
 
 ## Actual footage labelling
 
-`fixtures/clip_labels.pending.csv` contains **12 pending selection slots, zero human
-labels**. No event archive is available in this checkout. Fill a separate reviewed
-copy after watching event-provided clips; do not turn selection hints into labels.
+`fixtures/clip_labels.pending.csv` contains **10 sourced clips, zero reviewed labels**.
+These replace the original empty selection slots with C's published GX010001 shortlist
+from `rishik/rideahead-notes` at `c0922c221424b639b0153f3d50a80b08fda61dc2`.
+Sanitized captions and Cosmos caches are preserved under `fixtures/c_inputs/`, with
+source provenance. The caches contain no footage or playable authenticated media.
+Fill a reviewed copy after watching the supplied clips; do not turn captions or model
+verification answers into ground-truth labels.
 
-1. Ask C for the selected ride and 10–15 source segment IDs, including negatives,
-   negated captions, occlusion and ambiguous scenes. Do not download internet footage.
+1. Get playable footage or independently reviewed labels for the ten sourced segment
+   IDs from C. The shortlist includes negated, ordinary and ambiguous captions.
+   Do not download internet footage.
 2. Watch each clip independently of its model answer. Enter source/ride IDs, clip start
    and end, source caption, reviewer and review date; use `status=reviewed` only then.
 3. Label `expected` as `present`, `absent` or `uncertain`. Set `negated_caption` and
@@ -40,6 +45,11 @@ copy after watching event-provided clips; do not turn selection hints into label
    automatically become a lifecycle clearance observation.
 5. Obtain saved extraction and verification predictions from C. The runner calls no
    models and never generates answers from the expected labels.
+
+C's source cache has eight actual Cosmos checks (three overlap the ten shortlisted
+clips), but C explicitly reports W&B `chat_json` extraction has not run. Its AI frame
+reviews are marked `ground_truth=false`. No three-way extraction accuracy can be
+reported until independent labels and structured extraction predictions exist.
 
 `fixtures/synthetic_captions.csv` has 12 authored **text fixtures**, not video labels.
 They exercise negation and abstention handling. The naive keyword baseline is deliberately
@@ -74,11 +84,15 @@ and missing predictions remain visible.
 
 ## Lifecycle truth and route scoring
 
-`fixtures/lifecycle_scenarios.json` contains 15 explicit simulated expectations covering
+`fixtures/lifecycle_scenarios.json` contains 21 explicit simulated expectations covering
 duplicates, adjacent chunks, independent/continued sightings, stale versus clear,
 opposite/parallel roads, hidden future clearance, occlusion, provider failure, route
 changes and passed reports. Every scenario also checks deterministic reset/replay.
 These are authored scenario labels, **not outputs of the persistence heuristic**.
+Six additional cases check opposite-direction and conflicting-bearing clearance,
+parallel roads at the same synthetic anchor, independent corroboration followed by
+staleness, shared source groups, and duplicated evidence under another observer.
+Cases can assert `expected_strengths` independently of lifecycle state and action.
 
 Additional unit and canonical/runtime integration tests check immutable inputs, ID
 reuse, conflicting evidence, source chronology, future evidence, route costs, ETA,
@@ -112,12 +126,13 @@ text. A completed SDK upload is `submitted_unverified`, because it supplies no d
 remote read-back receipt. This is not represented as confirmed publication. There are no
 configured W&B credentials here, so the recorded run remains local.
 
-## Verification limitation inherited from bootstrap
+## Integration and verification
 
-The original A-owned test `test_full_story_observed_reroute_stale_cleared` expects a reroute
-for the default shared fixture. Its delay assumption is 45 s, whereas the supplied detour
-adds about 86.5 s before persistence decay. The cost-based policy returns `heads_up` at
-t=60 (the report is about 520 m ahead). The test and demo assumptions need reconciliation
-by A. D's separate full-runtime test uses an explicitly labelled 180 s delay and passes
-the complete observed → reroute → stale → cleared → rewind story. No A-owned fixture or
-test is silently edited to conceal the policy change.
+A resolved the earlier fixture assertion mismatch in `b550ebb`, preserving the cost policy
+and adding an offline API test with recorded genuine ORS routes. A also added sanitized
+hazard-transition tracing. D's cyclist-facing wording now gives distance, action and time
+cost, with technical explanations in assumptions; actions and numeric outputs are unchanged.
+
+Run `make verify` from the repository root. On this Windows machine, its server stage passes
+but frontend installation is blocked by the local pnpm minimum-release-age policy for six
+existing locked dependencies. No policy or dependency versions are changed to bypass it.

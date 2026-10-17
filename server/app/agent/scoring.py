@@ -103,7 +103,8 @@ def score_with_evidence(
             decision_id=f"dec-{rider.rider_id}-{now_s:g}",
             rider_id=rider.rider_id,
             action="unavailable",
-            reason="Hazard snapshot contains future support.",
+            reason="Route advice unavailable. Check again shortly.",
+            assumptions=["Hazard snapshot contains future support."],
         )
     normalized_hazards = []
     for hazard in hazards:
@@ -217,7 +218,8 @@ def score_with_evidence(
         ]
         if unresolved:
             action = "heads_up"
-            reason = "Keeping the alternative; unresolved reports remain on the original route."
+            reason = "Stay on this route. A blockage is still reported on the original route."
+            assumptions.append("Keeping the alternative; original-route reports remain unresolved.")
             hazard_ids = sorted(h.hazard_id for h in unresolved)
             evidence_ids = sorted(
                 {
