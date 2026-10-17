@@ -3,7 +3,9 @@
 ## Branch and integration base
 
 - Lane **D**, branch `agent-d/hazard-engine-eval`.
-- Previous D delivery `2f9c706` is merged by A. This follow-up pulls **main `6cd6329`**.
+- Latest integration: fast-forwarded to **main `ea6fd79`**, which already includes D's
+  comparison and AI-reference commits, C's hazard catalogue and A's Broadway scenario.
+- Earlier D delivery `2f9c706` and the follow-up based on **main `6cd6329`** are merged by A.
 - Accepted A's `test_hazard_runtime.py` integration edit: its London cost-policy cases
   explicitly select `scenario.json` while the app default is now NYC. No runtime,
   scenario, models, generated files, or policy changes in this follow-up.
@@ -11,8 +13,43 @@
   changing D's policy, added the recorded-ORS runtime test, and added sanitized
   `record_hazard_transition` tracing. Those requests are closed.
 - Entry points and canonical models remain frozen. No D edits to runtime, scenario,
-  models, generated API types, shared snapshots, dependencies, or frontend files.
+  models, generated API types, shared snapshots or dependencies. The user's subsequent
+  request to put catalogue clips into the app prompted the narrow selector fix below.
 - The user's pre-existing untracked `MASTERPROMPT.md` is untouched.
+
+## Catalogue clips in the app — current follow-up
+
+- User asked D to put the catalogue clips into the app. A has already integrated the
+  two Broadway & Walker St recordings as `nyc-broadway-work-zone-v1`, with real cached
+  Cosmos verification and recorded ORS routes, including mid-journey rerouting.
+- Found the remaining UI gap: deployed `/capabilities` lists Broadway, but `/rides`
+  lists only GX010001. B's selector used only `/rides`, making Broadway inaccessible
+  through the normal menu. The app now also lists the generated-contract `scenarios`
+  from `/capabilities` and submits both `scenario_id` and `ride_id` when one is chosen.
+  Ride discovery and scenario discovery fail independently; either source can still work.
+- Narrow B-owned edits for this explicit user request: `RideAheadApp.tsx`, the optional
+  scenario argument in `connection.ts`, and one session-selection regression test.
+  **B:** retain this selection behavior when updating the map. No styling or map edits.
+- Live backend check on `https://cysense.elio.ltd`: at t=59 no observations/hazards;
+  t=60 recorded work-zone evidence → observed → reroute, "Blockage 60 m ahead. Take the
+  detour; about 1 min 40 sec extra." At t=1489 the later clip confirms **persistence**.
+  Both media proxy requests returned **206 video/mp4** using the saved private demo key.
+- Added D-owned `tests/test_recorded_work_zone.py`: future observations cannot leak
+  into historical snapshots; a reprocessed clip cannot reset freshness; the same fixed
+  camera supplies persistence, not independent corroboration; later staleness never clears.
+- The two clips are nominally ~24 minutes apart after offsets are included, from the
+  **same camera**. No later clearance footage exists. Existing C AI review and model
+  support remain distinct from independent human ground truth.
+- The emergency-vehicle and open-door catalogue examples are not inserted as route
+  closures: their claims, geography and momentary impact differ from this work zone.
+- **A/C release request:** ship the selector fix with the next verified main deployment.
+  D has not redeployed the shared VM. Preview uses the built app against the deployed
+  backend via a loopback-only proxy, keeping the demo key server-side.
+- Verification: backend ruff/pyright clean; **176 passed, 1 live ORS skipped**; frontend
+  **62 passed**, lint and Astro diagnostics clean, production build passed. Browser
+  checked scenario selection, t=60 detour and video, and t=1489 persistence and the second
+  video; both decoded to 5.005 s with no media error. Exact `make verify` still stops at
+  65 untouched CRLF files on Windows; read-only Prettier with `--end-of-line auto` passes.
 
 ## 1. Cyclist-facing decision wording — complete
 
@@ -125,7 +162,8 @@
 - **21/21 synthetic scenarios pass**, including deterministic reset/replay. No model
   estimates serve as ground-truth labels. These are scenario tests, not real-video accuracy.
 - Real clip input and publication blockers from steps 2–3 were recorded before doing
-  this independent local test work. Personal publication is verified; team access and clip inputs remain open.
+  this independent local test work. Personal publication is verified; team access and
+  independent human labels remain open. Recorded work-zone clips are now available above.
 
 ## Verification
 

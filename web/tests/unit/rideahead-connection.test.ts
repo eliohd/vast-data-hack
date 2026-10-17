@@ -16,6 +16,18 @@ beforeEach(() => {
 });
 
 describe('frozen API integration', () => {
+  it('selects the recorded Broadway scenario even when it is absent from the ride list', async () => {
+    mock.POST.mockResolvedValue(response(raw()));
+    mock.GET.mockResolvedValue(response(raw()));
+    await createRideAheadConnection(
+      'nyc_streets_cam-1:walker-st',
+      'nyc-broadway-work-zone-v1',
+    ).read();
+    expect(mock.POST.mock.calls[0][1].body).toEqual({
+      ride_id: 'nyc_streets_cam-1:walker-st',
+      scenario_id: 'nyc-broadway-work-zone-v1',
+    });
+  });
   it('creates one session for concurrent readers and never advances on a read', async () => {
     mock.POST.mockResolvedValue(response(raw()));
     mock.GET.mockResolvedValue(response(raw()));

@@ -5,6 +5,15 @@ and merged integration `b550ebb`. Public entry points remain `hazards.build_engi
 and `scoring.score_routes(routes, rider, hazards, config, now_s)`. The runtime already
 uses them; no wiring, dependency, API schema or WebSocket changes are required.
 
+The recorded positive work-zone example is now integrated by A as
+`nyc-broadway-work-zone-v1` (Broadway & Walker St). The app's **Demo controls → Ride or
+scenario** menu lists scenarios from `/capabilities`, including this fixed-camera story.
+Select it, connect, and advance to **60 s** to see the recorded observation and mid-journey
+reroute; **1489 s** adds the later clip as persistence from the same camera. No clearance
+is asserted. These are cached model results with C's AI frame review, not human labels.
+Run `uv run pytest tests/test_recorded_work_zone.py tests/test_rideahead_midroute.py -q`
+for evidence deduplication/future isolation and current-position routing regressions.
+
 Run these commands from `server/`:
 
 ```sh
