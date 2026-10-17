@@ -30,7 +30,31 @@ obstruction. It is a **work zone** (`hazard_type="work_zone"`), not a parked veh
 - Not yet emitted by `ArchivePerceptionProvider` (that needs a scenario/ride on Broadway, A's call). If A wants
   it, C can add it as a second ride (`nyc_streets_cam-1`) with `work_zone` observations.
 
-## Deploy report (current: ea6fd79, both scenarios, 2026-10-17 ~14:01 UTC)
+## Deploy report (current: 3e65538, 2026-10-17 ~14:26 UTC)
+
+- **Deployed SHA: `3e65538`** (`main`); `make verify` green (server 176 passed / 1 skipped, web 62 passed).
+  Named tunnel left running. **URL: https://cysense.elio.ltd**. Weave `connected`; routing `cached`.
+- Scenarios listed: `nyc-6th-ave-v2`, `nyc-broadway-work-zone-v1`.
+
+API smoke test (demo key read on the VM, never printed):
+
+```
+--- 6th Ave
+140.0 [] ['continue'] {'cached_provider'}
+160.0 [('lane_blocked', 'observed', None)] ['heads_up'] {'cached_provider'}
+400.0 [('lane_blocked', 'stale', None)] ['slow'] {'cached_provider'}
+480.0 [('lane_blocked', 'cleared', None)] ['continue'] {'cached_provider'}
+--- Broadway (nyc-broadway-work-zone-v1)
+60.0 [('work_zone', 'observed', None)] ['reroute'] {'cached_provider'}
+   event: "1 detour(s) from Bike B (simulated)'s position (84 m along)"
+1489.0 [('work_zone', 'confirmed', 'persistence')] ['heads_up'] {'cached_provider'}
+media: both Walker clips 206 video/mp4
+```
+
+Phone check (Safari): PENDING (done by the human teammate on an iPhone; results added below when reported).
+
+## Deploy report (earlier: ea6fd79, superseded)
+
 
 - **Deployed SHA: `ea6fd79`** (`main`); `make verify` green (server 174 passed / 1 skipped, web 61 passed).
   `make deploy VM=bc-rishiksiripurapu`; named tunnel left running. **URL: https://cysense.elio.ltd**.
