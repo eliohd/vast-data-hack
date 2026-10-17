@@ -7,6 +7,29 @@ candidate extraction, model verification, VSS/GPU client changes.
 
 - Branch `rishik/rideahead-notes`, rebased on `main` @ `5fd686f`. See `git log` for the head.
 
+## Real anchored obstruction: Broadway & Walker St work zone (2026-10-17)
+
+This is the only candidate in the corpus with a cross-street readable **inside the clip** and a model-supported
+obstruction. It is a **work zone** (`hazard_type="work_zone"`), not a parked vehicle, and it comes from a
+**fixed street camera** (`nyc_streets_cam-1`), not a bike.
+
+- Clips: `20261008_065931_VID_20261006_174811_003_chunk_0004_segment_006_of_006.mp4` and
+  `20261008_065146_VID_20261006_171812_002_chunk_0017_segment_002_of_006.mp4`. Filenames suggest
+  recordings at 2026-10-06 17:18 and 17:48, about **30 min apart, same camera**. That is continued observation
+  (persistence), **not** independent corroboration.
+- Cosmos Reason (prompt `c-verify-work-zone-1`, a lane C proposal for `prompts.py`), Weave-traced: **supported
+  on both** ("red plastic barriers and orange traffic barrels on the road surface… a cyclist would have to go
+  around them"). Flagger seen in c04-s6. Readable signs reported by the model: **Walker St, 401, UNIFORM**.
+- Frame review (Agent C, 2.5 s frames): agrees. Red Jersey-style barrier and orange barrels in the Broadway
+  roadway/crosswalk; "Walker St" street sign and "401" building number readable; flagger with orange flag in c04-s6.
+- **Anchor: Broadway at Walker St, Manhattan, approx. 40.7192, -74.0024, ± 30 m** (401 Broadway is at
+  the Walker St corner; verify the pin on a map). Broadway is one-way southbound here: suggested
+  `road_segment_id` `manhattan-broadway:sb`, bearing ≈ 209°.
+- Cache: `server/fixtures/rideahead/cache/walker_work_zone_v1.json` (caption, YOLO counts, Cosmos output,
+  model + prompt version, video SHA-256; no URLs).
+- Not yet emitted by `ArchivePerceptionProvider` (that needs a scenario/ride on Broadway, A's call). If A wants
+  it, C can add it as a second ride (`nyc_streets_cam-1`) with `work_zone` observations.
+
 ## Deploy report (2026-10-17, ~12:50 UTC)
 
 - **Deployed SHA: `6cd6329`** (`main`), `make verify` green locally first (server 158 passed / 1

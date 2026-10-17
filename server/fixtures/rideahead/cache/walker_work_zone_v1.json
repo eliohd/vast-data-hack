@@ -1,0 +1,144 @@
+{
+ "provenance": "cached recorded",
+ "weave_traced": true,
+ "results": [
+  {
+   "segment_id": "walker-c04-s6",
+   "segment_file": "20261008_065931_VID_20261006_174811_003_chunk_0004_segment_006_of_006.mp4",
+   "camera_id": "nyc_streets_cam-1",
+   "caption": "The scene is a city street intersection with a crosswalk in the foreground. A red plastic traffic barricade and orange traffic barrels are placed on the road, partially blocking the crosswalk. A person in a green striped shirt and beige pants stands on the right side of the crosswalk, holding an orange flag. Several pedestrians are crossing the street, including a woman with a blue backpack and another woman in a gray jacket. A black car is stopped near the crosswalk, and a white SUV is visible further down the street. A white truck is parked on the right side of the frame. Traffic lights are visible, showing a red signal for vehicles. A street sign reading \"Walker St\" is visible on a pole. A building with the number \"401\" and the word \"UNIFORM\" on its facade is seen in the background. A bicycle is parked on the sidewalk near the crosswalk.",
+   "object_counts": {
+    "person": 14,
+    "bicycle": 2,
+    "truck": 1,
+    "car": 4,
+    "handbag": 2,
+    "clock": 1,
+    "traffic light": 1,
+    "fire hydrant": 1,
+    "suitcase": 1,
+    "backpack": 1
+   },
+   "verification": {
+    "model": "nvidia/cosmos3-nano-reasoner",
+    "prompt_version": "c-verify-work-zone-1 (lane C proposal)",
+    "prompt": "You are checking a short fixed street-camera clip of an intersection.\nClaim to check: construction barriers, barrels or cones occupy part of the roadway (a traffic or\ncycle lane or the crosswalk on the road), so a cyclist on that road would have to go around them.\nAnswer step by step from what is visible, then give JSON:\n1. List the barriers/barrels/cones you can see and where they stand (sidewalk, crosswalk, road lane).\n2. Is any of them on the road surface, not only on the sidewalk?\n3. Is a person directing traffic (flagger) visible?\n4. Which street name signs or building numbers are readable?\nReply with JSON only:\n{\"road_space_visible\": true|false|null, \"obstruction_visible\": true|false|null,\n \"verdict\": \"supported\"|\"contradicted\"|\"unclear\", \"objects\": [..], \"flagger\": true|false|null,\n \"readable_signs\": [..], \"rationale\": \"<one short factual sentence>\"}",
+    "verdict": "supported",
+    "parsed": {
+     "road_space_visible": true,
+     "obstruction_visible": true,
+     "verdict": "supported",
+     "objects": [
+      {
+       "type": "barrier",
+       "category": "temporary",
+       "description": "Red plastic construction barrier",
+       "location": "road lane",
+       "on_sidewalk": false,
+       "on_crosswalk": false,
+       "on_road": true
+      },
+      {
+       "type": "barrel",
+       "category": "temporary",
+       "description": "Orange and white striped traffic barrel",
+       "location": "road lane",
+       "on_sidewalk": false,
+       "on_crosswalk": false,
+       "on_road": true
+      },
+      {
+       "type": "barrel",
+       "category": "temporary",
+       "description": "Orange and white striped traffic barrel",
+       "location": "road lane",
+       "on_sidewalk": false,
+       "on_crosswalk": false,
+       "on_road": true
+      },
+      {
+       "type": "barrel",
+       "category": "temporary",
+       "description": "Orange and white striped traffic barrel",
+       "location": "road lane",
+       "on_sidewalk": false,
+       "on_crosswalk": false,
+       "on_road": true
+      }
+     ],
+     "flagger": true,
+     "readable_signs": [
+      "Walker St",
+      "401",
+      "UNIFORM"
+     ],
+     "rationale": "The video shows red plastic barriers and orange traffic barrels on the road surface, which occupy part of the roadway and would require a cyclist to go around them. A person holding an orange flag is visible, indicating traffic direction. The signs for Walker St, 401, and UNIFORM are clearly readable."
+    },
+    "latency_ms": 8399
+   },
+   "video_sha256": "13003c08e54e56b081e1ee6c165f84adaba499ae6875ae4f2deaf48b43876e8e"
+  },
+  {
+   "segment_id": "walker-c17-s2",
+   "segment_file": "20261008_065146_VID_20261006_171812_002_chunk_0017_segment_002_of_006.mp4",
+   "camera_id": "nyc_streets_cam-1",
+   "caption": "A busy city street intersection is shown with pedestrians crossing in multiple directions. A black SUV is stopped near the crosswalk, and a white delivery truck is visible on the right side of the frame. A red construction barrier and orange traffic cones are placed on the road, partially blocking the crosswalk. Several people are walking across the street, including a woman in a red jacket carrying a backpack and a person in a gray hoodie. A man in a yellow safety vest is pushing a cart loaded with boxes. A traffic light showing a red hand signal is visible, indicating pedestrians should not cross. A street sign reading \"Walker St\" is mounted on a pole. The background includes storefronts, one with the word \"UNIFORM\" displayed on its window.",
+   "object_counts": {
+    "car": 2,
+    "person": 17,
+    "traffic light": 2,
+    "truck": 1,
+    "bicycle": 1,
+    "handbag": 4,
+    "backpack": 2,
+    "suitcase": 1
+   },
+   "verification": {
+    "model": "nvidia/cosmos3-nano-reasoner",
+    "prompt_version": "c-verify-work-zone-1 (lane C proposal)",
+    "prompt": "You are checking a short fixed street-camera clip of an intersection.\nClaim to check: construction barriers, barrels or cones occupy part of the roadway (a traffic or\ncycle lane or the crosswalk on the road), so a cyclist on that road would have to go around them.\nAnswer step by step from what is visible, then give JSON:\n1. List the barriers/barrels/cones you can see and where they stand (sidewalk, crosswalk, road lane).\n2. Is any of them on the road surface, not only on the sidewalk?\n3. Is a person directing traffic (flagger) visible?\n4. Which street name signs or building numbers are readable?\nReply with JSON only:\n{\"road_space_visible\": true|false|null, \"obstruction_visible\": true|false|null,\n \"verdict\": \"supported\"|\"contradicted\"|\"unclear\", \"objects\": [..], \"flagger\": true|false|null,\n \"readable_signs\": [..], \"rationale\": \"<one short factual sentence>\"}",
+    "verdict": "supported",
+    "parsed": {
+     "road_space_visible": true,
+     "obstruction_visible": true,
+     "verdict": "supported",
+     "objects": [
+      {
+       "type": "barrier",
+       "category": "temporary",
+       "color": "red",
+       "material": "plastic",
+       "location": "road",
+       "description": "A red plastic temporary barrier placed on the road surface."
+      },
+      {
+       "type": "barrel",
+       "category": "temporary",
+       "color": "orange",
+       "material": "plastic",
+       "location": "road",
+       "description": "An orange plastic temporary barrel placed on the road surface."
+      },
+      {
+       "type": "barrel",
+       "category": "temporary",
+       "color": "orange",
+       "material": "plastic",
+       "location": "road",
+       "description": "Another orange plastic temporary barrel placed on the road surface."
+      }
+     ],
+     "flagger": false,
+     "readable_signs": [
+      "401",
+      "UNIFORM",
+      "Walker St"
+     ],
+     "rationale": "The video shows red plastic barriers and orange plastic barrels on the road surface, which occupy part of the roadway and would require a cyclist to go around them."
+    },
+    "latency_ms": 5214
+   },
+   "video_sha256": "47755887493be33a2b5f7f7a0b42b618875a267ab6cc9d8b8ece569991d78af9"
+  }
+ ]
+}
