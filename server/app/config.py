@@ -163,7 +163,7 @@ class Settings(BaseSettings):
     ors_base_url: str = "https://api.openrouteservice.org"
     ors_profile: str = "cycling-regular"
     rideahead_routing: Literal["auto", "fixture", "ors"] = "auto"  # auto: ors if key set
-    rideahead_perception: Literal["fixture", "archive"] = "fixture"
+    rideahead_perception: Literal["fixture", "archive"] = "archive"  # archive = C's cached outputs
     rideahead_fixtures: Path = SERVER_DIR / "fixtures" / "rideahead"
     rideahead_scenario: str = (
         "scenario_nyc.json"  # file in rideahead_fixtures; scenario.json = London fixture

@@ -122,27 +122,33 @@ def test_config_update_and_missing_session(client: TestClient) -> None:
     assert client.get("/api/rideahead/sessions/nope").status_code == 404
 
 
-def test_nyc_scenario_on_recorded_ors_routes(tmp_path) -> None:  # type: ignore[no-untyped-def]
-    """Default NYC scenario (6th Ave), recorded genuine ORS routes, placeholder observation."""
-    settings = make_settings(tmp_path, ors_api_key=SecretStr(""), rideahead_routing="ors")
+def test_nyc_scenario_archive_perception_on_recorded_ors_routes(tmp_path) -> None:  # type: ignore[no-untyped-def]
+    """Default demo: lane C cached real observations, labelled synthetic hazard, recorded ORS."""
+    settings = make_settings(
+        tmp_path, ors_api_key=SecretStr(""), rideahead_routing="ors", rideahead_perception="archive"
+    )
     with TestClient(create_app(settings)) as c:
         snap = c.post("/api/rideahead/sessions", json={}).json()
         sid = snap["session_id"]
-        assert snap["scenario_id"] == "nyc-6th-ave-v1"
-        assert any("New York" in label for label in snap["labels"])
-        assert snap["riders"][0]["position"] is None  # Bike A unmapped before its first anchor
+        assert snap["scenario_id"].startswith("nyc-6th-ave")
+        states = {i["name"]: i["state"] for i in snap["integrations"]}
+        assert states["cosmos"] == "cached" and states["routing"] == "cached"
 
-        snap = _advance(c, sid, 60)
+        snap = _advance(c, sid, 140)  # real reviewed claims revealed, none creates a hazard
+        assert snap["observations"]
+        assert all(o["source"] == "cached_model" for o in snap["observations"])
+        assert snap["hazards"] == []
+
+        snap = _advance(c, sid, 160)  # labelled synthetic scenario event
         assert [h["state"] for h in snap["hazards"]] == ["observed"]
-        assert snap["observations"][0]["label"].startswith("PLACEHOLDER")
-        assert {r["provenance"] for r in snap["routes"]} == {"cached_provider"}
-        assert any(r["role"] == "detour" for r in snap["routes"])
+        event = snap["observations"][-1]
+        assert event["source"] == "synthetic_scenario" and "Synthetic" in event["label"]
         assert snap["decisions"][0]["action"] == "heads_up"
+        assert any(r["role"] == "detour" for r in snap["routes"])
 
-        snap = _advance(c, sid, 200)  # brief obstruction cheaper than the +39 s detour
-        assert snap["decisions"][0]["action"] == "wait"
-
-        snap = _advance(c, sid, 330)
+        snap = _advance(c, sid, 400)
         assert snap["hazards"][0]["state"] == "stale"
-        snap = _advance(c, sid, 450)
+        assert snap["decisions"][0]["action"] in ("heads_up", "slow")  # stale is not clear
+        snap = _advance(c, sid, 480)
         assert snap["hazards"][0]["state"] == "cleared"
+        assert snap["decisions"][0]["action"] == "continue"

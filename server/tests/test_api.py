@@ -20,6 +20,7 @@ def make_settings(tmp_path, **overrides) -> Settings:  # type: ignore[no-untyped
         "wandb_api_key": SecretStr(""),
         "web_dist": tmp_path / "no-dist",
         "data_dir": tmp_path / "data",
+        "rideahead_perception": "fixture",
     }
     return Settings(**{**base, **overrides})
 

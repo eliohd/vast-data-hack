@@ -8,8 +8,8 @@ describe('replay presentation', () => {
     expect(previewAt(329).hazards[0].state).toBe('observed');
     expect(previewAt(449).hazards[0].state).toBe('stale');
     expect(previewAt(449).evidence.some((item) => item.id.includes('syn-clear'))).toBe(false);
-    expect(previewAt(450).hazards[0].state).toBe('cleared');
-    expect(previewAt(450).evidence.at(-1)?.provenance).toContain('Synthetic');
+    expect(previewAt(480).hazards[0].state).toBe('cleared');
+    expect(previewAt(480).evidence.at(-1)?.provenance).toContain('Synthetic');
   });
   it('rewinds deterministically without retaining future reports', () => {
     previewAt(180);

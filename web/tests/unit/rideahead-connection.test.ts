@@ -46,15 +46,16 @@ describe('frozen API integration', () => {
 
 describe('canonical snapshot presentation', () => {
   it('labels the Cosmos strip from actual model provenance', () => {
-    const source = structuredClone(canonical.t60) as unknown as Schemas['SessionSnapshot'];
-    expect(toSnapshotView(source).cosmos.source).toBe('fixture');
-    source.observations[0].verification!.source = 'cached_model';
+    const source = structuredClone(canonical.t160) as unknown as Schemas['SessionSnapshot'];
+    const verified = source.observations.filter((item) => item.verification).at(-1)!;
     expect(toSnapshotView(source).cosmos.source).toBe('cached_model');
-    source.observations[0].verification!.source = 'live_model';
+    verified.verification!.source = 'fixture';
+    expect(toSnapshotView(source).cosmos.source).toBe('fixture');
+    verified.verification!.source = 'live_model';
     expect(toSnapshotView(source).cosmos.source).toBe('live_model');
   });
   it('never shows future inference text in the bottom strip', () => {
-    const source = structuredClone(canonical.t60) as unknown as Schemas['SessionSnapshot'];
+    const source = structuredClone(canonical.t160) as unknown as Schemas['SessionSnapshot'];
     source.replay_time_s = 0;
     expect(toSnapshotView(source).cosmos.source).toBe('unavailable');
     expect(toSnapshotView(source).cosmos.timeS).toBeNull();
@@ -69,12 +70,14 @@ describe('canonical snapshot presentation', () => {
     expect(view.integrations[0].status).toBe('Configured · not verified');
   });
   it('converts GeoJSON longitude/latitude explicitly and blocks synthetic playback', () => {
-    const source = structuredClone(canonical.t60) as unknown as Schemas['SessionSnapshot'];
+    const source = structuredClone(canonical.t160) as unknown as Schemas['SessionSnapshot'];
     const view = toSnapshotView(source);
     const [lon, lat] = source.routes[0].geometry.coordinates[0];
     expect(view.routes[0].points[0]).toEqual({ lat, lon });
-    expect(view.evidence[0].mediaPath).toBeNull();
-    expect(view.evidence[0].provenance).toContain('Synthetic');
+    const synthetic = view.evidence.find((item) => item.provenance.includes('Synthetic'));
+    expect(synthetic?.mediaPath).toBeNull();
+    const recorded = view.evidence.find((item) => item.provenance.includes('Cached recorded'));
+    expect(recorded?.mediaPath).toMatch(/^\/api\/archive\/media\?source=/);
   });
   it('defensively excludes future evidence even if supplied in a snapshot', () => {
     const source = structuredClone(canonical.t450) as unknown as Schemas['SessionSnapshot'];

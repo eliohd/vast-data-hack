@@ -1,8 +1,8 @@
 {
-  "scenario_id": "nyc-6th-ave-v1",
+  "scenario_id": "nyc-6th-ave-v2",
   "title": "Blocked bike lane on 6th Ave northbound (Manhattan)",
   "ride_id": "nyc_bike_gopro-1:68c66490-7e43-428d-b7af-b477ae296369",
-  "duration_s": 600,
+  "duration_s": 660,
   "origin": {
     "lat": 40.7445,
     "lon": -73.9919
@@ -14,55 +14,61 @@
   "observer_label": "Bike A (recorded ride GX010001)",
   "observer_track": [
     {
-      "session_time_s": 40,
+      "session_time_s": 0,
       "lat": 40.7466,
       "lon": -73.9899
     },
     {
-      "session_time_s": 80,
+      "session_time_s": 40,
       "lat": 40.7491,
       "lon": -73.9881
     },
     {
-      "session_time_s": 95,
+      "session_time_s": 55,
       "lat": 40.7498,
       "lon": -73.9877
     },
     {
-      "session_time_s": 130,
+      "session_time_s": 90,
       "lat": 40.751,
       "lon": -73.9867
     },
     {
-      "session_time_s": 160,
+      "session_time_s": 120,
       "lat": 40.7522,
       "lon": -73.9858
+    },
+    {
+      "session_time_s": 139.5,
+      "lat": 40.7528,
+      "lon": -73.9853
     }
   ],
   "simulated_rider": {
     "rider_id": "bike_b",
     "label": "Bike B (simulated)",
-    "depart_s": 120,
+    "depart_s": 300,
     "speed_mps": 4.2
   },
-  "fixture_observations": [
+  "fixture_observations": [],
+  "synthetic_observations": [
     {
-      "observation_id": "obs-nyc-placeholder-001",
+      "observation_id": "obs-nyc-syn-block-001",
       "hazard_type": "lane_blocked",
       "assertion": "present",
       "evidence": [
         {
-          "evidence_id": "ev-nyc-placeholder-001",
+          "evidence_id": "ev-obs-nyc-syn-block-001",
           "ride_id": "nyc_bike_gopro-1:68c66490-7e43-428d-b7af-b477ae296369",
-          "segment_id": "placeholder-ev-nyc-placeholder-001",
-          "camera_id": "nyc_bike_gopro-1",
+          "segment_id": "synthetic-ev-obs-nyc-syn-block-001",
+          "camera_id": null,
           "clip_start_s": 0.0,
           "clip_end_s": 5.0,
-          "ride_offset_s": 360,
+          "ride_offset_s": 500,
           "recorded_at": null,
           "media_ref": null,
           "provenance": "synthetic",
-          "caption": "PLACEHOLDER: delivery van stopped in the 6th Ave bike lane.",
+          "caption": "SYNTHETIC scenario event: a delivery van stops in the northbound 6th Ave bike lane at W 31st St.",
           "object_counts": {},
           "model": null,
           "prompt_version": null
@@ -71,50 +77,40 @@
       "location": {
         "lat": 40.747912,
         "lon": -73.989145,
-        "road_segment_id": "6th-ave:nb:w29-w33",
+        "road_segment_id": "manhattan-6th-ave:nb",
         "bearing_deg": 29.0,
         "method": "manual_anchor",
         "uncertainty_m": 30.0,
-        "notes": "PLACEHOLDER: 6th Ave & W 31st St, between lane C anchors W 29 St and 100 W 33 St. Map-matched onto 6th Ave (OSM geometry via openrouteservice); assumes the real clip shows the cross-street (±30 m). Route anchors themselves are ±80–150 m"
+        "notes": "SCENARIO-DEFINED position for a synthetic event: 6th Ave & W 31st St, map-matched onto OSM geometry (openrouteservice). Not derived from footage; recorded anchors are ±60–150 m."
       },
-      "observer_id": "bike_a",
-      "source_group_id": "grp-nyc-placeholder-001",
-      "description": "PLACEHOLDER obstruction in the northbound 6th Ave bike lane near W 31st St.",
+      "observer_id": "scenario",
+      "source_group_id": "grp-obs-nyc-syn-block-001",
+      "description": "SYNTHETIC scenario event: a delivery van stops in the northbound 6th Ave bike lane at W 31st St.",
       "support": "supported",
-      "verification": {
-        "evidence_id": "ev-nyc-placeholder-001",
-        "question": "Is a vehicle in the bike lane ahead?",
-        "verdict": "supported",
-        "obstruction_visible": true,
-        "road_space_visible": true,
-        "rationale": "FIXTURE verification (no model call)",
-        "source": "fixture"
-      },
+      "verification": null,
       "model_confidence": null,
-      "ride_offset_s": 360,
-      "session_time_s": 60.0,
-      "source": "fixture",
-      "label": "PLACEHOLDER synthetic observation — replaced by lane C's real observation"
-    }
-  ],
-  "synthetic_observations": [
+      "ride_offset_s": 500,
+      "session_time_s": 160.0,
+      "source": "synthetic_scenario",
+      "label": "Synthetic scenario event — no recorded clip was verified as blocking the lane"
+    },
     {
       "observation_id": "obs-nyc-syn-clear-001",
       "hazard_type": "lane_blocked",
       "assertion": "clear",
       "evidence": [
         {
-          "evidence_id": "ev-nyc-syn-clear-001",
+          "evidence_id": "ev-obs-nyc-syn-clear-001",
           "ride_id": "nyc_bike_gopro-1:68c66490-7e43-428d-b7af-b477ae296369",
-          "segment_id": "placeholder-ev-nyc-syn-clear-001",
-          "camera_id": "nyc_bike_gopro-1",
+          "segment_id": "synthetic-ev-obs-nyc-syn-clear-001",
+          "camera_id": null,
           "clip_start_s": 0.0,
           "clip_end_s": 5.0,
-          "ride_offset_s": 750,
+          "ride_offset_s": 820,
           "recorded_at": null,
           "media_ref": null,
           "provenance": "synthetic",
-          "caption": "Synthetic scenario event: the bike lane is clear.",
+          "caption": "SYNTHETIC scenario event: a later pass shows the bike lane at W 31st St clear.",
           "object_counts": {},
           "model": null,
           "prompt_version": null
@@ -123,20 +119,20 @@
       "location": {
         "lat": 40.747912,
         "lon": -73.989145,
-        "road_segment_id": "6th-ave:nb:w29-w33",
+        "road_segment_id": "manhattan-6th-ave:nb",
         "bearing_deg": 29.0,
         "method": "manual_anchor",
         "uncertainty_m": 30.0,
-        "notes": "PLACEHOLDER: 6th Ave & W 31st St, between lane C anchors W 29 St and 100 W 33 St. Map-matched onto 6th Ave (OSM geometry via openrouteservice); assumes the real clip shows the cross-street (±30 m). Route anchors themselves are ±80–150 m"
+        "notes": "SCENARIO-DEFINED position for a synthetic event: 6th Ave & W 31st St, map-matched onto OSM geometry (openrouteservice). Not derived from footage; recorded anchors are ±60–150 m."
       },
       "observer_id": "scenario",
-      "source_group_id": "grp-nyc-syn-clear-001",
-      "description": "Later pass shows the northbound 6th Ave bike lane clear (SYNTHETIC scenario event).",
+      "source_group_id": "grp-obs-nyc-syn-clear-001",
+      "description": "SYNTHETIC scenario event: a later pass shows the bike lane at W 31st St clear.",
       "support": "supported",
       "verification": null,
       "model_confidence": null,
-      "ride_offset_s": 750,
-      "session_time_s": 450.0,
+      "ride_offset_s": 820,
+      "session_time_s": 480.0,
       "source": "synthetic_scenario",
       "label": "Synthetic clearance (scenario event) — not recorded evidence"
     }
@@ -151,8 +147,9 @@
   },
   "labels": [
     "Bike B is a simulated rider",
-    "Bike A positions: manually reconstructed route from caption sign text (±80–150 m), New York",
-    "Session t=0 is ride offset 300 s of recording GX010001 (no GPS, no recording time)",
+    "The demo obstruction and its clearance are SYNTHETIC scenario events; recorded clips show caption claims that verification rejected",
+    "Bike A positions: manually reconstructed route from street signs in the footage (±60–150 m), New York",
+    "Session t=0 is ride offset 340 s of recording GX010001 (no GPS, no recording time)",
     "Server-mediated sharing (not peer-to-peer)",
     "Persistence prior time-compressed for the demo (assumption, not measured)"
   ]

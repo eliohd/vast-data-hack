@@ -29,7 +29,7 @@ mkdir -p ~/hack/server && nano ~/hack/server/.env
 ```
 DEMO_KEY=<private demo key>        # required: protects shared GPUs on the public URL
 RIDEAHEAD_SCENARIO=scenario_nyc.json
-RIDEAHEAD_PERCEPTION=fixture       # switch to archive once your provider is merged to main
+RIDEAHEAD_PERCEPTION=archive       # default; lane C cached real outputs
 RIDEAHEAD_ROUTING=auto
 ORS_API_KEY=<from Elio, privately> # optional: without it the app replays recorded ORS routes
                                    # (labelled "cached"), which is fine for the demo
@@ -70,20 +70,20 @@ curl -fsS -H "x-demo-key: $K" $B/api/health/upstreams | python3 -m json.tool
 curl -fsS -H "x-demo-key: $K" $B/api/rideahead/capabilities | python3 -m json.tool
 SID=$(curl -fsS -H "x-demo-key: $K" -H 'content-type: application/json' -XPOST \
   $B/api/rideahead/sessions -d '{}' | python3 -c 'import sys,json;print(json.load(sys.stdin)["session_id"])')
-for t in 60 200 330 450; do
+for t in 140 160 400 480; do
   curl -fsS -H "x-demo-key: $K" -H 'content-type: application/json' -XPOST \
     $B/api/rideahead/sessions/$SID/advance -d "{\"to_s\":$t}" | python3 -c \
     'import sys,json;s=json.load(sys.stdin);print(s["replay_time_s"],[h["state"] for h in s["hazards"]],[d["action"] for d in s["decisions"]],{r["provenance"] for r in s["routes"]})'
 done
 ```
 
-Expected with the NYC placeholder scenario:
+Use `for t in 140 160 400 480` with the NYC demo scenario. Expected:
 
 ```
-60.0  ['observed'] ['heads_up'] {'live_provider'} or {'cached_provider'}
-200.0 ['observed'] ['wait']     …
-330.0 ['stale']    ['continue']   # Bike B already past it
-450.0 ['cleared']  ['continue']
+140.0 []           ['continue'] {'live_provider'} or {'cached_provider'}   # real claims, no hazard
+160.0 ['observed'] ['heads_up'] …                                          # synthetic event
+400.0 ['stale']    ['slow']     …                                          # stale is not clear
+480.0 ['cleared']  ['continue'] …
 ```
 
 Then on the phone: open `https://<public url>/?key=<demo key>`, check that the map loads, Play

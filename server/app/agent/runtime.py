@@ -251,7 +251,12 @@ class Session:
         ):
             obs = self.all_observations[self.revealed]
             self.revealed += 1
-            hz = self.engine.ingest(obs)
+            try:
+                hz = self.engine.ingest(obs)
+            except ValueError as exc:  # engine rejected malformed input: log, never crash replay
+                log.warning("engine rejected %s: %s", obs.observation_id, exc)
+                self._event("system", f"rejected {obs.observation_id}: {exc}", [obs.observation_id])
+                continue
             tag = f" [{obs.label}]" if obs.label else ""
             self._event(
                 "observation",

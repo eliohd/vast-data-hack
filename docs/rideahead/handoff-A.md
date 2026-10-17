@@ -132,28 +132,35 @@ Config (env or `server/.env`): `ORS_API_KEY` (empty → fixture routes), `RIDEAH
 - Evidence media: set `Evidence.segment_id` to the VSS `source` (segment file) and
   `media_ref` to `/api/archive/media?source=<segment_file>`; no contract change needed.
 
-## NYC scenario (default since this commit)
+## NYC demo (default): C's real perception + labelled synthetic hazard
 
-- `server/fixtures/rideahead/scenario_nyc.json` (default `RIDEAHEAD_SCENARIO`): recording GX010001,
-  session t=0 = ride offset 300 s; Bike A track = lane C's 6th Ave anchors (W 29 → W 38, ±80–150 m,
-  "manually reconstructed route"). `scenario.json` remains the synthetic London fixture (tests).
-- Real ORS (`cycling-regular`): origin 6th Ave & W 26th (40.7445,-73.9919) → destination
-  6th Ave & W 40th (40.7537,-73.9846). Primary 1318 m / 314 s straight up 6th Ave. Avoid-polygon
-  detour (30 m) 1489 m / 353 s via W 30th → Broadway → W 32nd (≈ +39 s). With a 100 m polygon
-  ORS detours via 8th Ave (2403 m / 529 s). Responses recorded in `routes_ors_cache.json`.
-- **Placeholder** observation (fixture perception only, `fixture_observations`): lane_blocked at
-  6th Ave & W 31st St, map-matched onto the ORS 6th Ave geometry, ±30 m, labelled PLACEHOLDER.
-  Real perception (`RIDEAHEAD_PERCEPTION=archive`) ignores it. Synthetic clearance at t=450 stays.
-- Story with D's engine: t=60 heads_up → t≈200 `wait` (brief obstruction cheaper than +39 s
-  detour) → t=300 stale → t=450 cleared/continue. A reroute needs a persistent hazard (work_zone)
-  — not forced by inflating delays.
-- **Location constraint (important for C):** D's route relevance needs
-  `route offset + uncertainty_m <= match_radius_m (40)` and a directed `road_segment_id` +
-  `bearing_deg`; clearance needs uncertainty <= 40 m. The ±80–150 m caption anchors alone give
-  "route relevance cannot be established". The real observation must be anchored at a cross-street
-  visible in its own clip and map-matched onto the avenue (≤ 30 m).
-- Integration edits in other lanes' tests: `test_hazard_runtime.py` pinned to `scenario.json`;
-  `web/tests/unit/rideahead.test.ts` made index-independent for the clearance evidence.
+Merged C `70e8212` (ArchivePerceptionProvider, traced W&B + Cosmos cache) and D `2f9c706`
+(cyclist wording, Weave-published lifecycle eval). Defaults now: `RIDEAHEAD_PERCEPTION=archive`,
+`RIDEAHEAD_SCENARIO=scenario_nyc.json` (`nyc-6th-ave-v2`).
+
+- Clock: session t=0 = ride offset 340 s of GX010001 (C's convention). Bike A track = C's anchors
+  W 29 → W 39 St (±60–150 m, "manually reconstructed route").
+- Real data: C's 5 reviewed observations appear at t=85–135 (2 uncertain, 3 contradicted by
+  verification). **None creates a hazard** — this is the trust layer, shown in the evidence panel.
+- Demo hazard = **synthetic scenario event** at t=160, 6th Ave & W 31st St (map-matched onto ORS
+  geometry, ±30 m, `manhattan-6th-ave:nb`, 29°), observer `scenario`, labelled. Synthetic
+  clearance at t=480. Not placed at C's suggested W 38–39 St spot because (a) the recorded clips
+  there show the lane clear, (b) ±80 m fails D's relevance rule (offset + uncertainty ≤ 40 m),
+  (c) the real ORS detour there is poor (+151 s around-the-block, 32 m clear; +215 s via 8th Ave
+  with a 50 m area) vs +39 s via Broadway at W 31st (61 m clear).
+- Real ORS: 6th Ave & W 26th (40.7445,-73.9919) → 6th Ave & W 40th (40.7537,-73.9846); primary
+  1318 m / 314 s up 6th Ave; detour 1489 m / 353 s (W 30th → Broadway → W 32nd). Recorded.
+- Bike B departs t=300. Decisions (D's engine): t=160 heads_up "Blockage 500 m ahead…" → t=400
+  stale → slow "Possible blockage 80 m ahead. Slow down; delay uncertain." → t=480 continue.
+  No reroute: brief obstruction vs +39 s detour; not forced.
+- Runtime hardening: an observation the engine rejects (ValueError) is logged as an event and
+  skipped instead of failing `advance` with a 500.
+- Integration edits in other lanes' tests (data moved under them): `tests/test_api.py`
+  `make_settings` defaults to fixture perception; `test_hazard_runtime.py` pinned to
+  `scenario.json`; B's `rideahead.test.ts` (clearance at t=480) and `rideahead-connection.test.ts`
+  (t160 frame; synthetic evidence has no media path, recorded evidence gets the proxy path).
+- `snapshots.json` / B's `canonical-snapshots.json`: archive perception + recorded ORS, frames
+  t0, 60, 140, 160, 300, 400, 450, 480, 660.
 - Deploy is run by lane C per `docs/rideahead/deploy-runbook.md`; A picks the SHA.
 
 ## Known limitations

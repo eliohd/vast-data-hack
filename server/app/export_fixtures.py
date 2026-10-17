@@ -15,14 +15,14 @@ from pydantic import SecretStr
 from app.config import Settings
 from app.services import Services
 
-SAMPLE_TIMES = (0, 60, 200, 330, 450, 600)
+SAMPLE_TIMES = (0, 60, 140, 160, 300, 400, 450, 480, 660)
 
 
 async def build() -> dict[str, dict]:
     settings = Settings(
         tracing=False,
         rideahead_routing="ors",  # no key → recorded genuine ORS responses (cached_provider)
-        rideahead_perception="fixture",
+        rideahead_perception="archive",  # lane C cached real outputs
         ors_api_key=SecretStr(""),
     )
     services = Services.create(settings)
