@@ -54,7 +54,7 @@ log `/tmp/hack-server.log`) and prints `/api/health`.
 
 Pick one.
 
-- **Named tunnel `https://hack.elio.ltd`**: needs Elio's tunnel token, shared privately. On the VM:
+- **Named tunnel `https://cysense.elio.ltd`**: needs Elio's tunnel token, shared privately. On the VM:
   `read -s CF_TOKEN; tmux new-session -d -s tunnel "~/bin/cloudflared tunnel run --token $CF_TOKEN"`
   (install steps in `docs/deploy.md`). Only one VM may run this tunnel at a time.
 - **Quick tunnel (no account)**: on the VM

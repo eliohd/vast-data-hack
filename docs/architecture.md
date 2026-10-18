@@ -4,7 +4,7 @@
 
 ```
 Phone (Safari/Chrome, HTTPS)
-   │  https://hack.elio.ltd            (Cloudflare named tunnel)
+   │  https://cysense.elio.ltd         (Cloudflare named tunnel)
    ▼
 cloudflared on the lab VM ──► FastAPI :8000 (one origin)
                                  ├── /            web/dist (Astro static build)

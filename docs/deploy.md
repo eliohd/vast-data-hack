@@ -1,10 +1,13 @@
-# Deploy: lab VM + Cloudflare tunnel → https://hack.elio.ltd
+# Deploy: lab VM + Cloudflare tunnel → https://cysense.elio.ltd
+
+> The organisers shut the lab VM down after the event. This page records how the
+> demo was hosted; to run Cysense now, see [Run it locally](../README.md#run-it-locally).
 
 ## Once: the tunnel (elio.ltd is on Cloudflare)
 
 1. Cloudflare dashboard → Zero Trust → Networks → Tunnels → **Create a tunnel** (cloudflared), name
    it `hack`. Copy the **token** from the install command.
-2. In the tunnel → **Public hostnames** → add `hack.elio.ltd` → Service `HTTP` →
+2. In the tunnel → **Public hostnames** → add `cysense.elio.ltd` → Service `HTTP` →
    `localhost:8000`. WebSockets work by default.
 3. On the lab VM (no sudo needed), download cloudflared and run it with the token:
 
@@ -18,7 +21,7 @@
    Keep the token out of the repo and out of shell history (`read -s CF_TOKEN` first, then
    `--token "$CF_TOKEN"`). This is separate from the cloudflared process the workshop uses for SSH.
 
-Check: `curl https://hack.elio.ltd/api/health` from your laptop.
+Check: `curl https://cysense.elio.ltd/api/health` from your laptop.
 
 ## Every deploy
 
@@ -40,7 +43,7 @@ Nothing to copy: `app/config.py` reads `/config/<team>.config`. Extras (e.g. `DE
 
 ## Protecting shared GPUs
 
-Set `DEMO_KEY=…` in `server/.env` on the VM, then share `https://hack.elio.ltd/?key=…`. The key is
+Set `DEMO_KEY=…` in `server/.env` on the VM, then share `https://cysense.elio.ltd/?key=…`. The key is
 remembered in the browser and sent on every API call and WebSocket. Per-IP rate limits apply
 regardless (`RATE_LIMIT_PER_MINUTE`, and 180 frames/min on the socket).
 

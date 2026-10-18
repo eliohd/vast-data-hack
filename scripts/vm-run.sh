@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Runs on the lab VM. (Re)starts the API on :8000 in a detached tmux session (or nohup if tmux
-# is missing). The Cloudflare tunnel for hack.elio.ltd points at http://localhost:8000.
+# is missing). The Cloudflare tunnel for cysense.elio.ltd points at http://localhost:8000.
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
